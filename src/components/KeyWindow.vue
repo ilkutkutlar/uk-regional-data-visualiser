@@ -10,8 +10,9 @@
       <TogglerButton
         id="key-collapse-toggle"
         classes="row ms-3 me-3 mb-2 mt-2"
-        toggleType="collapse"
-        target="key">
+        toggle-type="collapse"
+        target="key"
+      >
         <h5 id="key-title" class="col col-10 card-title mb-0 ps-0">Key</h5>
         <div class="col p-0 col-2">
           <div id="key-down-icon"><IconCaretDownFill/></div>

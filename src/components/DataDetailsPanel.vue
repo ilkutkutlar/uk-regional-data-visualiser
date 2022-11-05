@@ -24,14 +24,14 @@
         id="panel-data"
         name="panel-data"
         label="Choose a dataset"
-        ariaLabel="Dataset select"
-        outerDivClasses="mb-1 mt-3"/>
+        aria-label="Dataset select"
+        outer-div-classes="mb-1 mt-3"/>
       <SelectFloating
         id="panel-data-time-period"
         name= "panel-data-time-period"
         label="Time period"
-        ariaLabel="Dataset time period select"
-        outerDivClasses="mb-3"/>
+        aria-label="Dataset time period select"
+        outer-div-classes="mb-3"/>
     <div class="form-check mb-3">
       <input class="form-check-input" type="checkbox" value="" id="per-capita-check">
       <label class="form-check-label" for="per-capita-check">
