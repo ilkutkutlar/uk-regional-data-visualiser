@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import TogglerButton from './partials/TogglerButton.vue'
-  import IconCaretDownFill from './icons/IconCaretDownFill.vue'
-  import IconCaretUpFill from './icons/IconCaretUpFill.vue'
+import TogglerButton from './partials/TogglerButton.vue'
+import IconCaretDownFill from './icons/IconCaretDownFill.vue'
+import IconCaretUpFill from './icons/IconCaretUpFill.vue'
 </script>
 
 <template>

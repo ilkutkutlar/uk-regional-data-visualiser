@@ -1,17 +1,17 @@
 <script>
-  import IconSlider from './icons/IconSlider.vue'
+import IconSlider from './icons/IconSlider.vue'
 
-  export default {
-    data() {
-      return {
-        datasetName: 'None',
-        datasetYear: 'None'
-      }
-    },
-    components: {
-      IconSlider
+export default {
+  data() {
+    return {
+      datasetName: 'None',
+      datasetYear: 'None'
     }
+  },
+  components: {
+    IconSlider
   }
+}
 </script>
 
 <template>

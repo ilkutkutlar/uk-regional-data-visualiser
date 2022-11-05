@@ -5,7 +5,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "moduleResolution": "node",
+    "removeComments": true,
+    "lib": ["es2019", "DOM"]
   },
 
   "references": [

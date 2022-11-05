@@ -1,8 +1,28 @@
-<script setup lang="ts">
-  import SelectFloating from './partials/SelectFloating.vue'
-  import IconText from './icons/IconText.vue'
-  import IconLink from './icons/IconLink.vue'
-  import IconSearch from './icons/IconSearch.vue'
+<script>
+import SelectFloating from './partials/SelectFloating.vue'
+import IconText from './icons/IconText.vue'
+import IconLink from './icons/IconLink.vue'
+import IconSearch from './icons/IconSearch.vue'
+
+export default {
+  props: ['dataset', 'allDatasets'],
+  components: {
+    SelectFloating,
+    IconText,
+    IconLink,
+    IconSearch
+  },
+  data() {
+    return {
+      dataSelectItems: this.allDatasets.map((dataset) => {
+        return {value: dataset.metadata.id, text: dataset.metadata.name}
+      }),
+      timePeriodSelectItems: this.dataset.timePeriods.map((period) => {
+        return {value: period, text: period}
+      })
+    }
+  }
+}
 </script>
 
 <template>
@@ -25,13 +45,15 @@
         name="panel-data"
         label="Choose a dataset"
         aria-label="Dataset select"
-        outer-div-classes="mb-1 mt-3"/>
+        outer-div-classes="mb-1 mt-3"
+        :items="this.dataSelectItems"/>
       <SelectFloating
         id="panel-data-time-period"
         name= "panel-data-time-period"
         label="Time period"
         aria-label="Dataset time period select"
-        outer-div-classes="mb-3"/>
+        outer-div-classes="mb-3"
+        :items="this.timePeriodSelectItems"/>
     <div class="form-check mb-3">
       <input class="form-check-input" type="checkbox" value="" id="per-capita-check">
       <label class="form-check-label" for="per-capita-check">
@@ -82,7 +104,9 @@
             <h5 class="card-title border-bottom pb-1">
               <IconText/>Description
             </h5>
-            <div id="data-description" class="card-text"></div>
+            <div id="data-description" class="card-text">
+              {{ this.dataset.metadata.description }}
+            </div>
           </div>
         </div>
         <div class="card mt-3">
@@ -90,7 +114,9 @@
             <h5 class="card-title border-bottom pb-1">
               <IconLink/>Source
             </h5>
-            <a id="data-source" class="d-block card-text" target="blank"></a>
+            <a href="this.dataset.metadata.sourceLink" id="data-source" class="d-block card-text" target="blank">
+              {{ this.dataset.metadata.source }}
+            </a>
           </div>
         </div>
       </div>
