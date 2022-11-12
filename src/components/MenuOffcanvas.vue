@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     id="menu-offcanvas"
     aria-labelledby="menu-offcanvas-label"
     class="offcanvas offcanvas-end"

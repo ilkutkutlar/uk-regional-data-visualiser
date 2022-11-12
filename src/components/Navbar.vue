@@ -1,8 +1,10 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom h-6vh p-0">
+  <nav
+    class="navbar navbar-expand-lg navbar-light bg-light border-bottom h-6vh p-0"
+  >
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Maps of Britain</a>
-      <button 
+      <button
         class="navbar-toggler"
         type="button"
         data-bs-toggle="offcanvas"

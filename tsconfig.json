@@ -8,7 +8,8 @@
     },
     "moduleResolution": "node",
     "removeComments": true,
-    "lib": ["es2019", "DOM"]
+    "lib": ["es2019", "DOM"],
+    "allowJs": true
   },
 
   "references": [

@@ -1,26 +1,37 @@
 <script>
-import IconSlider from './icons/IconSlider.vue'
+import IconSlider from "./icons/IconSlider.vue";
 
 export default {
   data() {
     return {
-      datasetName: 'None',
-      datasetYear: 'None'
-    }
+      datasetName: "None",
+      datasetYear: "None",
+    };
   },
   components: {
-    IconSlider
-  }
-}
+    IconSlider,
+  },
+};
 </script>
 
 <template>
-  <div id='bar-dataset-root' class="w-100 position-fixed z-index-10 d-lg-none mt-3">
-    <div class="border m-auto bg-light p-2 rounded-3" style="width: fit-content">
+  <div
+    id="bar-dataset-root"
+    class="w-100 position-fixed z-index-10 d-lg-none mt-3"
+  >
+    <div
+      class="border m-auto bg-light p-2 rounded-3"
+      style="width: fit-content"
+    >
       <div class="w-100 d-flex">
-        <div class="overflow-hidden ms-2 me-3" style="white-space: nowrap; text-overflow: ellipsis">
+        <div
+          class="overflow-hidden ms-2 me-3"
+          style="white-space: nowrap; text-overflow: ellipsis"
+        >
           <div id="bar-dataset-name-label">{{ datasetName }}</div>
-          <div id="bar-dataset-year-label" class="text-muted">{{ datasetYear }}</div>
+          <div id="bar-dataset-year-label" class="text-muted">
+            {{ datasetYear }}
+          </div>
         </div>
         <div
           id="bar-dataset-details-button"
@@ -31,7 +42,7 @@ export default {
           aria-expanded="false"
           aria-label="Toggle data details"
         >
-          <IconSlider/>
+          <IconSlider />
         </div>
       </div>
     </div>

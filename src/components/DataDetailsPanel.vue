@@ -16,8 +16,8 @@ export default {
     return {
       dataSelectItems: this.allDatasets.map((dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
-      })
-    }
+      }),
+    };
   },
   computed: {
     timePeriodSelectItems() {
@@ -32,7 +32,7 @@ export default {
       });
     },
   },
-}
+};
 </script>
 
 <template>
