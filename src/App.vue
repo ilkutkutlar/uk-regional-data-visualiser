@@ -60,6 +60,12 @@ export default {
     _click(d) {
       // this._selectRegion(d.target.id);
     },
+    dataRowMouseEnter(regionId) {
+      this.highlightedRegion = regionId;
+    },
+    dataRowMouseLeave() {
+      this.highlightedRegion = null;
+    },
   },
   created() {
     // TODO: You can use nextTick here!
@@ -92,9 +98,12 @@ export default {
 
   <div id="main" class="row m-0">
     <DataDetailsPanel
+      v-if="this.isDataDownloaded"
       v-model:dataset="this.dataset"
       v-model:timePeriod="this.timePeriod"
       :allDatasets="this.allDatasets"
+      @dataRowMouseEnter="dataRowMouseEnter"
+      @dataRowMouseLeave="dataRowMouseLeave"
     />
     <RegionsMap
       v-if="this.isDataDownloaded"

@@ -17,6 +17,9 @@ export default {
       dataSelectItems: this.allDatasets.map((dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
+      keyFormatter: (area) => {
+        return this.dataset.svgMap.prettyNames[area];
+      },
     };
   },
   computed: {
@@ -189,6 +192,31 @@ export default {
             </div>
             <table class="w-100 m-auto mb-3 border bg-white">
               <tbody id="data-table">
+                <tr
+                  v-for="entry in Object.entries(
+                    this.dataset.data[this.timePeriod]
+                  )"
+                  :id="`data-${entry[0]}`"
+                  class="cursor-pointer"
+                  :key="entry[0]"
+                  @mouseenter="
+                    () => {
+                      this.$emit('dataRowMouseEnter', entry[0]);
+                    }
+                  "
+                  @mouseleave="
+                    () => {
+                      this.$emit('dataRowMouseLeave');
+                    }
+                  "
+                >
+                  <td>{{ this.keyFormatter(entry[0]) }}</td>
+                  <td>
+                    <span class="fw-bold">{{
+                      this.dataset.stylingOptions.valueFormatter(entry[1])
+                    }}</span>
+                  </td>
+                </tr>
                 {{
                   this.dataset.data[this.timePeriod]
                 }}
