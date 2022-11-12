@@ -7,6 +7,7 @@ import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
 import { population } from "./datasets/population.ts";
+import { pubsAndBars } from "./datasets/pubs_and_bars";
 
 export default {
   components: {
@@ -20,7 +21,7 @@ export default {
   },
   data() {
     return {
-      allDatasets: [population],
+      allDatasets: [population, pubsAndBars],
       dataset: population,
       timePeriod: "2020",
       highlightedRegion: null,
@@ -66,6 +67,15 @@ export default {
       this.isDataDownloaded = true;
     });
   },
+  watch: {
+    dataset(newDataset) {
+      this.isDataDownloaded = false;
+      newDataset.downloadData().then(() => {
+        this.timePeriod = this.dataset.timePeriods.slice(-1)[0];
+        this.isDataDownloaded = true;
+      });
+    },
+  },
 };
 </script>
 
@@ -81,7 +91,11 @@ export default {
   />
 
   <div id="main" class="row m-0">
-    <DataDetailsPanel :dataset="this.dataset" :allDatasets="this.allDatasets" />
+    <DataDetailsPanel
+      v-model:dataset="this.dataset"
+      v-model:timePeriod="this.timePeriod"
+      :allDatasets="this.allDatasets"
+    />
     <RegionsMap
       v-if="this.isDataDownloaded"
       :dataset="this.dataset"

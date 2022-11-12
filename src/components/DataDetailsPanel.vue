@@ -5,7 +5,7 @@ import IconLink from "./icons/IconLink.vue";
 import IconSearch from "./icons/IconSearch.vue";
 
 export default {
-  props: ["dataset", "allDatasets"],
+  props: ["dataset", "allDatasets", "timePeriod"],
   components: {
     SelectFloating,
     IconText,
@@ -30,6 +30,25 @@ export default {
       return this.dataset.timePeriods.map((period) => {
         return { value: period, text: period };
       });
+    },
+    modelTimePeriod: {
+      get() {
+        return this.timePeriod;
+      },
+      set(value) {
+        this.$emit("update:timePeriod", value);
+      },
+    },
+    modelDataset: {
+      get() {
+        return this.dataset.metadata.id;
+      },
+      set(value) {
+        this.$emit(
+          "update:dataset",
+          this.allDatasets.find((dataset) => dataset.metadata.id == value)
+        );
+      },
     },
   },
 };
@@ -61,6 +80,7 @@ export default {
           aria-label="Dataset select"
           outer-div-classes="mb-1 mt-3"
           :items="this.dataSelectItems"
+          v-model="this.modelDataset"
         />
         <SelectFloating
           id="panel-data-time-period"
@@ -69,6 +89,7 @@ export default {
           aria-label="Dataset time period select"
           outer-div-classes="mb-3"
           :items="this.timePeriodSelectItems"
+          v-model="this.modelTimePeriod"
         />
         <div class="form-check mb-3">
           <input
@@ -167,7 +188,11 @@ export default {
               />
             </div>
             <table class="w-100 m-auto mb-3 border bg-white">
-              <tbody id="data-table"></tbody>
+              <tbody id="data-table">
+                {{
+                  this.dataset.data[this.timePeriod]
+                }}
+              </tbody>
             </table>
           </div>
         </div>

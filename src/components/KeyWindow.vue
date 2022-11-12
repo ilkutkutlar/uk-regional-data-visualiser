@@ -10,28 +10,6 @@ export default {
     IconCaretDownFill,
     IconCaretUpFill,
   },
-  // methods: {
-  //   setKey (keys: [string, string][], addNoDataEntry: boolean = true) {
-  //     this.keyBody.text('')
-  //     if (addNoDataEntry) {
-  //       this._addKey('No data', Colours.GREY)
-  //     }
-  //     keys.forEach((key: [string, string]) => {
-  //       const [title, colour] = key
-  //       this._addKey(title, colour)
-  //     })
-  //   },
-  //   _addKey (title: string, colour: string) {
-  //     const newRow = this.keyBody
-  //       .append('div')
-  //       .attr('class', 'd-flex')
-  //     newRow.append('div')
-  //       .attr('class', 'key-colour-box')
-  //       .style('background', colour)
-  //     newRow.append('div').text(title)
-  //   }
-
-  // }
 };
 </script>
 
