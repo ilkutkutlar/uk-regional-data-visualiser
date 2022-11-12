@@ -1,6 +1,7 @@
 import type { Formatter, SvgMap } from "./types";
 import type { ColourMap } from "./colour_map";
 import { generateKey } from "./utils";
+import { Colours } from "./constants";
 
 type DatasetMetadata = {
   id: string;
@@ -25,11 +26,12 @@ export class Dataset {
   private _key: DatasetKey = [];
 
   get key() {
-    if (this._key === undefined) {
+    if (this._key.length == 0) {
       this._key = generateKey(
         this.colourMap,
         this.stylingOptions.valueFormatter
       );
+      this._key.unshift(["No data", Colours.GREY]);
     }
     return this._key;
   }

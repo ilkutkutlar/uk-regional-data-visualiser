@@ -73,7 +73,7 @@ export default {
   <Navbar />
   <MenuOffcanvas />
   <DataSelectionBar />
-  <KeyWindow />
+  <KeyWindow :dataset="this.dataset" />
   <InfoPanel
     :titleText="this.infoPanelTitleText"
     :bodyText="this.infoPanelBodyText"

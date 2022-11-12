@@ -4,11 +4,34 @@ import IconCaretDownFill from "./icons/IconCaretDownFill.vue";
 import IconCaretUpFill from "./icons/IconCaretUpFill.vue";
 
 export default {
+  props: ["dataset"],
   components: {
     TogglerButton,
     IconCaretDownFill,
     IconCaretUpFill,
   },
+  // methods: {
+  //   setKey (keys: [string, string][], addNoDataEntry: boolean = true) {
+  //     this.keyBody.text('')
+  //     if (addNoDataEntry) {
+  //       this._addKey('No data', Colours.GREY)
+  //     }
+  //     keys.forEach((key: [string, string]) => {
+  //       const [title, colour] = key
+  //       this._addKey(title, colour)
+  //     })
+  //   },
+  //   _addKey (title: string, colour: string) {
+  //     const newRow = this.keyBody
+  //       .append('div')
+  //       .attr('class', 'd-flex')
+  //     newRow.append('div')
+  //       .attr('class', 'key-colour-box')
+  //       .style('background', colour)
+  //     newRow.append('div').text(title)
+  //   }
+
+  // }
 };
 </script>
 
@@ -29,7 +52,19 @@ export default {
       </div>
     </TogglerButton>
     <div id="key" class="break-word border-top pt-2 show card-body p-2">
-      <div id="key-body" class="card-text vstack gap-2"></div>
+      <div id="key-body" class="card-text vstack gap-2">
+        <div
+          v-for="keyItem in this.dataset.key"
+          :key="keyItem[0]"
+          class="d-flex"
+        >
+          <div
+            class="key-colour-box"
+            :style="{ backgroundColor: keyItem[1] }"
+          ></div>
+          <div>{{ keyItem[0] }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
