@@ -1,7 +1,7 @@
 <script>
 import * as d3 from "d3";
 import { Colours } from "../constants";
-import { setOpacity } from "../utils";
+import { setOpacity, getCentreOfSvgElem } from "../utils";
 
 export default {
   props: [
@@ -21,7 +21,8 @@ export default {
     highlightedRegion(newRegionId, oldRegionId) {
       if (newRegionId) {
         this._highlightRegion(newRegionId);
-      } else if (oldRegionId) {
+      }
+      if (oldRegionId) {
         this._unhighlightRegion(oldRegionId);
       }
     },
@@ -78,6 +79,29 @@ export default {
           this.dataset.colourForArea(this.timePeriod, region) ?? Colours.GREY;
         svgContainer.select(`#${region}`).attr("fill", regionColour);
       });
+    },
+    centreRegion(regionId, duration = 2000) {
+      const regionElem = this._getSvgElementById(regionId);
+
+      const [regionCentreX, regionCentreY] = getCentreOfSvgElem(regionElem);
+      const viewBoxSize = this.viewBoxSize;
+
+      this.translateTo(
+        regionCentreX,
+        regionCentreY,
+        [viewBoxSize.width / 2, viewBoxSize.height / 2],
+        duration
+      );
+    },
+    translateTo(x, y, relativeTo = [0, 0], duration = 1000) {
+      const zoomTransform = d3.zoomIdentity
+        .translate(relativeTo[0], relativeTo[1])
+        .scale(this.currentScale)
+        .translate(-x, -y);
+      this.svgContainer
+        .transition()
+        .duration(duration)
+        .call(this.zoom.transform, zoomTransform);
     },
   },
   mounted() {

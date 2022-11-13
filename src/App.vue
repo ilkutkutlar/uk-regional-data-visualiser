@@ -28,37 +28,46 @@ export default {
       selectedRegion: null,
       isDataDownloaded: false,
       infoPanelVisible: false,
+      infoPanelCloseButtonVisible: false,
       infoPanelTitleText: "",
       infoPanelBodyText: "",
     };
   },
   methods: {
     _mouseOver(d) {
-      const regionId = d.target.id;
-      this.highlightedRegion = regionId;
-
       if (!this.selectedRegion) {
-        const data = this.dataset.data[this.timePeriod];
-        const keyFormatter = (area) => this.dataset.svgMap.prettyNames[area];
-        const valueFormatter = this.dataset.stylingOptions.valueFormatter;
-        const regionName = keyFormatter(regionId);
-        const regionValue = data ? data[regionId] : "";
-
-        this.infoPanelTitleText = regionName;
-        this.infoPanelBodyText = valueFormatter(regionValue);
+        const regionId = d.target.id;
+        this.highlightedRegion = regionId;
+        this._setInfoPanelToRegionDetails(regionId);
         this.infoPanelVisible = true;
       }
     },
-    _mouseOut(d) {
-      if (this.selectedRegion !== d.target.id) {
-        this.highlightedRegion = null;
-      }
+    _mouseOut() {
       if (!this.selectedRegion) {
         this.infoPanelVisible = false;
+        this.highlightedRegion = null;
       }
     },
+    _setInfoPanelToRegionDetails (regionId) {
+      const data = this.dataset.data[this.timePeriod];
+      const keyFormatter = (area) => this.dataset.svgMap.prettyNames[area];
+      const valueFormatter = this.dataset.stylingOptions.valueFormatter;
+      const regionName = keyFormatter(regionId);
+      const regionValue = data ? data[regionId] : "";
+
+      this.infoPanelTitleText = regionName;
+      this.infoPanelBodyText = valueFormatter(regionValue);
+    },
     _click(d) {
-      // this._selectRegion(d.target.id);
+      const regionId = d.target.id;
+      if (this.selectedRegion) {
+        this.highlightedRegion = null;
+      }
+      this.selectedRegion = regionId;
+      this.highlightedRegion = regionId;
+      this._setInfoPanelToRegionDetails(regionId);
+      this.infoPanelCloseButtonVisible = true;
+      // this.regions.centreRegion(regionId, 1000);
     },
     dataRowMouseEnter(regionId) {
       this.highlightedRegion = regionId;
@@ -94,6 +103,16 @@ export default {
     :titleText="this.infoPanelTitleText"
     :bodyText="this.infoPanelBodyText"
     :visible="this.infoPanelVisible"
+    :closeButtonVisible="this.infoPanelCloseButtonVisible"
+    @closeButtonClicked="
+      () => {
+        this.infoPanelVisible = false;
+        if (this.selectedRegion) {
+          this.highlightedRegion = null;
+        }
+        this.selectedRegion = null;
+      }
+    "
   />
 
   <div id="main" class="row m-0">

@@ -1,6 +1,6 @@
 <script>
 export default {
-  props: ["titleText", "bodyText", "visible"],
+  props: ["titleText", "bodyText", "visible", "closeButtonVisible"],
 };
 </script>
 
@@ -18,8 +18,10 @@ export default {
         <button
           id="info-panel-close-button"
           type="button"
-          class="btn-close col-2 m-auto d-none"
+          class="btn-close col-2 m-auto"
           aria-label="Close"
+          v-show="this.closeButtonVisible"
+          @click="this.$emit('closeButtonClicked')"
         ></button>
       </div>
       <p id="info-panel-body" class="card-text">{{ this.bodyText }}</p>
