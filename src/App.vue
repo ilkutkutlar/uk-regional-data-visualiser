@@ -45,21 +45,21 @@ export default {
     };
   },
   methods: {
-    _mouseOver(d) {
+    mouseOver(d) {
       if (!this.selectedRegion) {
         const regionId = d.target.id;
         this.highlightedRegion = regionId;
-        this._setInfoPanelToRegionDetails(regionId);
+        this.setInfoPanelToRegionDetails(regionId);
         this.infoPanelVisible = true;
       }
     },
-    _mouseOut() {
+    mouseOut() {
       if (!this.selectedRegion) {
         this.infoPanelVisible = false;
         this.highlightedRegion = null;
       }
     },
-    _setInfoPanelToRegionDetails(regionId) {
+    setInfoPanelToRegionDetails(regionId) {
       const data = this.dataset.data[this.timePeriod];
       const keyFormatter = (area) => this.dataset.svgMap.prettyNames[area];
       const valueFormatter = this.dataset.stylingOptions.valueFormatter;
@@ -69,14 +69,12 @@ export default {
       this.infoPanelTitleText = regionName;
       this.infoPanelBodyText = valueFormatter(regionValue);
     },
-    _click(d) {
+    click(d) {
       const regionId = d.target.id;
-      if (this.selectedRegion) {
-        this.highlightedRegion = null;
-      }
+      if (this.selectedRegion) this.highlightedRegion = null;
       this.selectedRegion = regionId;
       this.highlightedRegion = regionId;
-      this._setInfoPanelToRegionDetails(regionId);
+      this.setInfoPanelToRegionDetails(regionId);
       this.infoPanelCloseButtonVisible = true;
       // this.regions.centreRegion(regionId, 1000);
     },
@@ -88,7 +86,6 @@ export default {
     },
   },
   created() {
-    // TODO: You can use nextTick here!
     this.dataset.downloadData().then(() => {
       this.isDataDownloaded = true;
     });
@@ -118,9 +115,7 @@ export default {
     @closeButtonClicked="
       () => {
         this.infoPanelVisible = false;
-        if (this.selectedRegion) {
-          this.highlightedRegion = null;
-        }
+        if (this.selectedRegion) this.highlightedRegion = null;
         this.selectedRegion = null;
       }
     "
@@ -140,9 +135,9 @@ export default {
       :dataset="this.dataset"
       :timePeriod="this.timePeriod"
       :highlightedRegion="this.highlightedRegion"
-      @regionMouseOver="this._mouseOver"
-      @regionMouseOut="this._mouseOut"
-      @regionClick="this._click"
+      @regionMouseOver="this.mouseOver"
+      @regionMouseOut="this.mouseOut"
+      @regionClick="this.click"
     />
   </div>
 </template>

@@ -14,7 +14,7 @@ export default {
   ],
   data() {
     return {
-      svgData: "",
+      svgContainer: null,
     };
   },
   watch: {
@@ -26,14 +26,67 @@ export default {
       this.refreshData();
     },
   },
+  mounted() {
+    this.svgContainer = d3.select("#svg-container");
+    this.refreshData();
+  },
   methods: {
+    refreshData() {
+      d3.xml(this.dataset.svgMap.svgPath).then((svgData) => {
+        svgData.documentElement.classList.add("full-page");
+        this.svgContainer.node().append(svgData.documentElement);
+
+        this.setZoom();
+        this.setBaseStyle();
+        this.setColours();
+        this.svgContainer
+          .selectAll("path")
+          .on("mouseover", (d) => this.$emit("regionMouseOver", d))
+          .on("mouseout", (d) => this.$emit("regionMouseOut", d))
+          .on("click", (d) => this.$emit("regionClick", d));
+      });
+    },
+    setZoom() {
+      const zoom = d3.zoom().scaleExtent([1, 8]);
+      const zoomed = ({ transform }) => {
+        /* Passes as parameter the zooming transformation
+           (e.g. translate, scale, etc.) so we can apply
+           it to the SVG map. */
+        this.svgContainer
+          .select("svg")
+          .select("g")
+          .attr("transform", transform);
+      };
+      this.svgContainer.call(zoom.on("zoom", zoomed));
+    },
+    setBaseStyle() {
+      const FILL_COLOUR = "#412149";
+      const STROKE_COLOUR = "#dcdcdc";
+      const STROKE_WIDTH = "1";
+
+      this.svgContainer
+        .selectAll("path")
+        .style("cursor", "pointer")
+        .attr("stroke", STROKE_COLOUR)
+        .attr("stroke-width", STROKE_WIDTH)
+        .attr("fill", FILL_COLOUR);
+    },
+    setColours() {
+      this.dataset.svgMap.areas.forEach((region) => {
+        const regionColour =
+          this.dataset.colourForArea(this.timePeriod, region) ?? Colours.GREY;
+        this.svgContainer.select(`#${region}`).attr("fill", regionColour);
+      });
+    },
     highlightRegion(regionId) {
       const targetElement = this.getSvgElementById(regionId);
 
       if (targetElement.attr("highlighted") !== "true") {
         const highlightedFill = setOpacity(targetElement.attr("fill"), 0.8);
-        targetElement.attr("fill", highlightedFill).attr("stroke-width", "2");
-        targetElement.attr("highlighted", "true");
+        targetElement
+          .attr("fill", highlightedFill)
+          .attr("stroke-width", "2")
+          .attr("highlighted", "true");
       }
     },
     unhighlightRegion(regionId) {
@@ -41,43 +94,14 @@ export default {
 
       if (targetElement.attr("highlighted") === "true") {
         const unhighlightedFill = setOpacity(targetElement.attr("fill"), 1);
-        targetElement.attr("fill", unhighlightedFill).attr("stroke-width", "1");
-        targetElement.attr("highlighted", "false");
+        targetElement
+          .attr("fill", unhighlightedFill)
+          .attr("stroke-width", "1")
+          .attr("highlighted", "false");
       }
     },
     getSvgElementById(regionId) {
-      const svgContainer = d3.select("#svg-container");
-      return svgContainer.select(`#${regionId}`);
-    },
-    setZoom(svgContainer, svgData) {
-      const zoom = d3.zoom().scaleExtent([1, 8]);
-      svgContainer.node().append(svgData.documentElement);
-      const zoomed = ({ transform }) => {
-        /* Passes as parameter the zooming transformation
-           (e.g. translate, scale, etc.) so we can apply
-           it to the SVG map. */
-        svgContainer.select("svg").select("g").attr("transform", transform);
-      };
-      svgContainer.call(zoom.on("zoom", zoomed));
-    },
-    setBaseStyle(svgContainer) {
-      const FILL_COLOUR = "#412149";
-      const STROKE_COLOUR = "#dcdcdc";
-      const STROKE_WIDTH = "1";
-
-      svgContainer
-        .selectAll("path")
-        .style("cursor", "pointer")
-        .attr("stroke", STROKE_COLOUR)
-        .attr("stroke-width", STROKE_WIDTH)
-        .attr("fill", FILL_COLOUR);
-    },
-    setColours(svgContainer) {
-      this.dataset.svgMap.areas.forEach((region) => {
-        const regionColour =
-          this.dataset.colourForArea(this.timePeriod, region) ?? Colours.GREY;
-        svgContainer.select(`#${region}`).attr("fill", regionColour);
-      });
+      return this.svgContainer.select(`#${regionId}`);
     },
     centreRegion(regionId, duration = 2000) {
       const regionElem = this.getSvgElementById(regionId);
@@ -101,24 +125,6 @@ export default {
         .duration(duration)
         .call(this.zoom.transform, zoomTransform);
     },
-    refreshData() {
-      d3.xml(this.dataset.svgMap.svgPath).then((svgData) => {
-        svgData.documentElement.classList.add("full-page");
-        const svgContainer = d3.select("#svg-container");
-
-        this.setZoom(svgContainer, svgData);
-        this.setBaseStyle(svgContainer);
-        this.setColours(svgContainer);
-        svgContainer
-          .selectAll("path")
-          .on("mouseover", (d) => this.$emit("regionMouseOver", d))
-          .on("mouseout", (d) => this.$emit("regionMouseOut", d))
-          .on("click", (d) => this.$emit("regionClick", d));
-      });
-    },
-  },
-  mounted() {
-    this.refreshData();
   },
 };
 </script>
