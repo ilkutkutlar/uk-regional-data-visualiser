@@ -20,16 +20,19 @@ export default {
   watch: {
     highlightedRegion(newRegionId, oldRegionId) {
       if (newRegionId) {
-        this._highlightRegion(newRegionId);
+        this.highlightRegion(newRegionId);
       }
       if (oldRegionId) {
-        this._unhighlightRegion(oldRegionId);
+        this.unhighlightRegion(oldRegionId);
       }
+    },
+    timePeriod() {
+      this.refreshData();
     },
   },
   methods: {
-    _highlightRegion(regionId) {
-      const targetElement = this._getSvgElementById(regionId);
+    highlightRegion(regionId) {
+      const targetElement = this.getSvgElementById(regionId);
 
       if (targetElement.attr("highlighted") !== "true") {
         const highlightedFill = setOpacity(targetElement.attr("fill"), 0.8);
@@ -37,8 +40,8 @@ export default {
         targetElement.attr("highlighted", "true");
       }
     },
-    _unhighlightRegion(regionId) {
-      const targetElement = this._getSvgElementById(regionId);
+    unhighlightRegion(regionId) {
+      const targetElement = this.getSvgElementById(regionId);
 
       if (targetElement.attr("highlighted") === "true") {
         const unhighlightedFill = setOpacity(targetElement.attr("fill"), 1);
@@ -46,11 +49,11 @@ export default {
         targetElement.attr("highlighted", "false");
       }
     },
-    _getSvgElementById(regionId) {
+    getSvgElementById(regionId) {
       const svgContainer = d3.select("#svg-container");
       return svgContainer.select(`#${regionId}`);
     },
-    _setZoom(svgContainer, svgData) {
+    setZoom(svgContainer, svgData) {
       const zoom = d3.zoom().scaleExtent([1, 8]);
       svgContainer.node().append(svgData.documentElement);
       const zoomed = ({ transform }) => {
@@ -61,7 +64,7 @@ export default {
       };
       svgContainer.call(zoom.on("zoom", zoomed));
     },
-    _setBaseStyle(svgContainer) {
+    setBaseStyle(svgContainer) {
       const FILL_COLOUR = "#412149";
       const STROKE_COLOUR = "#dcdcdc";
       const STROKE_WIDTH = "1";
@@ -73,7 +76,7 @@ export default {
         .attr("stroke-width", STROKE_WIDTH)
         .attr("fill", FILL_COLOUR);
     },
-    _setColours(svgContainer) {
+    setColours(svgContainer) {
       this.dataset.svgMap.areas.forEach((region) => {
         const regionColour =
           this.dataset.colourForArea(this.timePeriod, region) ?? Colours.GREY;
@@ -81,7 +84,7 @@ export default {
       });
     },
     centreRegion(regionId, duration = 2000) {
-      const regionElem = this._getSvgElementById(regionId);
+      const regionElem = this.getSvgElementById(regionId);
 
       const [regionCentreX, regionCentreY] = getCentreOfSvgElem(regionElem);
       const viewBoxSize = this.viewBoxSize;
@@ -103,28 +106,24 @@ export default {
         .duration(duration)
         .call(this.zoom.transform, zoomTransform);
     },
+    refreshData() {
+      d3.xml(this.dataset.svgMap.svgPath).then((svgData) => {
+        svgData.documentElement.classList.add("full-page");
+        const svgContainer = d3.select("#svg-container");
+
+        this.setZoom(svgContainer, svgData);
+        this.setBaseStyle(svgContainer);
+        this.setColours(svgContainer);
+        svgContainer
+          .selectAll("path")
+          .on("mouseover", (d) => this.$emit("regionMouseOver", d))
+          .on("mouseout", (d) => this.$emit("regionMouseOut", d))
+          .on("click", (d) => this.$emit("regionClick", d));
+      });
+    },
   },
   mounted() {
-    d3.xml(this.dataset.svgMap.svgPath).then((svgData) => {
-      // this.svgData = svgData.documentElement.outerHTML;
-      svgData.documentElement.classList.add("full-page");
-      const svgContainer = d3.select("#svg-container");
-
-      this._setZoom(svgContainer, svgData);
-      this._setBaseStyle(svgContainer);
-      this._setColours(svgContainer);
-      svgContainer
-        .selectAll("path")
-        .on("mouseover", (d) => {
-          this.$emit("regionMouseOver", d);
-        })
-        .on("mouseout", (d) => {
-          this.$emit("regionMouseOut", d);
-        })
-        .on("click", (d) => {
-          this.$emit("regionClick", d);
-        });
-    });
+    this.refreshData();
   },
 };
 </script>

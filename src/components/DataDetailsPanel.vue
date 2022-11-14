@@ -10,11 +10,11 @@ export default {
   props: ["dataset", "allDatasets", "timePeriod"],
   components: {
     SelectFloating,
+    TabList,
+    TabContent,
     IconText,
     IconLink,
     IconSearch,
-    TabList,
-    TabContent,
   },
   data() {
     return {
