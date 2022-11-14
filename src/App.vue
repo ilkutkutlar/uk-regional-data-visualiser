@@ -6,7 +6,11 @@ import KeyWindow from "./components/KeyWindow.vue";
 import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
-import { population } from "./datasets/population.ts";
+import { earnings } from "./datasets/earnings";
+import { hpi } from "./datasets/hpi";
+import { gdhi } from "./datasets/gdhi";
+import { population } from "./datasets/population";
+import { netInternalMigration } from "./datasets/net_internal_migration";
 import { pubsAndBars } from "./datasets/pubs_and_bars";
 
 export default {
@@ -21,9 +25,16 @@ export default {
   },
   data() {
     return {
-      allDatasets: [population, pubsAndBars],
-      dataset: population,
-      timePeriod: "2020",
+      allDatasets: [
+        earnings,
+        hpi,
+        gdhi,
+        population,
+        netInternalMigration,
+        pubsAndBars,
+      ],
+      dataset: earnings,
+      timePeriod: "2021",
       highlightedRegion: null,
       selectedRegion: null,
       isDataDownloaded: false,
@@ -48,7 +59,7 @@ export default {
         this.highlightedRegion = null;
       }
     },
-    _setInfoPanelToRegionDetails (regionId) {
+    _setInfoPanelToRegionDetails(regionId) {
       const data = this.dataset.data[this.timePeriod];
       const keyFormatter = (area) => this.dataset.svgMap.prettyNames[area];
       const valueFormatter = this.dataset.stylingOptions.valueFormatter;

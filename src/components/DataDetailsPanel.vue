@@ -3,6 +3,8 @@ import SelectFloating from "./partials/SelectFloating.vue";
 import IconText from "./icons/IconText.vue";
 import IconLink from "./icons/IconLink.vue";
 import IconSearch from "./icons/IconSearch.vue";
+import TabList from "./partials/TabList.vue";
+import TabContent from "./partials/TabContent.vue";
 
 export default {
   props: ["dataset", "allDatasets", "timePeriod"],
@@ -11,6 +13,8 @@ export default {
     IconText,
     IconLink,
     IconSearch,
+    TabList,
+    TabContent,
   },
   data() {
     return {
@@ -106,45 +110,25 @@ export default {
           </label>
         </div>
 
-        <ul class="nav nav-pills" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button
-              id="metadata-tab"
-              class="nav-link active"
-              data-bs-toggle="tab"
-              data-bs-target="#metadata"
-              type="button"
-              role="tab"
-              aria-controls="metadata"
-              aria-selected="true"
-            >
-              Metadata
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button
-              id="dataset-data-tab"
-              class="nav-link"
-              data-bs-toggle="tab"
-              data-bs-target="#dataset-data"
-              type="button"
-              role="tab"
-              aria-controls="dataset-data"
-              aria-selected="false"
-            >
-              Data
-            </button>
-          </li>
-        </ul>
+        <TabList
+          :tabs="[
+            {
+              id: 'metadata-tab',
+              contentId: 'metadata',
+              title: 'Metadata',
+              active: true,
+            },
+            {
+              id: 'dataset-data-tab',
+              contentId: 'dataset-data',
+              title: 'Data',
+              active: false,
+            },
+          ]"
+        />
 
         <div class="tab-content">
-          <div
-            id="metadata"
-            class="tab-pane active"
-            role="tabpanel"
-            aria-labelledby="metadata-tab"
-            tabindex="0"
-          >
+          <TabContent id="metadata" tabId="metadata-tab" :active="true">
             <div class="card mt-3">
               <div class="card-body">
                 <h5 class="card-title border-bottom pb-1">
@@ -170,14 +154,8 @@ export default {
                 </a>
               </div>
             </div>
-          </div>
-          <div
-            id="dataset-data"
-            class="tab-pane"
-            role="tabpanel"
-            aria-labelledby="dataset-data-tab"
-            tabindex="0"
-          >
+          </TabContent>
+          <TabContent id="dataset-data" tabId="dataset-data-tab">
             <div class="input-group w-100 mb-3 mt-3">
               <span class="input-group-text">
                 <IconSearch />
@@ -222,7 +200,7 @@ export default {
                 }}
               </tbody>
             </table>
-          </div>
+          </TabContent>
         </div>
       </div>
     </div>

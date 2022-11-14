@@ -4,18 +4,18 @@ export default {
     id: String,
     classes: String,
     toggleType: String,
-    target: String
-  }
-}
+    target: String,
+  },
+};
 </script>
 
 <template>
   <div
     :id="id"
     :class="classes"
-    type="button" 
+    type="button"
     :data-bs-toggle="toggleType"
-    :data-bs-target="'#' + target"
+    :data-bs-target="`#${target}`"
     aria-expanded="false"
     aria-controls="target"
   >
