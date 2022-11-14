@@ -1,5 +1,5 @@
 <script>
-import Navbar from "./components/Navbar.vue";
+import Navbar from "./components/NavBar.vue";
 import MenuOffcanvas from "./components/MenuOffcanvas.vue";
 import DataSelectionBar from "./components/DataSelectionBar.vue";
 import KeyWindow from "./components/KeyWindow.vue";

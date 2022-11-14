@@ -21,9 +21,7 @@ export default {
       dataSelectItems: this.allDatasets.map((dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
-      keyFormatter: (area) => {
-        return this.dataset.svgMap.prettyNames[area];
-      },
+      keyFormatter: (area) => this.dataset.svgMap.prettyNames[area],
     };
   },
   computed: {
@@ -126,7 +124,6 @@ export default {
             },
           ]"
         />
-
         <div class="tab-content">
           <TabContent id="metadata" tabId="metadata-tab" :active="true">
             <div class="card mt-3">
@@ -177,16 +174,8 @@ export default {
                   :id="`data-${entry[0]}`"
                   class="cursor-pointer"
                   :key="entry[0]"
-                  @mouseenter="
-                    () => {
-                      this.$emit('dataRowMouseEnter', entry[0]);
-                    }
-                  "
-                  @mouseleave="
-                    () => {
-                      this.$emit('dataRowMouseLeave');
-                    }
-                  "
+                  @mouseenter="() => this.$emit('dataRowMouseEnter', entry[0])"
+                  @mouseleave="() => this.$emit('dataRowMouseLeave')"
                 >
                   <td>{{ this.keyFormatter(entry[0]) }}</td>
                   <td>

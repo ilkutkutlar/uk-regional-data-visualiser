@@ -19,12 +19,8 @@ export default {
   },
   watch: {
     highlightedRegion(newRegionId, oldRegionId) {
-      if (newRegionId) {
-        this.highlightRegion(newRegionId);
-      }
-      if (oldRegionId) {
-        this.unhighlightRegion(oldRegionId);
-      }
+      if (newRegionId) this.highlightRegion(newRegionId);
+      if (oldRegionId) this.unhighlightRegion(oldRegionId);
     },
     timePeriod() {
       this.refreshData();
@@ -85,7 +81,6 @@ export default {
     },
     centreRegion(regionId, duration = 2000) {
       const regionElem = this.getSvgElementById(regionId);
-
       const [regionCentreX, regionCentreY] = getCentreOfSvgElem(regionElem);
       const viewBoxSize = this.viewBoxSize;
 
