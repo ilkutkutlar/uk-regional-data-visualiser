@@ -15,6 +15,7 @@ export default {
   data() {
     return {
       svgContainer: null,
+      zoom: null,
     };
   },
   watch: {
@@ -29,6 +30,21 @@ export default {
   mounted() {
     this.svgContainer = d3.select("#svg-container");
     this.refreshData();
+  },
+  computed: {
+    viewBoxSize: {
+      get() {
+        return {
+          width: parseFloat(this.svgContainer.select("svg").attr("width")),
+          height: parseFloat(this.svgContainer.select("svg").attr("height")),
+        };
+      },
+    },
+    currentScale: {
+      get() {
+        return d3.zoomTransform(this.svgContainer.node()).k;
+      },
+    },
   },
   methods: {
     refreshData() {
@@ -47,7 +63,7 @@ export default {
       });
     },
     setZoom() {
-      const zoom = d3.zoom().scaleExtent([1, 8]);
+      this.zoom = d3.zoom().scaleExtent([1, 8]);
       const zoomed = ({ transform }) => {
         /* Passes as parameter the zooming transformation
            (e.g. translate, scale, etc.) so we can apply
@@ -57,7 +73,7 @@ export default {
           .select("g")
           .attr("transform", transform);
       };
-      this.svgContainer.call(zoom.on("zoom", zoomed));
+      this.svgContainer.call(this.zoom.on("zoom", zoomed));
     },
     setBaseStyle() {
       const FILL_COLOUR = "#412149";

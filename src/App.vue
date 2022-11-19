@@ -76,7 +76,7 @@ export default {
       this.highlightedRegion = regionId;
       this.setInfoPanelToRegionDetails(regionId);
       this.infoPanelCloseButtonVisible = true;
-      // this.regions.centreRegion(regionId, 1000);
+      this.$refs.regionsMap.centreRegion(regionId, 1000);
     },
     dataRowMouseEnter(regionId) {
       this.highlightedRegion = regionId;
@@ -131,6 +131,7 @@ export default {
       @dataRowMouseLeave="dataRowMouseLeave"
     />
     <RegionsMap
+      ref="regionsMap"
       v-if="this.isDataDownloaded"
       :dataset="this.dataset"
       :timePeriod="this.timePeriod"
