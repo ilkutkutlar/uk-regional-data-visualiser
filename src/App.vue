@@ -12,6 +12,7 @@ import { gdhi } from "./datasets/gdhi";
 import { population } from "./datasets/population";
 import { netInternalMigration } from "./datasets/net_internal_migration";
 import { pubsAndBars } from "./datasets/pubs_and_bars";
+import { removeByValue } from "./utils";
 
 export default {
   components: {
@@ -35,7 +36,7 @@ export default {
       ],
       dataset: earnings,
       timePeriod: "2021",
-      highlightedRegion: null,
+      highlightedRegions: [],
       selectedRegion: null,
       isDataDownloaded: false,
       infoPanelVisible: false,
@@ -46,18 +47,36 @@ export default {
   },
   methods: {
     mouseOver(d) {
+      this.highlightedRegions = this.highlightedRegions.concat([d.target.id]);
       if (!this.selectedRegion) {
-        const regionId = d.target.id;
-        this.highlightedRegion = regionId;
-        this.setInfoPanelToRegionDetails(regionId);
+        this.setInfoPanelToRegionDetails(d.target.id);
         this.infoPanelVisible = true;
       }
     },
-    mouseOut() {
+    mouseOut(d) {
+      if (d.target.id !== this.selectedRegion) {
+        this.highlightedRegions = removeByValue(
+          this.highlightedRegions,
+          d.target.id
+        );
+      }
       if (!this.selectedRegion) {
         this.infoPanelVisible = false;
-        this.highlightedRegion = null;
       }
+    },
+    click(d) {
+      const regionId = d.target.id;
+      if (this.selectedRegion) {
+        this.highlightedRegions = removeByValue(
+          this.highlightedRegions,
+          this.selectedRegion
+        );
+      }
+      this.selectedRegion = regionId;
+      this.highlightedRegions = [regionId];
+      this.setInfoPanelToRegionDetails(regionId);
+      this.infoPanelCloseButtonVisible = true;
+      this.$refs.regionsMap.centreRegion(regionId);
     },
     setInfoPanelToRegionDetails(regionId) {
       const data = this.dataset.data[this.timePeriod];
@@ -69,20 +88,11 @@ export default {
       this.infoPanelTitleText = regionName;
       this.infoPanelBodyText = valueFormatter(regionValue);
     },
-    click(d) {
-      const regionId = d.target.id;
-      if (this.selectedRegion) this.highlightedRegion = null;
-      this.selectedRegion = regionId;
-      this.highlightedRegion = regionId;
-      this.setInfoPanelToRegionDetails(regionId);
-      this.infoPanelCloseButtonVisible = true;
-      this.$refs.regionsMap.centreRegion(regionId);
-    },
     dataRowMouseEnter(regionId) {
-      this.highlightedRegion = regionId;
+      this.highlightedRegions = [regionId];
     },
     dataRowMouseLeave() {
-      this.highlightedRegion = null;
+      this.highlightedRegions = [];
     },
   },
   created() {
@@ -115,7 +125,7 @@ export default {
     @closeButtonClicked="
       () => {
         this.infoPanelVisible = false;
-        if (this.selectedRegion) this.highlightedRegion = null;
+        if (this.selectedRegion) this.highlightedRegions = [];
         this.selectedRegion = null;
       }
     "
@@ -135,7 +145,7 @@ export default {
       v-if="this.isDataDownloaded"
       :dataset="this.dataset"
       :timePeriod="this.timePeriod"
-      :highlightedRegion="this.highlightedRegion"
+      :highlightedRegions="this.highlightedRegions"
       @regionMouseOver="this.mouseOver"
       @regionMouseOut="this.mouseOut"
       @regionClick="this.click"

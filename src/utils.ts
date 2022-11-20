@@ -60,3 +60,10 @@ export class RectSize {
     this.height = height;
   }
 }
+
+export function removeByValue<Type>(
+  arr: Array<Type>,
+  value: Type
+): Array<Type> {
+  return arr.filter((item) => item !== value);
+}

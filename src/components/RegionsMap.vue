@@ -7,7 +7,7 @@ export default {
   props: [
     "dataset",
     "timePeriod",
-    "highlightedRegion",
+    "highlightedRegions",
     "mouseOverHandler",
     "mouseOutHandler",
     "clickHandler",
@@ -19,9 +19,9 @@ export default {
     };
   },
   watch: {
-    highlightedRegion(newRegionId, oldRegionId) {
-      if (newRegionId) this.highlightRegion(newRegionId);
-      if (oldRegionId) this.unhighlightRegion(oldRegionId);
+    highlightedRegions(newRegionIds, oldRegionIds) {
+      oldRegionIds.forEach((regionId) => this.unhighlightRegion(regionId));
+      newRegionIds.forEach((regionId) => this.highlightRegion(regionId));
     },
     timePeriod() {
       this.refreshData();
@@ -110,9 +110,6 @@ export default {
           .attr("highlighted", "false");
       }
     },
-    getSvgElementById(regionId) {
-      return this.svgContainer.select(`#${regionId}`);
-    },
     centreRegion(regionId) {
       const regionElem = this.getSvgElementById(regionId);
       const [regionCentreX, regionCentreY] = getCentreOfSvgElem(regionElem);
@@ -134,6 +131,9 @@ export default {
         .transition()
         .duration(duration)
         .call(this.zoom.transform, zoomTransform);
+    },
+    getSvgElementById(regionId) {
+      return this.svgContainer.select(`#${regionId}`);
     },
   },
 };
