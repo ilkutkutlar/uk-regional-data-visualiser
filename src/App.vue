@@ -76,7 +76,7 @@ export default {
       this.highlightedRegion = regionId;
       this.setInfoPanelToRegionDetails(regionId);
       this.infoPanelCloseButtonVisible = true;
-      this.$refs.regionsMap.centreRegion(regionId, 1000);
+      this.$refs.regionsMap.centreRegion(regionId);
     },
     dataRowMouseEnter(regionId) {
       this.highlightedRegion = regionId;

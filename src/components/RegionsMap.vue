@@ -34,9 +34,10 @@ export default {
   computed: {
     viewBoxSize: {
       get() {
+        const svgElem = this.svgContainer.select("svg");
         return {
-          width: parseFloat(this.svgContainer.select("svg").attr("width")),
-          height: parseFloat(this.svgContainer.select("svg").attr("height")),
+          width: parseFloat(svgElem.attr("width")),
+          height: parseFloat(svgElem.attr("height")),
         };
       },
     },
@@ -68,24 +69,17 @@ export default {
         /* Passes as parameter the zooming transformation
            (e.g. translate, scale, etc.) so we can apply
            it to the SVG map. */
-        this.svgContainer
-          .select("svg")
-          .select("g")
-          .attr("transform", transform);
+        this.svgContainer.select("svg g").attr("transform", transform);
       };
       this.svgContainer.call(this.zoom.on("zoom", zoomed));
     },
     setBaseStyle() {
-      const FILL_COLOUR = "#412149";
-      const STROKE_COLOUR = "#dcdcdc";
-      const STROKE_WIDTH = "1";
-
       this.svgContainer
         .selectAll("path")
         .style("cursor", "pointer")
-        .attr("stroke", STROKE_COLOUR)
-        .attr("stroke-width", STROKE_WIDTH)
-        .attr("fill", FILL_COLOUR);
+        .attr("stroke", "#dcdcdc")
+        .attr("stroke-width", "1")
+        .attr("fill", "#412149");
     },
     setColours() {
       this.dataset.svgMap.areas.forEach((region) => {
@@ -119,7 +113,7 @@ export default {
     getSvgElementById(regionId) {
       return this.svgContainer.select(`#${regionId}`);
     },
-    centreRegion(regionId, duration = 2000) {
+    centreRegion(regionId) {
       const regionElem = this.getSvgElementById(regionId);
       const [regionCentreX, regionCentreY] = getCentreOfSvgElem(regionElem);
       const viewBoxSize = this.viewBoxSize;
@@ -128,10 +122,10 @@ export default {
         regionCentreX,
         regionCentreY,
         [viewBoxSize.width / 2, viewBoxSize.height / 2],
-        duration
+        1000
       );
     },
-    translateTo(x, y, relativeTo = [0, 0], duration = 1000) {
+    translateTo(x, y, relativeTo, duration) {
       const zoomTransform = d3.zoomIdentity
         .translate(relativeTo[0], relativeTo[1])
         .scale(this.currentScale)
