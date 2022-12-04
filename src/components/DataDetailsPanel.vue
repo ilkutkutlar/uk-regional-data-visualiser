@@ -22,6 +22,7 @@ export default {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
       keyFormatter: (area) => this.dataset.svgMap.prettyNames[area],
+      perCapita: false,
     };
   },
   computed: {
@@ -53,6 +54,15 @@ export default {
           "update:dataset",
           this.allDatasets.find((dataset) => dataset.metadata.id == value)
         );
+      },
+    },
+    modelPerCapita: {
+      get() {
+        return this.perCapita;
+      },
+      set(value) {
+        this.perCapita = value;
+        this.$emit("update:perCapita", value);
       },
     },
   },
@@ -102,6 +112,7 @@ export default {
             type="checkbox"
             value=""
             id="per-capita-check"
+            v-model="this.modelPerCapita"
           />
           <label class="form-check-label" for="per-capita-check">
             Show data per capita

@@ -44,6 +44,7 @@ export default {
       infoPanelCloseButtonVisible: false,
       infoPanelTitleText: "",
       infoPanelBodyText: "",
+      perCapita: false,
     };
   },
   methods: {
@@ -109,6 +110,9 @@ export default {
         this.isDataDownloaded = true;
       });
     },
+    perCapita(isShowPerCapita) {
+      console.log(isShowPerCapita);
+    },
   },
 };
 </script>
@@ -137,6 +141,7 @@ export default {
       v-if="this.isDataDownloaded"
       v-model:dataset="this.dataset"
       v-model:timePeriod="this.timePeriod"
+      v-model:perCapita="this.perCapita"
       :allDatasets="this.allDatasets"
       @dataRowMouseEnter="dataRowMouseEnter"
       @dataRowMouseLeave="dataRowMouseLeave"
