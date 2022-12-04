@@ -13,6 +13,7 @@ import { population } from "./datasets/population";
 import { netInternalMigration } from "./datasets/net_internal_migration";
 import { pubsAndBars } from "./datasets/pubs_and_bars";
 import { removeByValue } from "./utils";
+import { PerCapitaConverter } from "./per_capita";
 
 export default {
   components: {

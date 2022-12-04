@@ -1,6 +1,5 @@
 import type * as d3 from "d3";
 
-export type AnyObject = { [index: string]: any };
 export type StringObject = { [index: string]: string };
 export type MouseEventHandler = (event: any) => void;
 export type Formatter = (value: any) => string;

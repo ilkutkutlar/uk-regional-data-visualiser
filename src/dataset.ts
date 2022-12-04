@@ -13,8 +13,6 @@ type DatasetMetadata = {
 type DatasetStylingOptions = {
   valueFormatter: Formatter;
 };
-type DatasetData = { [index: string]: { [index: string]: any } };
-type DatasetKey = [string, string][];
 
 export class Dataset {
   metadata: DatasetMetadata;
@@ -22,8 +20,8 @@ export class Dataset {
   colourMap: ColourMap;
   stylingOptions: DatasetStylingOptions;
   dataPath: string;
-  data: DatasetData = {};
-  private _key: DatasetKey = [];
+  data: { [index: string]: { [index: string]: any } } = {};
+  private _key: [string, string][] = [];
 
   get key() {
     if (this._key.length == 0) {
@@ -59,14 +57,17 @@ export class Dataset {
   }
 
   downloadData() {
-    return new Promise<void>((resolve) => {
-      fetch(this.dataPath, { method: "get" })
-        .then((resp) => resp.json())
-        .then((data) => {
-          this.data = data;
-          resolve();
-        });
-    });
+    const dataEmpty = Object.keys(this.data).length == 0;
+    if (dataEmpty) {
+      return new Promise<void>((resolve) => {
+        fetch(this.dataPath, { method: "get" })
+          .then((resp) => resp.json())
+          .then((data) => {
+            this.data = data;
+            resolve();
+          });
+      });
+    }
   }
 
   colourForArea(timePeriod: string, areaCode: string): string | null {
