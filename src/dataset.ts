@@ -2,6 +2,7 @@ import type { Formatter, SvgMap } from "./types";
 import type { ColourMap } from "./colour_map";
 import { generateKey } from "./utils";
 import { Colours } from "./constants";
+import { PerCapitaConverter } from "./per_capita";
 
 type DatasetMetadata = {
   id: string;
@@ -20,7 +21,8 @@ export class Dataset {
   colourMap: ColourMap;
   stylingOptions: DatasetStylingOptions;
   dataPath: string;
-  data: { [index: string]: { [index: string]: any } } = {};
+  isPerCapita: boolean;
+  private _data: { [index: string]: { [index: string]: any } } = {};
   private _key: [string, string][] = [];
 
   get key() {
@@ -42,6 +44,18 @@ export class Dataset {
     return Object.keys(this.data);
   }
 
+  get data() {
+    // if (this.isPerCapita) {
+    //   const p = new PerCapitaConverter();
+    //   return p.convert(this._data);
+    // }
+    return this._data;
+  }
+
+  set data(value) {
+    this._data = value;
+  }
+
   constructor(
     metadata: DatasetMetadata,
     svgMap: SvgMap,
@@ -54,6 +68,7 @@ export class Dataset {
     this.colourMap = colourMap;
     this.stylingOptions = stylingOptions;
     this.dataPath = dataPath;
+    this.isPerCapita = false;
   }
 
   downloadData() {

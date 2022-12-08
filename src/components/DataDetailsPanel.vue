@@ -7,7 +7,8 @@ import TabList from "./partials/TabList.vue";
 import TabContent from "./partials/TabContent.vue";
 
 export default {
-  props: ["dataset", "allDatasets", "timePeriod"],
+  props: ["dataset", "timePeriod"],
+  inject: ["allDatasets"],
   components: {
     SelectFloating,
     TabList,

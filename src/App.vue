@@ -6,16 +6,10 @@ import KeyWindow from "./components/KeyWindow.vue";
 import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
-import { earnings } from "./datasets/earnings";
-import { hpi } from "./datasets/hpi";
-import { gdhi } from "./datasets/gdhi";
-import { population } from "./datasets/population";
-import { netInternalMigration } from "./datasets/net_internal_migration";
-import { pubsAndBars } from "./datasets/pubs_and_bars";
 import { removeByValue } from "./utils";
-import { PerCapitaConverter } from "./per_capita";
 
 export default {
+  inject: ["allDatasets"],
   components: {
     Navbar,
     MenuOffcanvas,
@@ -27,15 +21,7 @@ export default {
   },
   data() {
     return {
-      allDatasets: [
-        earnings,
-        hpi,
-        gdhi,
-        population,
-        netInternalMigration,
-        pubsAndBars,
-      ],
-      dataset: earnings,
+      dataset: this.allDatasets[0],
       timePeriod: "2021",
       highlightedRegions: [],
       selectedRegion: null,
@@ -142,7 +128,6 @@ export default {
       v-model:dataset="this.dataset"
       v-model:timePeriod="this.timePeriod"
       v-model:perCapita="this.perCapita"
-      :allDatasets="this.allDatasets"
       @dataRowMouseEnter="dataRowMouseEnter"
       @dataRowMouseLeave="dataRowMouseLeave"
     />
