@@ -34,6 +34,11 @@ export default {
     };
   },
   methods: {
+    setInfoPanelToRegionDetails(regionId) {
+      this.infoPanelTitleText = this.keyFormatter(regionId);
+      const regionValue = this.data ? this.data[regionId] : "";
+      this.infoPanelBodyText = this.dataset.valueFormatter(regionValue);
+    },
     mouseOver(d) {
       this.highlightedRegions = this.highlightedRegions.concat([d.target.id]);
       if (!this.selectedRegion) {
@@ -66,25 +71,30 @@ export default {
       this.infoPanelCloseButtonVisible = true;
       this.$refs.regionsMap.centreRegion(regionId);
     },
-    setInfoPanelToRegionDetails(regionId) {
-      const keyFormatter = (area) => this.dataset.svgMap.prettyNames[area];
-      this.infoPanelTitleText = keyFormatter(regionId);
-
-      const data = this.dataset.data[this.timePeriod];
-      const regionValue = data ? data[regionId] : "";
-      this.infoPanelBodyText = this.dataset.valueFormatter(regionValue);
-    },
     dataRowMouseEnter(regionId) {
       this.highlightedRegions = [regionId];
     },
     dataRowMouseLeave() {
       this.highlightedRegions = [];
     },
+    closeButtonClicked() {
+      this.infoPanelVisible = false;
+      if (this.selectedRegion) this.highlightedRegions = [];
+      this.selectedRegion = null;
+    },
   },
   mounted() {
     this.dataset.downloadData().then(() => {
       this.isDataDownloaded = true;
     });
+  },
+  computed: {
+    keyFormatter() {
+      return (area) => this.dataset.svgMap.prettyNames[area];
+    },
+    data() {
+      return this.dataset.data[this.timePeriod];
+    },
   },
   watch: {
     dataset(newDataset) {
@@ -111,13 +121,7 @@ export default {
     :bodyText="this.infoPanelBodyText"
     :visible="this.infoPanelVisible"
     :closeButtonVisible="this.infoPanelCloseButtonVisible"
-    @closeButtonClicked="
-      () => {
-        this.infoPanelVisible = false;
-        if (this.selectedRegion) this.highlightedRegions = [];
-        this.selectedRegion = null;
-      }
-    "
+    @closeButtonClicked="this.closeButtonClicked"
   />
 
   <div id="main" class="row m-0">
@@ -126,8 +130,8 @@ export default {
       v-model:dataset="this.dataset"
       v-model:timePeriod="this.timePeriod"
       v-model:perCapita="this.perCapita"
-      @dataRowMouseEnter="dataRowMouseEnter"
-      @dataRowMouseLeave="dataRowMouseLeave"
+      @dataRowMouseEnter="this.dataRowMouseEnter"
+      @dataRowMouseLeave="this.dataRowMouseLeave"
     />
     <RegionsMap
       ref="regionsMap"
