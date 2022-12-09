@@ -18,14 +18,11 @@ const colourMap = new ColourMap([
   { range: [250000, 500000], colour: Colours.ORANGE },
   { range: [500000, 2000000], colour: Colours.RED },
 ]);
-const stylingOptions = {
-  valueFormatter: ValueFormatters.LARGE_NUMBER,
-};
 
 export const population = new Dataset(
   metadata,
   LocalAuthoritiesSvgMap,
   colourMap,
-  stylingOptions,
+  ValueFormatters.LARGE_NUMBER,
   "./data/dataset/population.json"
 );

@@ -11,15 +11,12 @@ type DatasetMetadata = {
   source: string;
   sourceLink: string;
 };
-type DatasetStylingOptions = {
-  valueFormatter: Formatter;
-};
 
 export class Dataset {
   metadata: DatasetMetadata;
   svgMap: SvgMap;
   colourMap: ColourMap;
-  stylingOptions: DatasetStylingOptions;
+  valueFormatter: Formatter;
   dataPath: string;
   isPerCapita: boolean;
   private _data: { [index: string]: { [index: string]: any } } = {};
@@ -27,10 +24,7 @@ export class Dataset {
 
   get key() {
     if (this._key.length == 0) {
-      this._key = generateKey(
-        this.colourMap,
-        this.stylingOptions.valueFormatter
-      );
+      this._key = generateKey(this.colourMap, this.valueFormatter);
       this._key.unshift(["No data", Colours.GREY]);
     }
     return this._key;
@@ -60,13 +54,13 @@ export class Dataset {
     metadata: DatasetMetadata,
     svgMap: SvgMap,
     colourMap: ColourMap,
-    stylingOptions: DatasetStylingOptions,
+    valueFormatter: Formatter,
     dataPath: string
   ) {
     this.metadata = metadata;
     this.svgMap = svgMap;
     this.colourMap = colourMap;
-    this.stylingOptions = stylingOptions;
+    this.valueFormatter = valueFormatter;
     this.dataPath = dataPath;
     this.isPerCapita = false;
   }

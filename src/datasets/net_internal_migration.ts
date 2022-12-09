@@ -19,14 +19,11 @@ const colourMap = new ColourMap([
   { range: [0, 2500], colour: Colours.GREEN },
   { range: [2500, 5000], colour: Colours.BLUE },
 ]);
-const stylingOptions = {
-  valueFormatter: ValueFormatters.NONE,
-};
 
 export const netInternalMigration = new Dataset(
   metadata,
   LocalAuthoritiesSvgMap,
   colourMap,
-  stylingOptions,
+  ValueFormatters.NONE,
   "./data/dataset/net_internal_migration.json"
 );

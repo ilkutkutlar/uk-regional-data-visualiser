@@ -19,14 +19,11 @@ const colourMap = new ColourMap([
   { range: [150, 200], colour: Colours.GREEN },
   { range: [200, NaN], colour: Colours.BLUE },
 ]);
-const stylingOptions = {
-  valueFormatter: ValueFormatters.NONE,
-};
 
 export const pubsAndBars = new Dataset(
   metadata,
   LocalAuthoritiesSvgMap,
   colourMap,
-  stylingOptions,
+  ValueFormatters.NONE,
   "./data/dataset/pubs_and_bars.json"
 );

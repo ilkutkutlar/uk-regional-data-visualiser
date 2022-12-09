@@ -20,14 +20,11 @@ const colourMap = new ColourMap([
   { range: [400000, 600000], colour: Colours.ORANGE },
   { range: [600000, NaN], colour: Colours.RED },
 ]);
-const stylingOptions = {
-  valueFormatter: ValueFormatters.CURRENCY_GBP,
-};
 
 export const hpi = new Dataset(
   metadata,
   LocalAuthoritiesSvgMap,
   colourMap,
-  stylingOptions,
+  ValueFormatters.CURRENCY_GBP,
   "./data/dataset/hpi.json"
 );

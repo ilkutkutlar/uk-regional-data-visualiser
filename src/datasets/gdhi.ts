@@ -19,14 +19,11 @@ const colourMap = new ColourMap([
   { range: [30000, 35000], colour: Colours.BLUE },
   { range: [35000, NaN], colour: Colours.PURPLE },
 ]);
-const stylingOptions = {
-  valueFormatter: ValueFormatters.CURRENCY_GBP,
-};
 
 export const gdhi = new Dataset(
   metadata,
   ITL3SvgMap,
   colourMap,
-  stylingOptions,
+  ValueFormatters.CURRENCY_GBP,
   "./data/dataset/gdhi.json"
 );

@@ -26,11 +26,11 @@ export default {
       highlightedRegions: [],
       selectedRegion: null,
       isDataDownloaded: false,
+      perCapita: false,
       infoPanelVisible: false,
       infoPanelCloseButtonVisible: false,
       infoPanelTitleText: "",
       infoPanelBodyText: "",
-      perCapita: false,
     };
   },
   methods: {
@@ -67,14 +67,12 @@ export default {
       this.$refs.regionsMap.centreRegion(regionId);
     },
     setInfoPanelToRegionDetails(regionId) {
-      const data = this.dataset.data[this.timePeriod];
       const keyFormatter = (area) => this.dataset.svgMap.prettyNames[area];
-      const valueFormatter = this.dataset.stylingOptions.valueFormatter;
-      const regionName = keyFormatter(regionId);
-      const regionValue = data ? data[regionId] : "";
+      this.infoPanelTitleText = keyFormatter(regionId);
 
-      this.infoPanelTitleText = regionName;
-      this.infoPanelBodyText = valueFormatter(regionValue);
+      const data = this.dataset.data[this.timePeriod];
+      const regionValue = data ? data[regionId] : "";
+      this.infoPanelBodyText = this.dataset.valueFormatter(regionValue);
     },
     dataRowMouseEnter(regionId) {
       this.highlightedRegions = [regionId];
@@ -83,7 +81,7 @@ export default {
       this.highlightedRegions = [];
     },
   },
-  created() {
+  mounted() {
     this.dataset.downloadData().then(() => {
       this.isDataDownloaded = true;
     });

@@ -192,7 +192,7 @@ export default {
                   <td>{{ this.keyFormatter(entry[0]) }}</td>
                   <td>
                     <span class="fw-bold">{{
-                      this.dataset.stylingOptions.valueFormatter(entry[1])
+                      this.dataset.valueFormatter(entry[1])
                     }}</span>
                   </td>
                 </tr>
