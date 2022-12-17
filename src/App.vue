@@ -7,7 +7,6 @@ import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
 import { removeByValue } from "./utils";
-import { PerCapitaConverter } from "./per_capita";
 
 export default {
   inject: ["allDatasets"],
@@ -27,7 +26,6 @@ export default {
       highlightedRegions: [],
       selectedRegion: null,
       isDataDownloaded: false,
-      perCapita: false,
       infoPanelVisible: false,
       infoPanelCloseButtonVisible: false,
       infoPanelTitleText: "",
@@ -105,12 +103,6 @@ export default {
         this.isDataDownloaded = true;
       });
     },
-    perCapita(isShowPerCapita) {
-      this.dataset.preparePerCapitaData().then(() => {
-        this.dataset.isPerCapita = isShowPerCapita;
-        this.$refs.regionsMap.refreshData();
-      });
-    },
   },
 };
 </script>
@@ -133,7 +125,6 @@ export default {
       v-if="this.isDataDownloaded"
       v-model:dataset="this.dataset"
       v-model:timePeriod="this.timePeriod"
-      v-model:perCapita="this.perCapita"
       @dataRowMouseEnter="this.dataRowMouseEnter"
       @dataRowMouseLeave="this.dataRowMouseLeave"
     />
