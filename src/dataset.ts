@@ -19,7 +19,9 @@ export class Dataset {
   valueFormatter: Formatter;
   dataPath: string;
   isPerCapita: boolean;
+  private _perCapitaConverter: PerCapitaConverter = new PerCapitaConverter();
   private _data: { [index: string]: { [index: string]: any } } = {};
+  private _perCapitaData: { [index: string]: { [index: string]: any } } = {};
   private _key: [string, string][] = [];
 
   get key() {
@@ -39,10 +41,9 @@ export class Dataset {
   }
 
   get data() {
-    // if (this.isPerCapita) {
-    //   const p = new PerCapitaConverter();
-    //   return p.convert(this._data);
-    // }
+    if (this.isPerCapita) {
+      return this._perCapitaData;
+    }
     return this._data;
   }
 
@@ -65,17 +66,33 @@ export class Dataset {
     this.isPerCapita = false;
   }
 
+  preparePerCapitaData() {
+    const dataEmpty = Object.keys(this._perCapitaData).length == 0;
+    if (dataEmpty) {
+      return new Promise<void>((resolve) => {
+        this._perCapitaConverter.convert(this._data).then((perCapitaData) => {
+          this._perCapitaData = perCapitaData;
+          resolve();
+        });
+      });
+    } else {
+      return new Promise<void>((resolve) => resolve());
+    }
+  }
+
   downloadData() {
-    const dataEmpty = Object.keys(this.data).length == 0;
+    const dataEmpty = Object.keys(this._data).length == 0;
     if (dataEmpty) {
       return new Promise<void>((resolve) => {
         fetch(this.dataPath, { method: "get" })
           .then((resp) => resp.json())
           .then((data) => {
-            this.data = data;
+            this._data = data;
             resolve();
           });
       });
+    } else {
+      return new Promise<void>((resolve) => resolve());
     }
   }
 

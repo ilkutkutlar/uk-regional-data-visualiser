@@ -22,17 +22,21 @@ export class PerCapitaConverter {
 
   convert(data: DatasetData) {
     return new Promise<DatasetData>((resolve) => {
-      this.downloadPopulation();
-    })
-    const perCapita: DatasetData = {};
-    Object.keys(data).forEach((year) => {
-      if (this.populationData[year] === undefined) return;
-      perCapita[year] = this._perCapitaForYear(
-        data[year],
-        this.populationData[year]
-      );
+      this.downloadPopulation()?.then(() => {
+        const perCapita: DatasetData = {};
+        Object.keys(data).forEach((year) => {
+          if (this.populationData[year] === undefined) {
+            perCapita[year] = {};
+            return;
+          }
+          perCapita[year] = this._perCapitaForYear(
+            data[year],
+            this.populationData[year]
+          );
+        });
+        resolve(perCapita);
+      });
     });
-    return perCapita;
   }
 
   _perCapitaForYear(values: DataObject, population: DataObject) {

@@ -196,9 +196,6 @@ export default {
                     }}</span>
                   </td>
                 </tr>
-                {{
-                  this.dataset.data[this.timePeriod]
-                }}
               </tbody>
             </table>
           </TabContent>

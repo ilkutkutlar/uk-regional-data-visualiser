@@ -90,25 +90,25 @@ export default {
     },
     highlightRegion(regionId) {
       const targetElement = this.getSvgElementById(regionId);
+      if (targetElement.node() === null) return;
+      if (targetElement.attr("highlighted") === "true") return;
 
-      if (targetElement.attr("highlighted") !== "true") {
-        const highlightedFill = setOpacity(targetElement.attr("fill"), 0.8);
-        targetElement
-          .attr("fill", highlightedFill)
-          .attr("stroke-width", "2")
-          .attr("highlighted", "true");
-      }
+      const highlightedFill = setOpacity(targetElement.attr("fill"), 0.8);
+      targetElement
+        .attr("fill", highlightedFill)
+        .attr("stroke-width", "2")
+        .attr("highlighted", "true");
     },
     unhighlightRegion(regionId) {
       const targetElement = this.getSvgElementById(regionId);
+      if (targetElement.node() === null) return;
+      if (targetElement.attr("highlighted") !== "true") return;
 
-      if (targetElement.attr("highlighted") === "true") {
-        const unhighlightedFill = setOpacity(targetElement.attr("fill"), 1);
-        targetElement
-          .attr("fill", unhighlightedFill)
-          .attr("stroke-width", "1")
-          .attr("highlighted", "false");
-      }
+      const unhighlightedFill = setOpacity(targetElement.attr("fill"), 1);
+      targetElement
+        .attr("fill", unhighlightedFill)
+        .attr("stroke-width", "1")
+        .attr("highlighted", "false");
     },
     centreRegion(regionId) {
       const regionElem = this.getSvgElementById(regionId);

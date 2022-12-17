@@ -7,6 +7,7 @@ import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
 import { removeByValue } from "./utils";
+import { PerCapitaConverter } from "./per_capita";
 
 export default {
   inject: ["allDatasets"],
@@ -105,7 +106,10 @@ export default {
       });
     },
     perCapita(isShowPerCapita) {
-      console.log(isShowPerCapita);
+      this.dataset.preparePerCapitaData().then(() => {
+        this.dataset.isPerCapita = isShowPerCapita;
+        this.$refs.regionsMap.refreshData();
+      });
     },
   },
 };
