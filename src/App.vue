@@ -25,25 +25,16 @@ export default {
       timePeriod: "2021",
       highlightedRegions: [],
       selectedRegion: null,
-      isDataDownloaded: false,
       infoPanelVisible: false,
+      infoPanelRegionId: null,
       infoPanelCloseButtonVisible: false,
-      infoPanelTitleText: "",
-      infoPanelBodyText: "",
     };
   },
   methods: {
-    setInfoPanelToRegionDetails(regionId) {
-      this.infoPanelTitleText = this.keyFormatter(regionId);
-      const regionValue = this.data ? this.data[regionId] : "";
-      this.infoPanelBodyText = this.dataset.valueFormatter(regionValue);
-    },
     mouseOver(d) {
       this.highlightedRegions = this.highlightedRegions.concat([d.target.id]);
-      if (!this.selectedRegion) {
-        this.setInfoPanelToRegionDetails(d.target.id);
-        this.infoPanelVisible = true;
-      }
+      if (this.selectedRegion) return;
+      this.infoPanelRegionId = d.target.id;
     },
     mouseOut(d) {
       if (d.target.id !== this.selectedRegion) {
@@ -52,9 +43,8 @@ export default {
           d.target.id
         );
       }
-      if (!this.selectedRegion) {
-        this.infoPanelVisible = false;
-      }
+      if (this.selectedRegion) return;
+      this.infoPanelRegionId = null;
     },
     click(d) {
       const regionId = d.target.id;
@@ -66,7 +56,7 @@ export default {
       }
       this.selectedRegion = regionId;
       this.highlightedRegions = [regionId];
-      this.setInfoPanelToRegionDetails(regionId);
+      this.infoPanelRegionId = regionId;
       this.infoPanelCloseButtonVisible = true;
       this.$refs.regionsMap.centreRegion(regionId);
     },
@@ -77,15 +67,14 @@ export default {
       this.highlightedRegions = [];
     },
     closeButtonClicked() {
-      this.infoPanelVisible = false;
+      this.infoPanelRegionId = null;
+      this.infoPanelCloseButtonVisible = false;
       if (this.selectedRegion) this.highlightedRegions = [];
       this.selectedRegion = null;
     },
   },
   mounted() {
-    this.dataset.downloadData().then(() => {
-      this.isDataDownloaded = true;
-    });
+    this.dataset.downloadData().then(() => {});
   },
   computed: {
     keyFormatter() {
@@ -97,10 +86,8 @@ export default {
   },
   watch: {
     dataset(newDataset) {
-      this.isDataDownloaded = false;
       newDataset.downloadData().then(() => {
-        this.timePeriod = this.dataset.timePeriods.slice(-1)[0];
-        this.isDataDownloaded = true;
+        this.timePeriod = newDataset.timePeriods.slice(-1)[0];
       });
     },
   },
@@ -113,16 +100,20 @@ export default {
   <DataSelectionBar />
   <KeyWindow :dataset="this.dataset" />
   <InfoPanel
-    :titleText="this.infoPanelTitleText"
-    :bodyText="this.infoPanelBodyText"
-    :visible="this.infoPanelVisible"
+    :titleText="this.keyFormatter(this.infoPanelRegionId)"
+    :bodyText="
+      this.dataset.valueFormatter(
+        this.dataset.valueForArea(this.timePeriod, this.infoPanelRegionId)
+      )
+    "
+    :visible="this.infoPanelRegionId"
     :closeButtonVisible="this.infoPanelCloseButtonVisible"
     @closeButtonClicked="this.closeButtonClicked"
   />
 
   <div id="main" class="row m-0">
     <DataDetailsPanel
-      v-if="this.isDataDownloaded"
+      v-if="this.dataset.isDataDownloaded"
       v-model:dataset="this.dataset"
       v-model:timePeriod="this.timePeriod"
       @dataRowMouseEnter="this.dataRowMouseEnter"
@@ -130,7 +121,7 @@ export default {
     />
     <RegionsMap
       ref="regionsMap"
-      v-if="this.isDataDownloaded"
+      v-if="this.dataset.isDataDownloaded"
       :dataset="this.dataset"
       :timePeriod="this.timePeriod"
       :highlightedRegions="this.highlightedRegions"

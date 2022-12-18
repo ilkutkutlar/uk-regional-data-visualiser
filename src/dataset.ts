@@ -44,6 +44,10 @@ export class Dataset {
     this._data = value;
   }
 
+  get isDataDownloaded() {
+    return Object.keys(this._data).length !== 0;
+  }
+
   constructor(
     metadata: DatasetMetadata,
     svgMap: SvgMap,
@@ -59,8 +63,9 @@ export class Dataset {
   }
 
   downloadData() {
-    const dataEmpty = Object.keys(this._data).length == 0;
-    if (dataEmpty) {
+    if (this.isDataDownloaded) {
+      return new Promise<void>((resolve) => resolve());
+    } else {
       return new Promise<void>((resolve) => {
         fetch(this.dataPath, { method: "get" })
           .then((resp) => resp.json())
@@ -69,8 +74,6 @@ export class Dataset {
             resolve();
           });
       });
-    } else {
-      return new Promise<void>((resolve) => resolve());
     }
   }
 
@@ -80,6 +83,9 @@ export class Dataset {
   }
 
   valueForArea(timePeriod: string, areaCode: string): number {
+    if (!(timePeriod in this.data) || !(areaCode in this.data[timePeriod])) {
+      return NaN;
+    }
     return this.data[timePeriod][areaCode];
   }
 }

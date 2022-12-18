@@ -159,7 +159,7 @@ export default {
               <tbody id="data-table">
                 <tr
                   v-for="entry in Object.entries(
-                    this.dataset.data[this.timePeriod]
+                    this.dataset.data[this.timePeriod] ?? {}
                   )"
                   :id="`data-${entry[0]}`"
                   class="cursor-pointer"
