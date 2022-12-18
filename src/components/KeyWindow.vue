@@ -2,7 +2,6 @@
 import TogglerButton from "./partials/TogglerButton.vue";
 import IconCaretDownFill from "./icons/IconCaretDownFill.vue";
 import IconCaretUpFill from "./icons/IconCaretUpFill.vue";
-import * as d3 from "d3";
 
 export default {
   props: ["dataset"],

@@ -2,12 +2,7 @@
 import IconSlider from "./icons/IconSlider.vue";
 
 export default {
-  data() {
-    return {
-      datasetName: "None",
-      datasetYear: "None",
-    };
-  },
+  props: ["dataset", "timePeriod"],
   components: {
     IconSlider,
   },
@@ -28,9 +23,9 @@ export default {
           class="overflow-hidden ms-2 me-3"
           style="white-space: nowrap; text-overflow: ellipsis"
         >
-          <div id="bar-dataset-name-label">{{ datasetName }}</div>
+          <div id="bar-dataset-name-label">{{ dataset.metadata.name }}</div>
           <div id="bar-dataset-year-label" class="text-muted">
-            {{ datasetYear }}
+            {{ timePeriod }}
           </div>
         </div>
         <div

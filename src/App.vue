@@ -92,7 +92,7 @@ export default {
 <template>
   <Navbar />
   <MenuOffcanvas />
-  <DataSelectionBar />
+  <DataSelectionBar :dataset="this.dataset" :timePeriod="this.timePeriod" />
   <KeyWindow :dataset="this.dataset" />
   <InfoPanel
     :titleText="this.keyFormatter(this.infoPanelRegionId)"

@@ -50,6 +50,7 @@ export default {
   methods: {
     refreshData() {
       d3.xml(this.dataset.svgMap.svgPath).then((svgData) => {
+        this.svgContainer.node().innerHTML = "";
         svgData.documentElement.classList.add("full-page");
         this.svgContainer.node().append(svgData.documentElement);
 
