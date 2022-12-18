@@ -5,6 +5,8 @@ import IconLink from "./icons/IconLink.vue";
 import IconSearch from "./icons/IconSearch.vue";
 import TabList from "./partials/TabList.vue";
 import TabContent from "./partials/TabContent.vue";
+import Card from "./partials/Card.vue";
+import { sortObjectByValue } from "../utils";
 
 export default {
   props: ["dataset", "timePeriod"],
@@ -13,17 +15,10 @@ export default {
     SelectFloating,
     TabList,
     TabContent,
+    Card,
     IconText,
     IconLink,
     IconSearch,
-  },
-  data() {
-    return {
-      dataSelectItems: this.allDatasets.map((dataset) => {
-        return { value: dataset.metadata.id, text: dataset.metadata.name };
-      }),
-      keyFormatter: (area) => this.dataset.svgMap.prettyNames[area],
-    };
   },
   computed: {
     timePeriodSelectItems() {
@@ -36,6 +31,12 @@ export default {
       return this.dataset.timePeriods.map((period) => {
         return { value: period, text: period };
       });
+    },
+    sortedData: {
+      get() {
+        const data = this.dataset.data[this.timePeriod] ?? {};
+        return sortObjectByValue(data, false);
+      },
     },
     modelTimePeriod: {
       get() {
@@ -56,6 +57,14 @@ export default {
         );
       },
     },
+  },
+  data() {
+    return {
+      dataSelectItems: this.allDatasets.map((dataset) => {
+        return { value: dataset.metadata.id, text: dataset.metadata.name };
+      }),
+      keyFormatter: (area) => this.dataset.svgMap.prettyNames[area],
+    };
   },
 };
 </script>
@@ -116,31 +125,24 @@ export default {
         />
         <div class="tab-content">
           <TabContent id="metadata" tabId="metadata-tab" :active="true">
-            <div class="card mt-3">
-              <div class="card-body">
-                <h5 class="card-title border-bottom pb-1">
-                  <IconText />Description
-                </h5>
-                <div id="data-description" class="card-text">
-                  {{ this.dataset.metadata.description }}
-                </div>
-              </div>
-            </div>
-            <div class="card mt-3">
-              <div class="card-body">
-                <h5 class="card-title border-bottom pb-1">
-                  <IconLink />Source
-                </h5>
+            <Card outerDivClasses="mt-3">
+              <template #title><IconText />Description</template>
+              <template #body>
+                {{ this.dataset.metadata.description }}
+              </template>
+            </Card>
+            <Card outerDivClasses="mt-3">
+              <template #title><IconLink />Source</template>
+              <template #body>
                 <a
                   :href="this.dataset.metadata.sourceLink"
-                  id="data-source"
-                  class="d-block card-text"
+                  class="d-block"
                   target="blank"
                 >
                   {{ this.dataset.metadata.source }}
                 </a>
-              </div>
-            </div>
+              </template>
+            </Card>
           </TabContent>
           <TabContent id="dataset-data" tabId="dataset-data-tab">
             <div class="input-group w-100 mb-3 mt-3">
@@ -156,11 +158,9 @@ export default {
               />
             </div>
             <table class="w-100 m-auto mb-3 border bg-white">
-              <tbody id="data-table">
+              <tbody>
                 <tr
-                  v-for="entry in Object.entries(
-                    this.dataset.data[this.timePeriod] ?? {}
-                  )"
+                  v-for="entry in Object.entries(this.sortedData)"
                   :id="`data-${entry[0]}`"
                   class="cursor-pointer"
                   :key="entry[0]"
