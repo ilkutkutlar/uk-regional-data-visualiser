@@ -19,60 +19,6 @@ export default {
     DataDetailsPanel,
     RegionsMap,
   },
-  data() {
-    return {
-      dataset: this.allDatasets[0],
-      timePeriod: "2021",
-      highlightedRegions: [],
-      selectedRegion: null,
-      infoPanelVisible: false,
-      infoPanelRegionId: null,
-      infoPanelCloseButtonVisible: false,
-    };
-  },
-  methods: {
-    mouseOver(d) {
-      this.highlightedRegions = this.highlightedRegions.concat([d.target.id]);
-      if (this.selectedRegion) return;
-      this.infoPanelRegionId = d.target.id;
-    },
-    mouseOut(d) {
-      if (d.target.id !== this.selectedRegion) {
-        this.highlightedRegions = removeByValue(
-          this.highlightedRegions,
-          d.target.id
-        );
-      }
-      if (this.selectedRegion) return;
-      this.infoPanelRegionId = null;
-    },
-    click(d) {
-      const regionId = d.target.id;
-      if (this.selectedRegion) {
-        this.highlightedRegions = removeByValue(
-          this.highlightedRegions,
-          this.selectedRegion
-        );
-      }
-      this.selectedRegion = regionId;
-      this.highlightedRegions = [regionId];
-      this.infoPanelRegionId = regionId;
-      this.infoPanelCloseButtonVisible = true;
-      this.$refs.regionsMap.centreRegion(regionId);
-    },
-    dataRowMouseEnter(regionId) {
-      this.highlightedRegions = [regionId];
-    },
-    dataRowMouseLeave() {
-      this.highlightedRegions = [];
-    },
-    closeButtonClicked() {
-      this.infoPanelRegionId = null;
-      this.infoPanelCloseButtonVisible = false;
-      if (this.selectedRegion) this.highlightedRegions = [];
-      this.selectedRegion = null;
-    },
-  },
   mounted() {
     this.dataset.downloadData().then(() => {});
   },
@@ -91,6 +37,55 @@ export default {
       });
     },
   },
+  data() {
+    return {
+      dataset: this.allDatasets[0],
+      timePeriod: "2021",
+      highlightedRegions: [],
+      selectedRegion: null,
+      infoPanelRegionId: null,
+    };
+  },
+  methods: {
+    regionMouseOver(d) {
+      this.highlightedRegions = this.highlightedRegions.concat([d.target.id]);
+      if (this.selectedRegion) return;
+      this.infoPanelRegionId = d.target.id;
+    },
+    regionMouseOut(d) {
+      if (d.target.id !== this.selectedRegion) {
+        this.highlightedRegions = removeByValue(
+          this.highlightedRegions,
+          d.target.id
+        );
+      }
+      if (this.selectedRegion) return;
+      this.infoPanelRegionId = null;
+    },
+    regionClick(d) {
+      if (this.selectedRegion) {
+        this.highlightedRegions = removeByValue(
+          this.highlightedRegions,
+          this.selectedRegion
+        );
+      }
+      this.selectedRegion = d.target.id;
+      this.highlightedRegions = [d.target.id];
+      this.infoPanelRegionId = d.target.id;
+      this.$refs.regionsMap.centreRegion(d.target.id);
+    },
+    dataRowMouseEnter(regionId) {
+      this.highlightedRegions = [regionId];
+    },
+    dataRowMouseLeave() {
+      this.highlightedRegions = [];
+    },
+    infoPanelCloseButtonClicked() {
+      this.infoPanelRegionId = null;
+      if (this.selectedRegion) this.highlightedRegions = [];
+      this.selectedRegion = null;
+    },
+  },
 };
 </script>
 
@@ -102,13 +97,11 @@ export default {
   <InfoPanel
     :titleText="this.keyFormatter(this.infoPanelRegionId)"
     :bodyText="
-      this.dataset.valueFormatter(
-        this.dataset.valueForArea(this.timePeriod, this.infoPanelRegionId)
-      )
+      this.dataset.valueForArea(this.timePeriod, this.infoPanelRegionId, true)
     "
     :visible="this.infoPanelRegionId"
-    :closeButtonVisible="this.infoPanelCloseButtonVisible"
-    @closeButtonClicked="this.closeButtonClicked"
+    :closeButtonVisible="this.selectedRegion"
+    @closeButtonClicked="this.infoPanelCloseButtonClicked"
   />
 
   <div id="main" class="row m-0">
@@ -125,9 +118,9 @@ export default {
       :dataset="this.dataset"
       :timePeriod="this.timePeriod"
       :highlightedRegions="this.highlightedRegions"
-      @regionMouseOver="this.mouseOver"
-      @regionMouseOut="this.mouseOut"
-      @regionClick="this.click"
+      @regionMouseOver="this.regionMouseOver"
+      @regionMouseOut="this.regionMouseOut"
+      @regionClick="this.regionClick"
     />
   </div>
 </template>

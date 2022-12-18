@@ -15,8 +15,8 @@ export class Dataset {
   metadata: DatasetMetadata;
   svgMap: SvgMap;
   colourMap: ColourMap;
-  valueFormatter: Formatter;
   dataPath: string;
+  valueFormatter: Formatter;
   private _data: { [index: string]: { [index: string]: any } } = {};
   private _key: [string, string][] = [];
 
@@ -82,10 +82,15 @@ export class Dataset {
     return this.colourMap.mapValueToColour(value);
   }
 
-  valueForArea(timePeriod: string, areaCode: string): number {
-    if (!(timePeriod in this.data) || !(areaCode in this.data[timePeriod])) {
-      return NaN;
+  valueForArea(
+    timePeriod: string,
+    areaCode: string,
+    formatValue: boolean = false
+  ): number | string {
+    let value = NaN;
+    if (timePeriod in this.data && areaCode in this.data[timePeriod]) {
+      value = this.data[timePeriod][areaCode];
     }
-    return this.data[timePeriod][areaCode];
+    return formatValue ? this.valueFormatter(value) : value;
   }
 }
