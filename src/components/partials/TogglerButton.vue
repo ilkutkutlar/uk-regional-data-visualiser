@@ -1,11 +1,6 @@
 <script>
 export default {
-  props: {
-    id: String,
-    classes: String,
-    toggleType: String,
-    target: String,
-  },
+  props: ["id", "classes", "toggleType", "target"],
 };
 </script>
 
@@ -18,6 +13,7 @@ export default {
     :data-bs-target="`#${target}`"
     aria-expanded="false"
     aria-controls="target"
+    @click="this.$emit('click')"
   >
     <slot></slot>
   </div>

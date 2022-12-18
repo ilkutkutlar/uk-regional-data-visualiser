@@ -6,7 +6,7 @@ import IconSearch from "./icons/IconSearch.vue";
 import TabList from "./partials/TabList.vue";
 import TabContent from "./partials/TabContent.vue";
 import Card from "./partials/Card.vue";
-import { sortObjectByValue } from "../utils";
+import { filterDataByKey, sortObjectByValue } from "../utils";
 
 export default {
   props: ["dataset", "timePeriod"],
@@ -32,9 +32,12 @@ export default {
         return { value: period, text: period };
       });
     },
-    sortedData: {
+    filteredData: {
       get() {
-        const data = this.dataset.data[this.timePeriod] ?? {};
+        let data = this.dataset.data[this.timePeriod] ?? {};
+        if (this.searchText) {
+          data = filterDataByKey(data, this.keyFormatter, this.searchText);
+        }
         return sortObjectByValue(data, false);
       },
     },
@@ -58,12 +61,14 @@ export default {
       },
     },
   },
+
   data() {
     return {
       dataSelectItems: this.allDatasets.map((dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
       keyFormatter: (area) => this.dataset.svgMap.prettyNames[area],
+      searchText: "",
     };
   },
 };
@@ -155,12 +160,13 @@ export default {
                 class="form-control border-style-solid"
                 placeholder="Search data..."
                 aria-label="Data search text"
+                v-model="searchText"
               />
             </div>
             <table class="w-100 m-auto mb-3 border bg-white">
               <tbody>
                 <tr
-                  v-for="entry in Object.entries(this.sortedData)"
+                  v-for="entry in Object.entries(this.filteredData)"
                   :id="`data-${entry[0]}`"
                   class="cursor-pointer"
                   :key="entry[0]"

@@ -1,7 +1,22 @@
 import * as d3 from "d3";
 
-import type { D3Selection, Formatter } from "./types";
+import type { D3Selection, Formatter, StringObject } from "./types";
 import type { ColourMap } from "./colour_map";
+
+export function filterDataByKey(
+  data: StringObject,
+  keyFormatter: Formatter,
+  filterBy: string
+) {
+  const filter = (row: [string, any]) => {
+    const formatted = keyFormatter(row[0]);
+    if (formatted !== undefined) {
+      return formatted.toLowerCase().includes(filterBy.toLowerCase());
+    }
+  };
+  const sortedEntries = Object.entries(data).filter(filter);
+  return Object.fromEntries(sortedEntries);
+}
 
 export function sortObjectByValue(obj: object, sortAsc: boolean = true) {
   const entries = Object.entries(obj);

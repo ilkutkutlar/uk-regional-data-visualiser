@@ -2,6 +2,7 @@
 import TogglerButton from "./partials/TogglerButton.vue";
 import IconCaretDownFill from "./icons/IconCaretDownFill.vue";
 import IconCaretUpFill from "./icons/IconCaretUpFill.vue";
+import * as d3 from "d3";
 
 export default {
   props: ["dataset"],
@@ -9,6 +10,18 @@ export default {
     TogglerButton,
     IconCaretDownFill,
     IconCaretUpFill,
+  },
+  data() {
+    return {
+      toggleCollapsed: false,
+    };
+  },
+  methods: {
+    toggleClicked() {
+      this.toggleCollapsed = document
+        .getElementById("key-collapse-toggle")
+        .classList.contains("collapsed");
+    },
   },
 };
 </script>
@@ -22,11 +35,16 @@ export default {
       classes="row ms-3 me-3 mb-2 mt-2"
       toggle-type="collapse"
       target="key"
+      @click="toggleClicked"
     >
       <h5 id="key-title" class="col col-10 card-title mb-0 ps-0">Key</h5>
       <div class="col p-0 col-2">
-        <div id="key-down-icon"><IconCaretDownFill /></div>
-        <div id="key-up-icon" class="d-none"><IconCaretUpFill /></div>
+        <div id="key-down-icon" v-if="!this.toggleCollapsed">
+          <IconCaretDownFill />
+        </div>
+        <div id="key-up-icon" v-if="this.toggleCollapsed">
+          <IconCaretUpFill />
+        </div>
       </div>
     </TogglerButton>
     <div id="key" class="break-word border-top pt-2 show card-body p-2">
