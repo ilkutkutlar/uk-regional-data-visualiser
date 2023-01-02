@@ -24,7 +24,7 @@ export default {
           @click="this.$emit('closeButtonClicked')"
         ></button>
       </div>
-      <p id="info-panel-body" class="card-text">{{ this.bodyText }}</p>
+      <p id="info-panel-body" class="card-text" v-html="this.bodyText"></p>
     </div>
   </div>
 </template>

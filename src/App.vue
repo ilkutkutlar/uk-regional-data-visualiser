@@ -29,6 +29,14 @@ export default {
     data() {
       return this.dataset.data[this.timePeriod];
     },
+    infoPanelBodyText() {
+      const valueThisYear = this.dataset.valueForArea(
+        this.timePeriod,
+        this.infoPanelRegionId,
+        true
+      );
+      return `<span class='fw-bold'>${this.timePeriod}</span>: ${valueThisYear}`;
+    },
   },
   watch: {
     dataset(newDataset) {
@@ -96,9 +104,7 @@ export default {
   <KeyWindow :dataset="this.dataset" />
   <InfoPanel
     :titleText="this.keyFormatter(this.infoPanelRegionId)"
-    :bodyText="
-      this.dataset.valueForArea(this.timePeriod, this.infoPanelRegionId, true)
-    "
+    :bodyText="this.infoPanelBodyText"
     :visible="this.infoPanelRegionId"
     :closeButtonVisible="this.selectedRegion"
     @closeButtonClicked="this.infoPanelCloseButtonClicked"
