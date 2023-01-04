@@ -39,8 +39,8 @@ export default {
       dataset: this.allDatasets[0],
       timePeriod: "2021",
       highlightedRegions: [],
-      selectedRegion: null,
-      infoPanelRegionId: null,
+      selectedRegion: "",
+      infoPanelRegionId: "",
     };
   },
   methods: {
@@ -57,7 +57,7 @@ export default {
         );
       }
       if (this.selectedRegion) return;
-      this.infoPanelRegionId = null;
+      this.infoPanelRegionId = "";
     },
     regionClick(d) {
       if (this.selectedRegion) {
@@ -78,9 +78,9 @@ export default {
       this.highlightedRegions = [];
     },
     infoPanelCloseButtonClicked() {
-      this.infoPanelRegionId = null;
+      this.infoPanelRegionId = "";
       if (this.selectedRegion) this.highlightedRegions = [];
-      this.selectedRegion = null;
+      this.selectedRegion = "";
     },
   },
 };
