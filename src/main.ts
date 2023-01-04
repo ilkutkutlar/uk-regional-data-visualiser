@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 import { earnings } from "./datasets/earnings";
 import { hpi } from "./datasets/hpi";
 import { gdhi } from "./datasets/gdhi";
@@ -11,6 +12,7 @@ import "./assets/main.css";
 import "./assets/bootstrap.min.css";
 
 const app = createApp(App);
+const pinia = createPinia();
 
 app.provide("allDatasets", [
   earnings,
@@ -21,4 +23,5 @@ app.provide("allDatasets", [
   pubsAndBars,
 ]);
 
+app.use(pinia);
 app.mount("#app");
