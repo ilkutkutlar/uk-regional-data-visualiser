@@ -7,6 +7,7 @@ import RegionsInfoPanel from "./components/RegionsInfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
 import { removeByValue } from "./utils";
+import { selected } from "./store";
 
 export default {
   inject: ["allDatasets"],
@@ -20,67 +21,58 @@ export default {
     RegionsMap,
   },
   mounted() {
-    this.dataset.downloadData().then(() => {});
+    this.selected.dataset.downloadData().then(() => {});
   },
   computed: {
     data() {
-      return this.dataset.data[this.timePeriod];
+      return this.selected.dataset.data[this.selected.timePeriod];
     },
   },
   watch: {
     dataset(newDataset) {
       newDataset.downloadData().then(() => {
-        this.timePeriod = newDataset.timePeriods.slice(-1)[0];
+        this.setTimePeriod(newDataset.timePeriods.slice(-1)[0]);
       });
     },
   },
   data() {
     return {
-      dataset: this.allDatasets[0],
-      timePeriod: "2021",
-      highlightedRegions: [],
-      selectedRegion: "",
+      selected: selected(),
       infoPanelRegionId: "",
     };
   },
   methods: {
     regionMouseOver(d) {
-      this.highlightedRegions = this.highlightedRegions.concat([d.target.id]);
-      if (this.selectedRegion) return;
+      this.selected.addHighlightedRegion(d.target.id);
+      if (this.selected.selectedRegion) return;
       this.infoPanelRegionId = d.target.id;
     },
     regionMouseOut(d) {
-      if (d.target.id !== this.selectedRegion) {
-        this.highlightedRegions = removeByValue(
-          this.highlightedRegions,
-          d.target.id
-        );
+      if (d.target.id !== this.selected.selectedRegion) {
+        this.selected.removeHighlightedRegion(d.target.id);
       }
-      if (this.selectedRegion) return;
+      if (this.selected.selectedRegion) return;
       this.infoPanelRegionId = "";
     },
     regionClick(d) {
-      if (this.selectedRegion) {
-        this.highlightedRegions = removeByValue(
-          this.highlightedRegions,
-          this.selectedRegion
-        );
+      if (this.selected.selectedRegion) {
+        this.selected.removeHighlightedRegion(this.selected.selectedRegion);
       }
-      this.selectedRegion = d.target.id;
-      this.highlightedRegions = [d.target.id];
+      this.selected.setSelectedRegion(d.target.id);
+      this.selected.setHighlightedRegions([d.target.id]);
       this.infoPanelRegionId = d.target.id;
       this.$refs.regionsMap.centreRegion(d.target.id);
     },
     dataRowMouseEnter(regionId) {
-      this.highlightedRegions = [regionId];
+      this.selected.setHighlightedRegions([regionId]);
     },
     dataRowMouseLeave() {
-      this.highlightedRegions = [];
+      this.selected.clearHighlightedRegions();
     },
     infoPanelCloseButtonClicked() {
       this.infoPanelRegionId = "";
-      if (this.selectedRegion) this.highlightedRegions = [];
-      this.selectedRegion = "";
+      if (this.selected.selectedRegion) this.selected.clearHighlightedRegions();
+      this.selected.clearSelectedRegion();
     },
   },
 };
@@ -89,30 +81,33 @@ export default {
 <template>
   <Navbar />
   <MenuOffcanvas />
-  <DataSelectionBar :dataset="this.dataset" :timePeriod="this.timePeriod" />
-  <KeyWindow :dataset="this.dataset" />
+  <DataSelectionBar
+    :dataset="this.selected.dataset"
+    :timePeriod="this.selected.timePeriod"
+  />
+  <KeyWindow :dataset="this.selected.dataset" />
   <RegionsInfoPanel
-    :dataset="this.dataset"
-    :timePeriod="this.timePeriod"
+    :dataset="this.selected.dataset"
+    :timePeriod="this.selected.timePeriod"
     :regionId="this.infoPanelRegionId"
-    :selectedRegionId="this.selectedRegion"
+    :selectedRegionId="this.selected.selectedRegion"
     @closeButtonClicked="this.infoPanelCloseButtonClicked"
   />
 
   <div id="main" class="row m-0">
     <DataDetailsPanel
-      v-if="this.dataset.isDataDownloaded"
-      v-model:dataset="this.dataset"
-      v-model:timePeriod="this.timePeriod"
+      v-if="this.selected.dataset.isDataDownloaded"
+      v-model:dataset="this.selected.dataset"
+      v-model:timePeriod="this.selected.timePeriod"
       @dataRowMouseEnter="this.dataRowMouseEnter"
       @dataRowMouseLeave="this.dataRowMouseLeave"
     />
     <RegionsMap
       ref="regionsMap"
-      v-if="this.dataset.isDataDownloaded"
-      :dataset="this.dataset"
-      :timePeriod="this.timePeriod"
-      :highlightedRegions="this.highlightedRegions"
+      v-if="this.selected.dataset.isDataDownloaded"
+      :dataset="this.selected.dataset"
+      :timePeriod="this.selected.timePeriod"
+      :highlightedRegions="this.selected.highlightedRegions"
       @regionMouseOver="this.regionMouseOver"
       @regionMouseOut="this.regionMouseOut"
       @regionClick="this.regionClick"
