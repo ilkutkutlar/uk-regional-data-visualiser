@@ -6,15 +6,23 @@ export default {
   components: {
     InfoPanel,
   },
-  props: ["regionId"],
   data() {
     return {
       selected: selected(),
     };
   },
+  methods: {
+    closeButtonClicked() {
+      this.selected.focusedRegion = "";
+      if (this.selected.selectedRegion) this.selected.clearHighlightedRegions();
+      this.selected.clearSelectedRegion();
+    },
+  },
   computed: {
     titleText() {
-      return this.selected.dataset.svgMap.prettyNames[this.regionId];
+      return this.selected.dataset.svgMap.prettyNames[
+        this.selected.focusedRegion
+      ];
     },
     otherTimePeriods() {
       const currentIndex = this.selected.dataset.timePeriods.indexOf(
@@ -59,7 +67,7 @@ export default {
         .map((year) => {
           const value = this.selected.dataset.valueForArea(
             year,
-            this.regionId,
+            this.selected.focusedRegion,
             true
           );
           if (year === this.selected.timePeriod) {
@@ -85,8 +93,8 @@ export default {
   <InfoPanel
     :titleText="titleText"
     :bodyText="bodyText"
-    :visible="regionId"
+    :visible="this.selected.focusedRegion"
     :closeButtonVisible="selected.selectedRegion"
-    @closeButtonClicked="$emit('closeButtonClicked')"
+    @closeButtonClicked="closeButtonClicked"
   />
 </template>

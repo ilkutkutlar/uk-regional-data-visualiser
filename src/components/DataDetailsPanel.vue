@@ -41,27 +41,21 @@ export default {
         return sortObjectByValue(data, false);
       },
     },
-    modelTimePeriod: {
-      get() {
-        return this.selected.timePeriod;
-      },
-      set(value) {
-        this.selected.setTimePeriod(value);
-      },
-    },
     modelDataset: {
       get() {
         return this.selected.dataset.metadata.id;
       },
-      set(value) {
-        const selectedDataset = this.allDatasets.find(
-          (dataset) => dataset.metadata.id == value
-        );
-        this.selected.setDataset(selectedDataset);
-      },
+      set(value) {},
     },
   },
-
+  methods: {
+    dataRowMouseEnter(regionId) {
+      this.selected.setHighlightedRegions([regionId]);
+    },
+    dataRowMouseLeave() {
+      this.selected.clearHighlightedRegions();
+    },
+  },
   data() {
     return {
       selected: selected(),
@@ -101,7 +95,15 @@ export default {
           aria-label="Dataset select"
           outer-div-classes="mb-1 mt-3"
           :items="dataSelectItems"
-          v-model="modelDataset"
+          :modelValue="selected.dataset.metadata.id"
+          @input="
+            (event) => {
+              const selectedDataset = this.allDatasets.find(
+                (dataset) => dataset.metadata.id == event.target.value
+              );
+              this.selected.setDataset(selectedDataset);
+            }
+          "
         />
         <SelectFloating
           id="panel-data-time-period"
@@ -110,7 +112,7 @@ export default {
           aria-label="Dataset time period select"
           outer-div-classes="mb-3"
           :items="timePeriodSelectItems"
-          v-model="modelTimePeriod"
+          v-model="selected.timePeriod"
         />
 
         <TabList
@@ -171,8 +173,8 @@ export default {
                   :id="`data-${entry[0]}`"
                   class="cursor-pointer"
                   :key="entry[0]"
-                  @mouseenter="() => $emit('dataRowMouseEnter', entry[0])"
-                  @mouseleave="() => $emit('dataRowMouseLeave')"
+                  @mouseenter="() => dataRowMouseEnter(entry[0])"
+                  @mouseleave="dataRowMouseLeave"
                 >
                   <td>{{ keyFormatter(entry[0]) }}</td>
                   <td>

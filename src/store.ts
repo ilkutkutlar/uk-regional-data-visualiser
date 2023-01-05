@@ -9,6 +9,7 @@ export const selected = defineStore("selected", {
     timePeriod: "2021" as string,
     highlightedRegions: [] as Array<string>,
     selectedRegion: "" as string,
+    focusedRegion: "" as string,
   }),
   getters: {},
   actions: {
@@ -28,13 +29,13 @@ export const selected = defineStore("selected", {
       this.highlightedRegions = value;
     },
     addHighlightedRegion(value: string) {
-      this.setHighlightedRegions(this.highlightedRegions.concat([value]));
+      this.highlightedRegions = this.highlightedRegions.concat([value]);
     },
     removeHighlightedRegion(value: string) {
-      this.setHighlightedRegions(removeByValue(this.highlightedRegions, value));
+      this.highlightedRegions = removeByValue(this.highlightedRegions, value);
     },
     clearHighlightedRegions() {
-      this.setHighlightedRegions([]);
+      this.highlightedRegions = [];
     },
   },
 });

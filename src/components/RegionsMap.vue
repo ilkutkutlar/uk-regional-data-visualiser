@@ -5,7 +5,6 @@ import { setOpacity, getCentreOfSvgElem } from "../utils";
 import { selected } from "../store";
 
 export default {
-  props: ["mouseOverHandler", "mouseOutHandler", "clickHandler"],
   data() {
     return {
       svgContainer: null,
@@ -14,22 +13,23 @@ export default {
     };
   },
   watch: {
-    timePeriod() {
-      this.refreshData();
-    },
+    timePeriod: "refreshData",
   },
   mounted() {
-    this.selected.$subscribe((mutation) => {
-      switch (mutation.events.key) {
-        case "timePeriod":
-          this.refreshData();
-          break;
-        case "highlightedRegions":
-          this.unhighlightRegions(mutation.events.oldValue);
-          this.highlightRegions(mutation.events.newValue);
-          break;
-      }
-    });
+    this.selected.$subscribe(
+      (mutation) => {
+        switch (mutation.events.key) {
+          case "timePeriod":
+            this.refreshData();
+            break;
+          case "highlightedRegions":
+            this.unhighlightRegions(mutation.events.oldValue);
+            this.highlightRegions(mutation.events.newValue);
+            break;
+        }
+      },
+      { flush: "sync" }
+    );
     this.svgContainer = d3.select("#svg-container");
     this.refreshData();
   },
@@ -61,9 +61,9 @@ export default {
         this.setColours();
         this.svgContainer
           .selectAll("path")
-          .on("mouseover", (d) => this.$emit("regionMouseOver", d))
-          .on("mouseout", (d) => this.$emit("regionMouseOut", d))
-          .on("click", (d) => this.$emit("regionClick", d));
+          .on("mouseover", (d) => this.regionMouseOver(d))
+          .on("mouseout", (d) => this.regionMouseOut(d))
+          .on("click", (d) => this.regionClick(d));
       });
     },
     setZoom() {
@@ -144,6 +144,29 @@ export default {
     },
     getSvgElementById(regionId) {
       return this.svgContainer.select(`#${regionId}`);
+    },
+    regionMouseOver(d) {
+      this.selected.addHighlightedRegion(d.target.id);
+      if (this.selected.selectedRegion) return;
+      this.selected.focusedRegion = d.target.id;
+    },
+    regionMouseOut(d) {
+      if (d.target.id !== this.selected.selectedRegion) {
+        this.selected.removeHighlightedRegion(d.target.id);
+      }
+      if (this.selected.selectedRegion) return;
+      this.selected.focusedRegion = "";
+    },
+    regionClick(d) {
+      if (this.selected.selectedRegion) {
+        this.selected.removeHighlightedRegion(this.selected.selectedRegion);
+      }
+      this.selected.$patch({
+        selectedRegion: d.target.id,
+        highlightedRegions: [d.target.id],
+        focusedRegion: d.target.id,
+      });
+      this.centreRegion(d.target.id);
     },
   },
 };
