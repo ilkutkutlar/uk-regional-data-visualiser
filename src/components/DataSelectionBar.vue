@@ -1,6 +1,6 @@
 <script>
 import IconSlider from "./icons/IconSlider.vue";
-import { selected } from "../store";
+import { useOptions } from "../store";
 
 export default {
   components: {
@@ -8,7 +8,7 @@ export default {
   },
   data() {
     return {
-      selected: selected(),
+      options: useOptions(),
     };
   },
 };
@@ -29,10 +29,10 @@ export default {
           style="white-space: nowrap; text-overflow: ellipsis"
         >
           <div id="bar-dataset-name-label">
-            {{ selected.dataset.metadata.name }}
+            {{ options.dataset.metadata.name }}
           </div>
           <div id="bar-dataset-year-label" class="text-muted">
-            {{ selected.timePeriod }}
+            {{ options.timePeriod }}
           </div>
         </div>
         <div

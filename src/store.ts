@@ -3,7 +3,7 @@ import type { Dataset } from "./dataset";
 import { earnings } from "./datasets/earnings";
 import { removeByValue } from "./utils";
 
-export const selected = defineStore("selected", {
+export const useOptions = defineStore("options", {
   state: () => ({
     dataset: earnings as Dataset,
     timePeriod: "2021" as string,

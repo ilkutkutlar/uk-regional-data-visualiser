@@ -7,7 +7,7 @@ import TabList from "./partials/TabList.vue";
 import TabContent from "./partials/TabContent.vue";
 import Card from "./partials/Card.vue";
 import { filterDataByKey, sortObjectByValue } from "../utils";
-import { selected } from "../store";
+import { useOptions } from "../store";
 
 export default {
   inject: ["allDatasets"],
@@ -28,12 +28,12 @@ export default {
          when this template has been initialised. Make it
          a computed property so it is updated when data
          has been downloaded */
-      return this.selected.dataset.timePeriods.map((period) => {
+      return this.options.dataset.timePeriods.map((period) => {
         return { value: period, text: period };
       });
     },
     filteredData() {
-      let data = this.selected.dataset.data[this.selected.timePeriod] ?? {};
+      let data = this.options.dataset.data[this.options.timePeriod] ?? {};
       if (this.searchText) {
         data = filterDataByKey(data, this.keyFormatter, this.searchText);
       }
@@ -42,19 +42,19 @@ export default {
   },
   methods: {
     dataRowMouseEnter(regionId) {
-      this.selected.addHighlightedRegion(regionId);
+      this.options.addHighlightedRegion(regionId);
     },
     dataRowMouseLeave() {
-      this.selected.clearHighlightedRegions();
+      this.options.clearHighlightedRegions();
     },
   },
   data() {
     return {
-      selected: selected(),
+      options: useOptions(),
       dataSelectItems: this.allDatasets.map((dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
-      keyFormatter: (area) => this.selected.dataset.svgMap.prettyNames[area],
+      keyFormatter: (area) => this.options.dataset.svgMap.prettyNames[area],
       searchText: "",
     };
   },
@@ -87,10 +87,10 @@ export default {
           aria-label="Dataset select"
           outer-div-classes="mb-1 mt-3"
           :items="dataSelectItems"
-          :modelValue="selected.dataset.metadata.id"
+          :modelValue="options.dataset.metadata.id"
           @input="
             (event) => {
-              this.selected.dataset = this.allDatasets.find(
+              this.options.dataset = this.allDatasets.find(
                 (dataset) => dataset.metadata.id == event.target.value
               );
             }
@@ -103,7 +103,7 @@ export default {
           aria-label="Dataset time period select"
           outer-div-classes="mb-3"
           :items="timePeriodSelectItems"
-          v-model="selected.timePeriod"
+          v-model="options.timePeriod"
         />
 
         <TabList
@@ -127,18 +127,18 @@ export default {
             <Card outerDivClasses="mt-3">
               <template #title><IconText />Description</template>
               <template #body>
-                {{ selected.dataset.metadata.description }}
+                {{ options.dataset.metadata.description }}
               </template>
             </Card>
             <Card outerDivClasses="mt-3">
               <template #title><IconLink />Source</template>
               <template #body>
                 <a
-                  :href="selected.dataset.metadata.sourceLink"
+                  :href="options.dataset.metadata.sourceLink"
                   class="d-block"
                   target="blank"
                 >
-                  {{ selected.dataset.metadata.source }}
+                  {{ options.dataset.metadata.source }}
                 </a>
               </template>
             </Card>
@@ -170,7 +170,7 @@ export default {
                   <td>{{ keyFormatter(entry[0]) }}</td>
                   <td>
                     <span class="fw-bold">{{
-                      selected.dataset.valueFormatter(entry[1])
+                      options.dataset.valueFormatter(entry[1])
                     }}</span>
                   </td>
                 </tr>

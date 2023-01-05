@@ -2,21 +2,21 @@
 import * as d3 from "d3";
 import { Colours } from "../constants";
 import { setOpacity, getCentreOfSvgElem } from "../utils";
-import { selected } from "../store";
+import { useOptions } from "../store";
 
 export default {
   data() {
     return {
       svgContainer: null,
       zoom: null,
-      selected: selected(),
+      options: useOptions(),
     };
   },
   watch: {
     timePeriod: "refreshData",
   },
   mounted() {
-    this.selected.$subscribe((mutation) => {
+    this.options.$subscribe((mutation) => {
       const events = Array.isArray(mutation.events)
         ? mutation.events
         : [mutation.events];
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     refreshData() {
-      d3.xml(this.selected.dataset.svgMap.svgPath).then((svgData) => {
+      d3.xml(this.options.dataset.svgMap.svgPath).then((svgData) => {
         this.svgContainer.node().innerHTML = "";
         svgData.documentElement.classList.add("full-page");
         this.svgContainer.node().append(svgData.documentElement);
@@ -83,12 +83,10 @@ export default {
         .attr("fill", "#412149");
     },
     setColours() {
-      this.selected.dataset.svgMap.areas.forEach((region) => {
+      this.options.dataset.svgMap.areas.forEach((region) => {
         const regionColour =
-          this.selected.dataset.colourForArea(
-            this.selected.timePeriod,
-            region
-          ) ?? Colours.GREY;
+          this.options.dataset.colourForArea(this.options.timePeriod, region) ??
+          Colours.GREY;
         this.svgContainer.select(`#${region}`).attr("fill", regionColour);
       });
     },
@@ -144,14 +142,14 @@ export default {
       return this.svgContainer.select(`#${regionId}`);
     },
     regionMouseOver(d) {
-      this.selected.addHighlightedRegion(d.target.id);
+      this.options.addHighlightedRegion(d.target.id);
     },
     regionMouseOut(d) {
-      if (d.target.id === this.selected.selectedRegion) return;
-      this.selected.removeHighlightedRegion(d.target.id);
+      if (d.target.id === this.options.selectedRegion) return;
+      this.options.removeHighlightedRegion(d.target.id);
     },
     regionClick(d) {
-      this.selected.$patch({
+      this.options.$patch({
         selectedRegion: d.target.id,
         highlightedRegions: [d.target.id],
       });

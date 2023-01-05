@@ -1,6 +1,6 @@
 <script>
 import InfoPanel from "./InfoPanel.vue";
-import { selected } from "../store";
+import { useOptions } from "../store";
 
 export default {
   components: {
@@ -8,21 +8,21 @@ export default {
   },
   data() {
     return {
-      selected: selected(),
+      options: useOptions(),
     };
   },
   methods: {
     closeButtonClicked() {
-      if (this.selected.selectedRegion) this.selected.clearHighlightedRegions();
-      this.selected.clearSelectedRegion();
+      if (this.options.selectedRegion) this.options.clearHighlightedRegions();
+      this.options.clearSelectedRegion();
     },
   },
   computed: {
     displayedRegionId() {
-      if (this.selected.selectedRegion) {
-        return this.selected.selectedRegion;
-      } else if (this.selected.highlightedRegions.length > 0) {
-        return this.selected.highlightedRegions[0];
+      if (this.options.selectedRegion) {
+        return this.options.selectedRegion;
+      } else if (this.options.highlightedRegions.length > 0) {
+        return this.options.highlightedRegions[0];
       } else {
         return "";
       }
@@ -31,55 +31,55 @@ export default {
       return this.displayedRegionId;
     },
     titleText() {
-      return this.selected.dataset.svgMap.prettyNames[this.displayedRegionId];
+      return this.options.dataset.svgMap.prettyNames[this.displayedRegionId];
     },
     otherTimePeriods() {
-      const currentIndex = this.selected.dataset.timePeriods.indexOf(
-        this.selected.timePeriod
+      const currentIndex = this.options.dataset.timePeriods.indexOf(
+        this.options.timePeriod
       );
-      const timePeriods = this.selected.dataset.timePeriods;
+      const timePeriods = this.options.dataset.timePeriods;
       if (currentIndex == 0) {
         if (timePeriods.length >= 3) {
           return [
             timePeriods[currentIndex + 2],
             timePeriods[currentIndex + 1],
-            this.selected.timePeriod,
+            this.options.timePeriod,
           ];
         } else if (timePeriods.length == 2) {
-          return [timePeriods[currentIndex + 1], this.selected.timePeriod];
+          return [timePeriods[currentIndex + 1], this.options.timePeriod];
         } else {
-          return [this.selected.timePeriod];
+          return [this.options.timePeriod];
         }
       } else if (currentIndex == 1) {
         if (timePeriods.length >= 3) {
           return [
             timePeriods[currentIndex + 1],
-            this.selected.timePeriod,
+            this.options.timePeriod,
             timePeriods[currentIndex - 1],
           ];
         } else {
           return [
-            this.selected.timePeriod,
-            this.selected.dataset.timePeriods[currentIndex - 1],
+            this.options.timePeriod,
+            this.options.dataset.timePeriods[currentIndex - 1],
           ];
         }
       } else {
         return [
-          this.selected.timePeriod,
-          this.selected.dataset.timePeriods[currentIndex - 1],
-          this.selected.dataset.timePeriods[currentIndex - 2],
+          this.options.timePeriod,
+          this.options.dataset.timePeriods[currentIndex - 1],
+          this.options.dataset.timePeriods[currentIndex - 2],
         ];
       }
     },
     bodyText() {
       return this.otherTimePeriods
         .map((year) => {
-          const value = this.selected.dataset.valueForArea(
+          const value = this.options.dataset.valueForArea(
             year,
             this.displayedRegionId,
             true
           );
-          if (year === this.selected.timePeriod) {
+          if (year === this.options.timePeriod) {
             return `
               <div class="bg-body border border-primary p-2">
                 <span class='fw-bold'>${year}</span>: ${value}
@@ -103,7 +103,7 @@ export default {
     :titleText="titleText"
     :bodyText="bodyText"
     :visible="this.isInfoPanelVisible"
-    :closeButtonVisible="selected.selectedRegion"
+    :closeButtonVisible="options.selectedRegion"
     @closeButtonClicked="closeButtonClicked"
   />
 </template>

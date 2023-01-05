@@ -6,7 +6,7 @@ import KeyWindow from "./components/KeyWindow.vue";
 import RegionsInfoPanel from "./components/RegionsInfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
-import { selected } from "./store";
+import { useOptions } from "./store";
 
 export default {
   inject: ["allDatasets"],
@@ -20,17 +20,17 @@ export default {
     RegionsMap,
   },
   mounted() {
-    this.selected.$subscribe((mutation, state) => {
+    this.options.$subscribe((mutation, state) => {
       if (mutation.events.key !== "dataset") return;
       state.dataset.downloadData().then(() => {
-        this.selected.timePeriod = state.dataset.timePeriods.slice(-1)[0];
+        this.options.timePeriod = state.dataset.timePeriods.slice(-1)[0];
       });
     });
-    this.selected.dataset.downloadData().then(() => {});
+    this.options.dataset.downloadData().then(() => {});
   },
   data() {
     return {
-      selected: selected(),
+      options: useOptions(),
     };
   },
 };
@@ -44,7 +44,7 @@ export default {
   <RegionsInfoPanel />
 
   <div id="main" class="row m-0">
-    <DataDetailsPanel v-if="this.selected.dataset.isDataDownloaded" />
-    <RegionsMap v-if="this.selected.dataset.isDataDownloaded" />
+    <DataDetailsPanel v-if="this.options.dataset.isDataDownloaded" />
+    <RegionsMap v-if="this.options.dataset.isDataDownloaded" />
   </div>
 </template>
