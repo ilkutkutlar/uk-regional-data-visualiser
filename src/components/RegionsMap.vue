@@ -148,14 +148,12 @@ export default {
     regionMouseOver(d) {
       this.selected.addHighlightedRegion(d.target.id);
       if (this.selected.selectedRegion) return;
-      this.selected.focusedRegion = d.target.id;
     },
     regionMouseOut(d) {
       if (d.target.id !== this.selected.selectedRegion) {
         this.selected.removeHighlightedRegion(d.target.id);
       }
       if (this.selected.selectedRegion) return;
-      this.selected.focusedRegion = "";
     },
     regionClick(d) {
       if (this.selected.selectedRegion) {
@@ -164,7 +162,6 @@ export default {
       this.selected.$patch({
         selectedRegion: d.target.id,
         highlightedRegions: [d.target.id],
-        focusedRegion: d.target.id,
       });
       this.centreRegion(d.target.id);
     },

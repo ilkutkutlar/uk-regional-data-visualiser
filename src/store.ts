@@ -9,7 +9,6 @@ export const selected = defineStore("selected", {
     timePeriod: "2021" as string,
     highlightedRegions: [] as Array<string>,
     selectedRegion: "" as string,
-    focusedRegion: "" as string,
   }),
   getters: {},
   actions: {

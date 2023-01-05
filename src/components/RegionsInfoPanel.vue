@@ -13,16 +13,25 @@ export default {
   },
   methods: {
     closeButtonClicked() {
-      this.selected.focusedRegion = "";
       if (this.selected.selectedRegion) this.selected.clearHighlightedRegions();
       this.selected.clearSelectedRegion();
     },
   },
   computed: {
+    displayedRegionId() {
+      if (this.selected.selectedRegion) {
+        return this.selected.selectedRegion;
+      } else if (this.selected.highlightedRegions.length > 0) {
+        return this.selected.highlightedRegions[0];
+      } else {
+        return "";
+      }
+    },
+    isInfoPanelVisible() {
+      return this.displayedRegionId;
+    },
     titleText() {
-      return this.selected.dataset.svgMap.prettyNames[
-        this.selected.focusedRegion
-      ];
+      return this.selected.dataset.svgMap.prettyNames[this.displayedRegionId];
     },
     otherTimePeriods() {
       const currentIndex = this.selected.dataset.timePeriods.indexOf(
@@ -67,7 +76,7 @@ export default {
         .map((year) => {
           const value = this.selected.dataset.valueForArea(
             year,
-            this.selected.focusedRegion,
+            this.displayedRegionId,
             true
           );
           if (year === this.selected.timePeriod) {
@@ -93,7 +102,7 @@ export default {
   <InfoPanel
     :titleText="titleText"
     :bodyText="bodyText"
-    :visible="this.selected.focusedRegion"
+    :visible="this.isInfoPanelVisible"
     :closeButtonVisible="selected.selectedRegion"
     @closeButtonClicked="closeButtonClicked"
   />
