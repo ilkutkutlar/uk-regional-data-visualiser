@@ -7,9 +7,9 @@ import TabList from "./partials/TabList.vue";
 import TabContent from "./partials/TabContent.vue";
 import Card from "./partials/Card.vue";
 import { filterDataByKey, sortObjectByValue } from "../utils";
+import { selected } from "../store";
 
 export default {
-  props: ["dataset", "timePeriod"],
   inject: ["allDatasets"],
   components: {
     SelectFloating,
@@ -28,13 +28,13 @@ export default {
          when this template has been initialised. Make it
          a computed property so it is updated when data
          has been downloaded */
-      return this.dataset.timePeriods.map((period) => {
+      return this.selected.dataset.timePeriods.map((period) => {
         return { value: period, text: period };
       });
     },
     filteredData: {
       get() {
-        let data = this.dataset.data[this.timePeriod] ?? {};
+        let data = this.selected.dataset.data[this.selected.timePeriod] ?? {};
         if (this.searchText) {
           data = filterDataByKey(data, this.keyFormatter, this.searchText);
         }
@@ -43,31 +43,32 @@ export default {
     },
     modelTimePeriod: {
       get() {
-        return this.timePeriod;
+        return this.selected.timePeriod;
       },
       set(value) {
-        this.$emit("update:timePeriod", value);
+        this.selected.setTimePeriod(value);
       },
     },
     modelDataset: {
       get() {
-        return this.dataset.metadata.id;
+        return this.selected.dataset.metadata.id;
       },
       set(value) {
-        this.$emit(
-          "update:dataset",
-          this.allDatasets.find((dataset) => dataset.metadata.id == value)
+        const selectedDataset = this.allDatasets.find(
+          (dataset) => dataset.metadata.id == value
         );
+        this.selected.setDataset(selectedDataset);
       },
     },
   },
 
   data() {
     return {
+      selected: selected(),
       dataSelectItems: this.allDatasets.map((dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
-      keyFormatter: (area) => this.dataset.svgMap.prettyNames[area],
+      keyFormatter: (area) => this.selected.dataset.svgMap.prettyNames[area],
       searchText: "",
     };
   },
@@ -133,18 +134,18 @@ export default {
             <Card outerDivClasses="mt-3">
               <template #title><IconText />Description</template>
               <template #body>
-                {{ this.dataset.metadata.description }}
+                {{ this.selected.dataset.metadata.description }}
               </template>
             </Card>
             <Card outerDivClasses="mt-3">
               <template #title><IconLink />Source</template>
               <template #body>
                 <a
-                  :href="this.dataset.metadata.sourceLink"
+                  :href="this.selected.dataset.metadata.sourceLink"
                   class="d-block"
                   target="blank"
                 >
-                  {{ this.dataset.metadata.source }}
+                  {{ this.selected.dataset.metadata.source }}
                 </a>
               </template>
             </Card>
@@ -176,7 +177,7 @@ export default {
                   <td>{{ this.keyFormatter(entry[0]) }}</td>
                   <td>
                     <span class="fw-bold">{{
-                      this.dataset.valueFormatter(entry[1])
+                      this.selected.dataset.valueFormatter(entry[1])
                     }}</span>
                   </td>
                 </tr>

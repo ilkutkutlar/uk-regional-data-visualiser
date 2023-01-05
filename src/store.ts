@@ -28,13 +28,13 @@ export const selected = defineStore("selected", {
       this.highlightedRegions = value;
     },
     addHighlightedRegion(value: string) {
-      this.highlightedRegions = this.highlightedRegions.concat([value]);
+      this.setHighlightedRegions(this.highlightedRegions.concat([value]));
     },
     removeHighlightedRegion(value: string) {
-      this.highlightedRegions = removeByValue(this.highlightedRegions, value);
+      this.setHighlightedRegions(removeByValue(this.highlightedRegions, value));
     },
     clearHighlightedRegions() {
-      this.highlightedRegions = [];
+      this.setHighlightedRegions([]);
     },
   },
 });

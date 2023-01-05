@@ -2,32 +2,34 @@
 import * as d3 from "d3";
 import { Colours } from "../constants";
 import { setOpacity, getCentreOfSvgElem } from "../utils";
+import { selected } from "../store";
 
 export default {
-  props: [
-    "dataset",
-    "timePeriod",
-    "highlightedRegions",
-    "mouseOverHandler",
-    "mouseOutHandler",
-    "clickHandler",
-  ],
+  props: ["mouseOverHandler", "mouseOutHandler", "clickHandler"],
   data() {
     return {
       svgContainer: null,
       zoom: null,
+      selected: selected(),
     };
   },
   watch: {
-    highlightedRegions(newRegionIds, oldRegionIds) {
-      oldRegionIds.forEach((regionId) => this.unhighlightRegion(regionId));
-      newRegionIds.forEach((regionId) => this.highlightRegion(regionId));
-    },
     timePeriod() {
       this.refreshData();
     },
   },
   mounted() {
+    this.selected.$subscribe((mutation) => {
+      switch (mutation.events.key) {
+        case "timePeriod":
+          this.refreshData();
+          break;
+        case "highlightedRegions":
+          this.unhighlightRegions(mutation.events.oldValue);
+          this.highlightRegions(mutation.events.newValue);
+          break;
+      }
+    });
     this.svgContainer = d3.select("#svg-container");
     this.refreshData();
   },
@@ -49,7 +51,7 @@ export default {
   },
   methods: {
     refreshData() {
-      d3.xml(this.dataset.svgMap.svgPath).then((svgData) => {
+      d3.xml(this.selected.dataset.svgMap.svgPath).then((svgData) => {
         this.svgContainer.node().innerHTML = "";
         svgData.documentElement.classList.add("full-page");
         this.svgContainer.node().append(svgData.documentElement);
@@ -83,33 +85,40 @@ export default {
         .attr("fill", "#412149");
     },
     setColours() {
-      this.dataset.svgMap.areas.forEach((region) => {
+      this.selected.dataset.svgMap.areas.forEach((region) => {
         const regionColour =
-          this.dataset.colourForArea(this.timePeriod, region) ?? Colours.GREY;
+          this.selected.dataset.colourForArea(
+            this.selected.timePeriod,
+            region
+          ) ?? Colours.GREY;
         this.svgContainer.select(`#${region}`).attr("fill", regionColour);
       });
     },
-    highlightRegion(regionId) {
-      const targetElement = this.getSvgElementById(regionId);
-      if (targetElement.node() === null) return;
-      if (targetElement.attr("highlighted") === "true") return;
+    highlightRegions(regionIds) {
+      regionIds.forEach((regionId) => {
+        const targetElement = this.getSvgElementById(regionId);
+        if (targetElement.node() === null) return;
+        if (targetElement.attr("highlighted") === "true") return;
 
-      const highlightedFill = setOpacity(targetElement.attr("fill"), 0.8);
-      targetElement
-        .attr("fill", highlightedFill)
-        .attr("stroke-width", "2")
-        .attr("highlighted", "true");
+        const highlightedFill = setOpacity(targetElement.attr("fill"), 0.8);
+        targetElement
+          .attr("fill", highlightedFill)
+          .attr("stroke-width", "2")
+          .attr("highlighted", "true");
+      });
     },
-    unhighlightRegion(regionId) {
-      const targetElement = this.getSvgElementById(regionId);
-      if (targetElement.node() === null) return;
-      if (targetElement.attr("highlighted") !== "true") return;
+    unhighlightRegions(regionIds) {
+      regionIds.forEach((regionId) => {
+        const targetElement = this.getSvgElementById(regionId);
+        if (targetElement.node() === null) return;
+        if (targetElement.attr("highlighted") !== "true") return;
 
-      const unhighlightedFill = setOpacity(targetElement.attr("fill"), 1);
-      targetElement
-        .attr("fill", unhighlightedFill)
-        .attr("stroke-width", "1")
-        .attr("highlighted", "false");
+        const unhighlightedFill = setOpacity(targetElement.attr("fill"), 1);
+        targetElement
+          .attr("fill", unhighlightedFill)
+          .attr("stroke-width", "1")
+          .attr("highlighted", "false");
+      });
     },
     centreRegion(regionId) {
       const regionElem = this.getSvgElementById(regionId);

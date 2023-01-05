@@ -2,9 +2,9 @@
 import TogglerButton from "./partials/TogglerButton.vue";
 import IconCaretDownFill from "./icons/IconCaretDownFill.vue";
 import IconCaretUpFill from "./icons/IconCaretUpFill.vue";
+import { selected } from "../store";
 
 export default {
-  props: ["dataset"],
   components: {
     TogglerButton,
     IconCaretDownFill,
@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       toggleCollapsed: false,
+      selected: selected(),
     };
   },
   methods: {
@@ -49,7 +50,7 @@ export default {
     <div id="key" class="break-word border-top pt-2 show card-body p-2">
       <div id="key-body" class="card-text vstack gap-2">
         <div
-          v-for="keyItem in this.dataset.key"
+          v-for="keyItem in this.selected.dataset.key"
           :key="keyItem[0]"
           class="d-flex"
         >
