@@ -29,10 +29,10 @@ export default {
           style="white-space: nowrap; text-overflow: ellipsis"
         >
           <div id="bar-dataset-name-label">
-            {{ this.selected.dataset.metadata.name }}
+            {{ selected.dataset.metadata.name }}
           </div>
           <div id="bar-dataset-year-label" class="text-muted">
-            {{ this.selected.timePeriod }}
+            {{ selected.timePeriod }}
           </div>
         </div>
         <div

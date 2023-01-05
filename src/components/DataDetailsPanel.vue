@@ -100,8 +100,8 @@ export default {
           label="Choose a dataset"
           aria-label="Dataset select"
           outer-div-classes="mb-1 mt-3"
-          :items="this.dataSelectItems"
-          v-model="this.modelDataset"
+          :items="dataSelectItems"
+          v-model="modelDataset"
         />
         <SelectFloating
           id="panel-data-time-period"
@@ -109,8 +109,8 @@ export default {
           label="Time period"
           aria-label="Dataset time period select"
           outer-div-classes="mb-3"
-          :items="this.timePeriodSelectItems"
-          v-model="this.modelTimePeriod"
+          :items="timePeriodSelectItems"
+          v-model="modelTimePeriod"
         />
 
         <TabList
@@ -134,18 +134,18 @@ export default {
             <Card outerDivClasses="mt-3">
               <template #title><IconText />Description</template>
               <template #body>
-                {{ this.selected.dataset.metadata.description }}
+                {{ selected.dataset.metadata.description }}
               </template>
             </Card>
             <Card outerDivClasses="mt-3">
               <template #title><IconLink />Source</template>
               <template #body>
                 <a
-                  :href="this.selected.dataset.metadata.sourceLink"
+                  :href="selected.dataset.metadata.sourceLink"
                   class="d-block"
                   target="blank"
                 >
-                  {{ this.selected.dataset.metadata.source }}
+                  {{ selected.dataset.metadata.source }}
                 </a>
               </template>
             </Card>
@@ -167,17 +167,17 @@ export default {
             <table class="w-100 m-auto mb-3 border bg-white">
               <tbody>
                 <tr
-                  v-for="entry in Object.entries(this.filteredData)"
+                  v-for="entry in Object.entries(filteredData)"
                   :id="`data-${entry[0]}`"
                   class="cursor-pointer"
                   :key="entry[0]"
-                  @mouseenter="() => this.$emit('dataRowMouseEnter', entry[0])"
-                  @mouseleave="() => this.$emit('dataRowMouseLeave')"
+                  @mouseenter="() => $emit('dataRowMouseEnter', entry[0])"
+                  @mouseleave="() => $emit('dataRowMouseLeave')"
                 >
-                  <td>{{ this.keyFormatter(entry[0]) }}</td>
+                  <td>{{ keyFormatter(entry[0]) }}</td>
                   <td>
                     <span class="fw-bold">{{
-                      this.selected.dataset.valueFormatter(entry[1])
+                      selected.dataset.valueFormatter(entry[1])
                     }}</span>
                   </td>
                 </tr>

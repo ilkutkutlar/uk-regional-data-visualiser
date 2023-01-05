@@ -39,10 +39,10 @@ export default {
     >
       <h5 id="key-title" class="col col-10 card-title mb-0 ps-0">Key</h5>
       <div class="col p-0 col-2">
-        <div id="key-down-icon" v-if="!this.toggleCollapsed">
+        <div id="key-down-icon" v-if="!toggleCollapsed">
           <IconCaretDownFill />
         </div>
-        <div id="key-up-icon" v-if="this.toggleCollapsed">
+        <div id="key-up-icon" v-if="toggleCollapsed">
           <IconCaretUpFill />
         </div>
       </div>
@@ -50,7 +50,7 @@ export default {
     <div id="key" class="break-word border-top pt-2 show card-body p-2">
       <div id="key-body" class="card-text vstack gap-2">
         <div
-          v-for="keyItem in this.selected.dataset.key"
+          v-for="keyItem in selected.dataset.key"
           :key="keyItem[0]"
           class="d-flex"
         >

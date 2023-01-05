@@ -83,10 +83,10 @@ export default {
 
 <template>
   <InfoPanel
-    :titleText="this.titleText"
-    :bodyText="this.bodyText"
-    :visible="this.regionId"
-    :closeButtonVisible="this.selected.selectedRegion"
-    @closeButtonClicked="this.$emit('closeButtonClicked')"
+    :titleText="titleText"
+    :bodyText="bodyText"
+    :visible="regionId"
+    :closeButtonVisible="selected.selectedRegion"
+    @closeButtonClicked="$emit('closeButtonClicked')"
   />
 </template>
