@@ -62,10 +62,18 @@ export default {
             this.regionId,
             true
           );
-          if (year == this.selected.timePeriod) {
-            return `<div style="background-color: lightgrey; padding-top: 0.3em; padding-bottom: 0.3em"><span class='fw-bold'>${year}</span>: ${value}</div>`;
+          if (year === this.selected.timePeriod) {
+            return `
+              <div class="bg-body border border-primary p-2">
+                <span class='fw-bold'>${year}</span>: ${value}
+              </div>
+            `;
           }
-          return `<div><span class='fw-bold'>${year}</span>: ${value}</div>`;
+          return `
+            <div class="ps-2">
+              <span class='fw-bold'>${year}</span>: ${value}
+            </div>
+          `;
         })
         .join("");
     },

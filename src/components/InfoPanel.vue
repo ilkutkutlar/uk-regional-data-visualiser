@@ -12,7 +12,7 @@ export default {
   >
     <div class="card-body ps-2 pt-2 pb-2">
       <div class="row">
-        <div id="info-panel-title" class="card-title col-10 pe-0 mb-1 fw-bold">
+        <div id="info-panel-title" class="card-title col-10 pe-0 mb-3 fw-bold">
           {{ this.titleText }}
         </div>
         <button
