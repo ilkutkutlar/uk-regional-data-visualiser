@@ -41,16 +41,10 @@ export default {
         return sortObjectByValue(data, false);
       },
     },
-    modelDataset: {
-      get() {
-        return this.selected.dataset.metadata.id;
-      },
-      set(value) {},
-    },
   },
   methods: {
     dataRowMouseEnter(regionId) {
-      this.selected.setHighlightedRegions([regionId]);
+      this.selected.addHighlightedRegion(regionId);
     },
     dataRowMouseLeave() {
       this.selected.clearHighlightedRegions();
@@ -98,10 +92,9 @@ export default {
           :modelValue="selected.dataset.metadata.id"
           @input="
             (event) => {
-              const selectedDataset = this.allDatasets.find(
+              this.selected.dataset = this.allDatasets.find(
                 (dataset) => dataset.metadata.id == event.target.value
               );
-              this.selected.setDataset(selectedDataset);
             }
           "
         />

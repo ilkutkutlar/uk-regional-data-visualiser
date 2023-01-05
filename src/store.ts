@@ -13,20 +13,8 @@ export const selected = defineStore("selected", {
   }),
   getters: {},
   actions: {
-    setDataset(value: Dataset) {
-      this.dataset = value;
-    },
-    setTimePeriod(value: string) {
-      this.timePeriod = value;
-    },
-    setSelectedRegion(value: string) {
-      this.selectedRegion = value;
-    },
     clearSelectedRegion() {
       this.selectedRegion = "";
-    },
-    setHighlightedRegions(value: Array<string>) {
-      this.highlightedRegions = value;
     },
     addHighlightedRegion(value: string) {
       this.highlightedRegions = this.highlightedRegions.concat([value]);
