@@ -45,9 +45,6 @@ export default {
 
   <div id="main" class="row m-0">
     <DataDetailsPanel v-if="this.selected.dataset.isDataDownloaded" />
-    <RegionsMap
-      ref="regionsMap"
-      v-if="this.selected.dataset.isDataDownloaded"
-    />
+    <RegionsMap v-if="this.selected.dataset.isDataDownloaded" />
   </div>
 </template>

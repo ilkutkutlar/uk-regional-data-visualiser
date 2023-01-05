@@ -18,15 +18,20 @@ export default {
   mounted() {
     this.selected.$subscribe(
       (mutation) => {
-        switch (mutation.events.key) {
-          case "timePeriod":
-            this.refreshData();
-            break;
-          case "highlightedRegions":
-            this.unhighlightRegions(mutation.events.oldValue);
-            this.highlightRegions(mutation.events.newValue);
-            break;
-        }
+        const events = Array.isArray(mutation.events)
+          ? mutation.events
+          : [mutation.events];
+        events.forEach((event) => {
+          switch (event.key) {
+            case "timePeriod":
+              this.refreshData();
+              break;
+            case "highlightedRegions":
+              this.unhighlightRegions(event.oldValue);
+              this.highlightRegions(event.newValue);
+              break;
+          }
+        });
       },
       { flush: "sync" }
     );
@@ -147,18 +152,12 @@ export default {
     },
     regionMouseOver(d) {
       this.selected.addHighlightedRegion(d.target.id);
-      if (this.selected.selectedRegion) return;
     },
     regionMouseOut(d) {
-      if (d.target.id !== this.selected.selectedRegion) {
-        this.selected.removeHighlightedRegion(d.target.id);
-      }
-      if (this.selected.selectedRegion) return;
+      if (d.target.id === this.selected.selectedRegion) return;
+      this.selected.removeHighlightedRegion(d.target.id);
     },
     regionClick(d) {
-      if (this.selected.selectedRegion) {
-        this.selected.removeHighlightedRegion(this.selected.selectedRegion);
-      }
       this.selected.$patch({
         selectedRegion: d.target.id,
         highlightedRegions: [d.target.id],
