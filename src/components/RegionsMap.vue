@@ -16,42 +16,35 @@ export default {
     timePeriod: "refreshData",
   },
   mounted() {
-    this.selected.$subscribe(
-      (mutation) => {
-        const events = Array.isArray(mutation.events)
-          ? mutation.events
-          : [mutation.events];
-        events.forEach((event) => {
-          switch (event.key) {
-            case "timePeriod":
-              this.refreshData();
-              break;
-            case "highlightedRegions":
-              this.unhighlightRegions(event.oldValue);
-              this.highlightRegions(event.newValue);
-              break;
-          }
-        });
-      },
-      { flush: "sync" }
-    );
+    this.selected.$subscribe((mutation) => {
+      const events = Array.isArray(mutation.events)
+        ? mutation.events
+        : [mutation.events];
+      events.forEach((event) => {
+        switch (event.key) {
+          case "timePeriod":
+            this.refreshData();
+            break;
+          case "highlightedRegions":
+            this.unhighlightRegions(event.oldValue);
+            this.highlightRegions(event.newValue);
+            break;
+        }
+      });
+    });
     this.svgContainer = d3.select("#svg-container");
     this.refreshData();
   },
   computed: {
-    viewBoxSize: {
-      get() {
-        const svgElem = this.svgContainer.select("svg");
-        return {
-          width: parseFloat(svgElem.attr("width")),
-          height: parseFloat(svgElem.attr("height")),
-        };
-      },
+    viewBoxSize() {
+      const svgElem = this.svgContainer.select("svg");
+      return {
+        width: parseFloat(svgElem.attr("width")),
+        height: parseFloat(svgElem.attr("height")),
+      };
     },
-    currentScale: {
-      get() {
-        return d3.zoomTransform(this.svgContainer.node()).k;
-      },
+    currentScale() {
+      return d3.zoomTransform(this.svgContainer.node()).k;
     },
   },
   methods: {

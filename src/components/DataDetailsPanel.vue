@@ -32,14 +32,12 @@ export default {
         return { value: period, text: period };
       });
     },
-    filteredData: {
-      get() {
-        let data = this.selected.dataset.data[this.selected.timePeriod] ?? {};
-        if (this.searchText) {
-          data = filterDataByKey(data, this.keyFormatter, this.searchText);
-        }
-        return sortObjectByValue(data, false);
-      },
+    filteredData() {
+      let data = this.selected.dataset.data[this.selected.timePeriod] ?? {};
+      if (this.searchText) {
+        data = filterDataByKey(data, this.keyFormatter, this.searchText);
+      }
+      return sortObjectByValue(data, false);
     },
   },
   methods: {
