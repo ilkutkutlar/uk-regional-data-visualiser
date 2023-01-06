@@ -6,7 +6,7 @@ import { removeByValue } from "./utils";
 export const useOptions = defineStore("options", {
   state: () => ({
     dataset: earnings as Dataset,
-    timePeriod: "2021" as string,
+    year: "2021" as string,
     highlightedRegions: [] as Array<string>,
     selectedRegion: "" as string,
   }),

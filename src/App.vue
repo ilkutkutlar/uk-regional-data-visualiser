@@ -23,7 +23,7 @@ export default {
     this.options.$subscribe((mutation, state) => {
       if (mutation.events.key !== "dataset") return;
       state.dataset.downloadData().then(() => {
-        this.options.timePeriod = state.dataset.timePeriods.slice(-1)[0];
+        this.options.year = state.dataset.years.slice(-1)[0];
       });
     });
     this.options.dataset.downloadData().then(() => {});

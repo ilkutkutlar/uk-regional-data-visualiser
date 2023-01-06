@@ -18,7 +18,7 @@ export default {
     },
   },
   computed: {
-    displayedRegionId() {
+    displayedRegion() {
       if (this.options.selectedRegion) {
         return this.options.selectedRegion;
       } else if (this.options.highlightedRegions.length > 0) {
@@ -27,60 +27,31 @@ export default {
         return "";
       }
     },
-    isInfoPanelVisible() {
-      return this.displayedRegionId;
-    },
-    titleText() {
-      return this.options.dataset.svgMap.prettyNames[this.displayedRegionId];
-    },
-    otherTimePeriods() {
-      const timePeriods = this.options.dataset.timePeriods;
-      const currentIndex = timePeriods.indexOf(this.options.timePeriod);
+    displayedYears() {
+      const years = this.options.dataset.years;
+      const currentIndex = years.indexOf(this.options.year);
 
-      const periods = [this.options.timePeriod];
+      const displayedYears = [this.options.year];
       switch (currentIndex) {
         case 0:
-          if (timePeriods.length >= 2) {
-            periods.unshift(timePeriods[currentIndex + 1]);
+          if (years.length >= 2) {
+            displayedYears.unshift(years[currentIndex + 1]);
           }
-          if (timePeriods.length >= 3) {
-            periods.unshift(timePeriods[currentIndex + 2]);
+          if (years.length >= 3) {
+            displayedYears.unshift(years[currentIndex + 2]);
           }
           break;
         case 1:
-          periods.push(timePeriods[currentIndex - 1]);
-          if (timePeriods.length >= 3) {
-            periods.unshift(timePeriods[currentIndex + 1]);
+          displayedYears.push(years[currentIndex - 1]);
+          if (years.length >= 3) {
+            displayedYears.unshift(years[currentIndex + 1]);
           }
           break;
         default:
-          periods.push(timePeriods[currentIndex - 1]);
-          periods.push(timePeriods[currentIndex - 2]);
+          displayedYears.push(years[currentIndex - 1]);
+          displayedYears.push(years[currentIndex - 2]);
       }
-      return periods;
-    },
-    bodyText() {
-      return this.otherTimePeriods
-        .map((year) => {
-          const value = this.options.dataset.valueForArea(
-            year,
-            this.displayedRegionId,
-            true
-          );
-          if (year === this.options.timePeriod) {
-            return `
-              <div class="bg-body border border-primary p-2">
-                <span class='fw-bold'>${year}</span>: ${value}
-              </div>
-            `;
-          }
-          return `
-            <div class="ps-2">
-              <span class='fw-bold'>${year}</span>: ${value}
-            </div>
-          `;
-        })
-        .join("");
+      return displayedYears;
     },
   },
 };
@@ -88,10 +59,26 @@ export default {
 
 <template>
   <InfoPanel
-    :titleText="titleText"
-    :bodyText="bodyText"
-    :visible="this.isInfoPanelVisible"
+    v-show="displayedRegion"
     :closeButtonVisible="options.selectedRegion"
     @closeButtonClicked="closeButtonClicked"
-  />
+  >
+    <template #title>
+      {{ options.dataset.svgMap.prettyNames[displayedRegion] }}
+    </template>
+    <template #body>
+      <div
+        :class="
+          year == options.year
+            ? ['bg-body', 'border', 'border-primary', 'p-2']
+            : ['ps-2']
+        "
+        v-for="year in displayedYears"
+        :key="year"
+      >
+        <span class="fw-bold"> {{ year }} </span>:
+        {{ options.dataset.valueForArea(year, displayedRegion, true) }}
+      </div>
+    </template>
+  </InfoPanel>
 </template>

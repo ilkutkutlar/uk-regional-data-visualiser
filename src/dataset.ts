@@ -29,10 +29,10 @@ export class Dataset {
   }
 
   get areas() {
-    return Object.keys(this.data[this.timePeriods[0]]);
+    return Object.keys(this.data[this.years[0]]);
   }
 
-  get timePeriods() {
+  get years() {
     return Object.keys(this.data);
   }
 
@@ -77,19 +77,19 @@ export class Dataset {
     }
   }
 
-  colourForArea(timePeriod: string, areaCode: string): string | null {
-    const value = this.data[timePeriod][areaCode];
+  colourForArea(year: string, areaCode: string): string | null {
+    const value = this.data[year][areaCode];
     return this.colourMap.mapValueToColour(value);
   }
 
   valueForArea(
-    timePeriod: string,
+    year: string,
     areaCode: string,
     formatValue: boolean = false
   ): number | string {
     let value = NaN;
-    if (timePeriod in this.data && areaCode in this.data[timePeriod]) {
-      value = this.data[timePeriod][areaCode];
+    if (year in this.data && areaCode in this.data[year]) {
+      value = this.data[year][areaCode];
     }
     return formatValue ? this.valueFormatter(value) : value;
   }

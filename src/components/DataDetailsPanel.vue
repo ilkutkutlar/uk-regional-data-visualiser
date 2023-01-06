@@ -21,19 +21,19 @@ export default {
     IconSearch,
   },
   computed: {
-    timePeriodSelectItems() {
-      /* This is a computed property because timePeriods
+    yearSelectItems() {
+      /* This is a computed property because `years`
          uses the "data" property, which is downloaded
          asynchronously, and might not have been downloaded
          when this template has been initialised. Make it
          a computed property so it is updated when data
          has been downloaded */
-      return this.options.dataset.timePeriods.map((period) => {
-        return { value: period, text: period };
+      return this.options.dataset.years.map((year) => {
+        return { value: year, text: year };
       });
     },
     filteredData() {
-      let data = this.options.dataset.data[this.options.timePeriod] ?? {};
+      let data = this.options.dataset.data[this.options.year] ?? {};
       if (this.searchText) {
         data = filterDataByKey(data, this.keyFormatter, this.searchText);
       }
@@ -41,8 +41,8 @@ export default {
     },
   },
   methods: {
-    dataRowMouseEnter(regionId) {
-      this.options.addHighlightedRegion(regionId);
+    dataRowMouseEnter(region) {
+      this.options.addHighlightedRegion(region);
     },
     dataRowMouseLeave() {
       this.options.clearHighlightedRegions();
@@ -97,13 +97,13 @@ export default {
           "
         />
         <SelectFloating
-          id="panel-data-time-period"
-          name="panel-data-time-period"
-          label="Time period"
-          aria-label="Dataset time period select"
+          id="panel-data-time-year"
+          name="panel-data-time-year"
+          label="Year"
+          aria-label="Dataset year select"
           outer-div-classes="mb-3"
-          :items="timePeriodSelectItems"
-          v-model="options.timePeriod"
+          :items="yearSelectItems"
+          v-model="options.year"
         />
 
         <TabList

@@ -1,6 +1,6 @@
 <script>
 export default {
-  props: ["titleText", "bodyText", "visible", "closeButtonVisible"],
+  props: ["closeButtonVisible"],
 };
 </script>
 
@@ -8,12 +8,11 @@ export default {
   <div
     id="info-panel"
     class="card z-index-10 position-fixed break-word bg-secondary bg-opacity-75 top-0-lg end-0-lg bottom-0-md-down start-0-md-down w-50-md-down mt-5em me-4 w-20em"
-    v-show="visible"
   >
     <div class="card-body ps-2 pt-2 pb-2">
       <div class="row">
         <div id="info-panel-title" class="card-title col-10 pe-0 mb-3 fw-bold">
-          {{ titleText }}
+          <slot name="title"></slot>
         </div>
         <button
           id="info-panel-close-button"
@@ -24,7 +23,9 @@ export default {
           @click="$emit('closeButtonClicked')"
         ></button>
       </div>
-      <p id="info-panel-body" class="card-text" v-html="bodyText"></p>
+      <p id="info-panel-body" class="card-text">
+        <slot name="body"></slot>
+      </p>
     </div>
   </div>
 </template>

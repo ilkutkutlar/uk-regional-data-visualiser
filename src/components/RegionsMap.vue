@@ -13,7 +13,7 @@ export default {
     };
   },
   watch: {
-    timePeriod: "refreshData",
+    year: "refreshData",
   },
   mounted() {
     this.options.$subscribe((mutation) => {
@@ -22,7 +22,7 @@ export default {
         : [mutation.events];
       events.forEach((event) => {
         switch (event.key) {
-          case "timePeriod":
+          case "year":
             this.refreshData();
             break;
           case "highlightedRegions":
@@ -85,14 +85,14 @@ export default {
     setColours() {
       this.options.dataset.svgMap.areas.forEach((region) => {
         const regionColour =
-          this.options.dataset.colourForArea(this.options.timePeriod, region) ??
+          this.options.dataset.colourForArea(this.options.year, region) ??
           Colours.GREY;
         this.svgContainer.select(`#${region}`).attr("fill", regionColour);
       });
     },
-    highlightRegions(regionIds) {
-      regionIds.forEach((regionId) => {
-        const targetElement = this.getSvgElementById(regionId);
+    highlightRegions(regions) {
+      regions.forEach((region) => {
+        const targetElement = this.getSvgElementById(region);
         if (targetElement.node() === null) return;
         if (targetElement.attr("highlighted") === "true") return;
 
@@ -103,9 +103,9 @@ export default {
           .attr("highlighted", "true");
       });
     },
-    unhighlightRegions(regionIds) {
-      regionIds.forEach((regionId) => {
-        const targetElement = this.getSvgElementById(regionId);
+    unhighlightRegions(regions) {
+      regions.forEach((region) => {
+        const targetElement = this.getSvgElementById(region);
         if (targetElement.node() === null) return;
         if (targetElement.attr("highlighted") !== "true") return;
 
@@ -116,8 +116,8 @@ export default {
           .attr("highlighted", "false");
       });
     },
-    centreRegion(regionId) {
-      const regionElem = this.getSvgElementById(regionId);
+    centreRegion(region) {
+      const regionElem = this.getSvgElementById(region);
       const [regionCentreX, regionCentreY] = getCentreOfSvgElem(regionElem);
       const viewBoxSize = this.viewBoxSize;
 
@@ -138,8 +138,8 @@ export default {
         .duration(duration)
         .call(this.zoom.transform, zoomTransform);
     },
-    getSvgElementById(regionId) {
-      return this.svgContainer.select(`#${regionId}`);
+    getSvgElementById(region) {
+      return this.svgContainer.select(`#${region}`);
     },
     regionMouseOver(d) {
       this.options.addHighlightedRegion(d.target.id);

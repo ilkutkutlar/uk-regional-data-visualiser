@@ -32,7 +32,7 @@ export default {
             {{ options.dataset.metadata.name }}
           </div>
           <div id="bar-dataset-year-label" class="text-muted">
-            {{ options.timePeriod }}
+            {{ options.year }}
           </div>
         </div>
         <div
