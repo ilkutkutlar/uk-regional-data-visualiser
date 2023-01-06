@@ -34,42 +34,30 @@ export default {
       return this.options.dataset.svgMap.prettyNames[this.displayedRegionId];
     },
     otherTimePeriods() {
-      const currentIndex = this.options.dataset.timePeriods.indexOf(
-        this.options.timePeriod
-      );
       const timePeriods = this.options.dataset.timePeriods;
-      if (currentIndex == 0) {
-        if (timePeriods.length >= 3) {
-          return [
-            timePeriods[currentIndex + 2],
-            timePeriods[currentIndex + 1],
-            this.options.timePeriod,
-          ];
-        } else if (timePeriods.length == 2) {
-          return [timePeriods[currentIndex + 1], this.options.timePeriod];
-        } else {
-          return [this.options.timePeriod];
-        }
-      } else if (currentIndex == 1) {
-        if (timePeriods.length >= 3) {
-          return [
-            timePeriods[currentIndex + 1],
-            this.options.timePeriod,
-            timePeriods[currentIndex - 1],
-          ];
-        } else {
-          return [
-            this.options.timePeriod,
-            this.options.dataset.timePeriods[currentIndex - 1],
-          ];
-        }
-      } else {
-        return [
-          this.options.timePeriod,
-          this.options.dataset.timePeriods[currentIndex - 1],
-          this.options.dataset.timePeriods[currentIndex - 2],
-        ];
+      const currentIndex = timePeriods.indexOf(this.options.timePeriod);
+
+      const periods = [this.options.timePeriod];
+      switch (currentIndex) {
+        case 0:
+          if (timePeriods.length >= 2) {
+            periods.unshift(timePeriods[currentIndex + 1]);
+          }
+          if (timePeriods.length >= 3) {
+            periods.unshift(timePeriods[currentIndex + 2]);
+          }
+          break;
+        case 1:
+          periods.push(timePeriods[currentIndex - 1]);
+          if (timePeriods.length >= 3) {
+            periods.unshift(timePeriods[currentIndex + 1]);
+          }
+          break;
+        default:
+          periods.push(timePeriods[currentIndex - 1]);
+          periods.push(timePeriods[currentIndex - 2]);
       }
+      return periods;
     },
     bodyText() {
       return this.otherTimePeriods
