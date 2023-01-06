@@ -16,6 +16,19 @@ export default {
       if (this.options.selectedRegion) this.options.clearHighlightedRegions();
       this.options.clearSelectedRegion();
     },
+    changeBetweenYears(fromYear, toYear) {
+      console.log(fromYear, toYear);
+      const fromValue = this.options.dataset.valueForArea(
+        fromYear,
+        this.displayedRegion
+      );
+      const toValue = this.options.dataset.valueForArea(
+        toYear,
+        this.displayedRegion
+      );
+      const pcChange = ((toValue - fromValue) / fromValue) * 100;
+      return pcChange.toFixed(2);
+    },
   },
   computed: {
     displayedRegion() {
@@ -68,16 +81,29 @@ export default {
     </template>
     <template #body>
       <div
+        class="d-flex"
         :class="
           year == options.year
             ? ['bg-body', 'border', 'border-primary', 'p-2']
-            : ['ps-2']
+            : ['ps-2', 'pe-2']
         "
         v-for="year in displayedYears"
         :key="year"
       >
-        <span class="fw-bold"> {{ year }} </span>:
-        {{ options.dataset.valueForArea(year, displayedRegion, true) }}
+        <div class="flex-fill">
+          <span class="fw-bold"> {{ year }} </span>:
+          {{ options.dataset.valueForArea(year, displayedRegion, true) }}
+        </div>
+        <div class="flex-fill text-end">
+          <span
+            :class="
+              changeBetweenYears(parseInt(year) - 1, year) > 0
+                ? ['text-success']
+                : ['text-danger']
+            "
+            >{{ changeBetweenYears(parseInt(year) - 1, year) }}%</span
+          >
+        </div>
       </div>
     </template>
   </InfoPanel>
