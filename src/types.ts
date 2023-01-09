@@ -7,5 +7,5 @@ export type D3Selection = d3.Selection<any, any, any, any>;
 export type SvgMap = {
   svgPath: string;
   prettyNames: StringObject;
-  areas: string[];
+  regions: string[];
 };

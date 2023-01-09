@@ -424,7 +424,7 @@ export const PRETTY_NAMES: StringObject = {
   K02000001: "United Kingdom",
 };
 
-export const AREAS: string[] = [
+export const REGIONS: string[] = [
   "E06000001",
   "E06000002",
   "E06000003",
@@ -804,5 +804,5 @@ export const AREAS: string[] = [
 export const LocalAuthoritiesSvgMap: SvgMap = {
   svgPath: "./data/svg/uk_local.svg",
   prettyNames: PRETTY_NAMES,
-  areas: AREAS,
+  regions: REGIONS,
 };

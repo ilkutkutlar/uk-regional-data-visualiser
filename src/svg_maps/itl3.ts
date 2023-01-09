@@ -236,7 +236,7 @@ const PRETTY_NAMES: StringObject = {
   TLN0G: "Fermanagh and Omagh",
 };
 
-export const AREAS: string[] = [
+export const REGIONS: string[] = [
   "TLB",
   "TLC",
   "TLC1",
@@ -475,5 +475,5 @@ export const AREAS: string[] = [
 export const ITL3SvgMap: SvgMap = {
   svgPath: "./data/svg/uk_itl3.svg",
   prettyNames: PRETTY_NAMES,
-  areas: AREAS,
+  regions: REGIONS,
 };

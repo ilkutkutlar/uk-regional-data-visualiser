@@ -17,15 +17,15 @@ export default {
       this.options.clearSelectedRegion();
     },
     changeBetweenYears(fromYear, toYear) {
-      console.log(fromYear, toYear);
-      const fromValue = this.options.dataset.valueForArea(
+      const fromValue = this.options.dataset.valueForRegion(
         fromYear,
         this.displayedRegion
       );
-      const toValue = this.options.dataset.valueForArea(
+      const toValue = this.options.dataset.valueForRegion(
         toYear,
         this.displayedRegion
       );
+      if (isNaN(fromValue) || isNaN(toValue)) return "-";
       const pcChange = ((toValue - fromValue) / fromValue) * 100;
       return pcChange.toFixed(2);
     },
@@ -92,7 +92,7 @@ export default {
       >
         <div class="flex-fill">
           <span class="fw-bold"> {{ year }} </span>:
-          {{ options.dataset.valueForArea(year, displayedRegion, true) }}
+          {{ options.dataset.valueForRegion(year, displayedRegion, true) }}
         </div>
         <div class="flex-fill text-end">
           <span

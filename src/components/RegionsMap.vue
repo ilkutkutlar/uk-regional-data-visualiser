@@ -83,9 +83,9 @@ export default {
         .attr("fill", "#412149");
     },
     setColours() {
-      this.options.dataset.svgMap.areas.forEach((region) => {
+      this.options.dataset.svgMap.regions.forEach((region) => {
         const regionColour =
-          this.options.dataset.colourForArea(this.options.year, region) ??
+          this.options.dataset.colourForRegion(this.options.year, region) ??
           Colours.GREY;
         this.svgContainer.select(`#${region}`).attr("fill", regionColour);
       });
