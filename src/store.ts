@@ -10,7 +10,12 @@ export const useOptions = defineStore("options", {
     highlightedRegions: [] as Array<string>,
     selectedRegion: "" as string,
   }),
-  getters: {},
+  getters: {
+    selectedData: (state) => state.dataset.data[state.year],
+    getSelectedValueFor: (state) => {
+      return (region: string) => state.dataset.valueFor(state.year, region, true);
+    },
+  },
   actions: {
     clearSelectedRegion() {
       this.selectedRegion = "";

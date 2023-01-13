@@ -1,10 +1,12 @@
 <script>
 import InfoPanel from "./InfoPanel.vue";
 import { useOptions } from "../store";
+import InfoPanelRow from "./InfoPanelRow.vue";
 
 export default {
   components: {
     InfoPanel,
+    InfoPanelRow,
   },
   data() {
     return {
@@ -17,11 +19,11 @@ export default {
       this.options.clearSelectedRegion();
     },
     changeBetweenYears(fromYear, toYear) {
-      const fromValue = this.options.dataset.valueForRegion(
+      const fromValue = this.options.dataset.valueFor(
         fromYear,
         this.displayedRegion
       );
-      const toValue = this.options.dataset.valueForRegion(
+      const toValue = this.options.dataset.valueFor(
         toYear,
         this.displayedRegion
       );
@@ -80,31 +82,14 @@ export default {
       {{ options.dataset.svgMap.prettyNames[displayedRegion] }}
     </template>
     <template #body>
-      <div
-        class="d-flex"
-        :class="
-          year == options.year
-            ? ['bg-body', 'border', 'border-primary', 'p-2']
-            : ['ps-2', 'pe-2']
-        "
+      <InfoPanelRow
         v-for="year in displayedYears"
         :key="year"
-      >
-        <div class="flex-fill">
-          <span class="fw-bold"> {{ year }} </span>:
-          {{ options.dataset.valueForRegion(year, displayedRegion, true) }}
-        </div>
-        <div class="flex-fill text-end">
-          <span
-            :class="
-              changeBetweenYears(parseInt(year) - 1, year) > 0
-                ? ['text-success']
-                : ['text-danger']
-            "
-            >{{ changeBetweenYears(parseInt(year) - 1, year) }}%</span
-          >
-        </div>
-      </div>
+        :isSelectedRow="year == options.year"
+        :year="year"
+        :value="options.dataset.valueFor(year, displayedRegion, true)"
+        :changeFromLastYear="changeBetweenYears(parseInt(year) - 1, year)"
+      />
     </template>
   </InfoPanel>
 </template>

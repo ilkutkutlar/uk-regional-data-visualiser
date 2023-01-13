@@ -1,7 +1,5 @@
 import type { Formatter, SvgMap } from "./types";
 import type { ColourMap } from "./colour_map";
-import { generateKey } from "./utils";
-import { Colours } from "./constants";
 
 type DatasetMetadata = {
   id: string;
@@ -17,16 +15,7 @@ export class Dataset {
   colourMap: ColourMap;
   dataPath: string;
   valueFormatter: Formatter;
-  private _data: { [index: string]: { [index: string]: any } } = {};
-  private _key: [string, string][] = [];
-
-  get key() {
-    if (this._key.length == 0) {
-      this._key = generateKey(this.colourMap, this.valueFormatter);
-      this._key.unshift(["No data", Colours.GREY]);
-    }
-    return this._key;
-  }
+  data: { [index: string]: { [index: string]: any } } = {};
 
   get regions() {
     return Object.keys(this.data[this.years[0]]);
@@ -36,16 +25,8 @@ export class Dataset {
     return Object.keys(this.data);
   }
 
-  get data() {
-    return this._data;
-  }
-
-  set data(value) {
-    this._data = value;
-  }
-
   get isDataDownloaded() {
-    return Object.keys(this._data).length !== 0;
+    return Object.keys(this.data).length !== 0;
   }
 
   constructor(
@@ -70,19 +51,19 @@ export class Dataset {
         fetch(this.dataPath, { method: "get" })
           .then((resp) => resp.json())
           .then((data) => {
-            this._data = data;
+            this.data = data;
             resolve();
           });
       });
     }
   }
 
-  colourForRegion(year: string, regionCode: string): string | null {
+  colourFor(year: string, regionCode: string): string | null {
     const value = this.data[year][regionCode];
     return this.colourMap.mapValueToColour(value);
   }
 
-  valueForRegion(
+  valueFor(
     year: string,
     regionCode: string,
     formatValue: boolean = false
