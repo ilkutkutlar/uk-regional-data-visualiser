@@ -1,30 +1,26 @@
 <script>
-import * as d3 from "d3";
 import { Colours } from "../constants";
-import { setOpacity, getCentreOfSvgElem } from "../utils";
+import { setOpacity } from "../utils";
 import { useOptions } from "../store";
+import SvgContainer from "./partials/SvgContainer.vue";
 
 export default {
   data() {
     return {
-      svgContainer: null,
-      zoom: null,
       options: useOptions(),
+      svgContainer: null,
     };
   },
-  watch: {
-    year: "refreshData",
-  },
+  components: { SvgContainer },
   mounted() {
+    this.svgContainer = this.$refs.svgContainer;
+
     this.options.$subscribe((mutation) => {
       const events = Array.isArray(mutation.events)
         ? mutation.events
         : [mutation.events];
       events.forEach((event) => {
         switch (event.key) {
-          case "year":
-            this.refreshData();
-            break;
           case "highlightedRegions":
             this.unhighlightRegions(event.oldValue);
             this.highlightRegions(event.newValue);
@@ -32,114 +28,17 @@ export default {
         }
       });
     });
-    this.svgContainer = d3.select("#svg-container");
-    this.refreshData();
-  },
-  computed: {
-    viewBoxSize() {
-      const svgElem = this.svgContainer.select("svg");
-      return {
-        width: parseFloat(svgElem.attr("width")),
-        height: parseFloat(svgElem.attr("height")),
-      };
-    },
-    currentScale() {
-      return d3.zoomTransform(this.svgContainer.node()).k;
-    },
   },
   methods: {
-    refreshData() {
-      d3.xml(this.options.dataset.svgMap.svgPath).then((svgData) => {
-        this.svgContainer.node().innerHTML = "";
-        svgData.documentElement.classList.add("full-page");
-        this.svgContainer.node().append(svgData.documentElement);
-
-        this.setZoom();
-        this.setBaseStyle();
-        this.setColours();
-        this.svgContainer
-          .selectAll("path")
-          .on("mouseover", (d) => this.regionMouseOver(d))
-          .on("mouseout", (d) => this.regionMouseOut(d))
-          .on("click", (d) => this.regionClick(d));
+    svgDataLoaded() {
+      const entries = this.options.dataset.svgMap.regions.map((region) => {
+        const regionColour = this.options.dataset.colourFor(
+          this.options.year,
+          region
+        );
+        return [region, { fill: regionColour ?? Colours.GREY }];
       });
-    },
-    setZoom() {
-      this.zoom = d3.zoom().scaleExtent([1, 8]);
-      const zoomed = ({ transform }) => {
-        /* Passes as parameter the zooming transformation
-           (e.g. translate, scale, etc.) so we can apply
-           it to the SVG map. */
-        this.svgContainer.select("svg g").attr("transform", transform);
-      };
-      this.svgContainer.call(this.zoom.on("zoom", zoomed));
-    },
-    setBaseStyle() {
-      this.svgContainer
-        .selectAll("path")
-        .style("cursor", "pointer")
-        .attr("stroke", "#dcdcdc")
-        .attr("stroke-width", "1")
-        .attr("fill", "#412149");
-    },
-    setColours() {
-      this.options.dataset.svgMap.regions.forEach((region) => {
-        const regionColour =
-          this.options.dataset.colourFor(this.options.year, region) ??
-          Colours.GREY;
-        this.svgContainer.select(`#${region}`).attr("fill", regionColour);
-      });
-    },
-    highlightRegions(regions) {
-      regions.forEach((region) => {
-        const targetElement = this.getSvgElementById(region);
-        if (targetElement.node() === null) return;
-        if (targetElement.attr("highlighted") === "true") return;
-
-        const highlightedFill = setOpacity(targetElement.attr("fill"), 0.8);
-        targetElement
-          .attr("fill", highlightedFill)
-          .attr("stroke-width", "2")
-          .attr("highlighted", "true");
-      });
-    },
-    unhighlightRegions(regions) {
-      regions.forEach((region) => {
-        const targetElement = this.getSvgElementById(region);
-        if (targetElement.node() === null) return;
-        if (targetElement.attr("highlighted") !== "true") return;
-
-        const unhighlightedFill = setOpacity(targetElement.attr("fill"), 1);
-        targetElement
-          .attr("fill", unhighlightedFill)
-          .attr("stroke-width", "1")
-          .attr("highlighted", "false");
-      });
-    },
-    centreRegion(region) {
-      const regionElem = this.getSvgElementById(region);
-      const [regionCentreX, regionCentreY] = getCentreOfSvgElem(regionElem);
-      const viewBoxSize = this.viewBoxSize;
-
-      this.translateTo(
-        regionCentreX,
-        regionCentreY,
-        [viewBoxSize.width / 2, viewBoxSize.height / 2],
-        1000
-      );
-    },
-    translateTo(x, y, relativeTo, duration) {
-      const zoomTransform = d3.zoomIdentity
-        .translate(relativeTo[0], relativeTo[1])
-        .scale(this.currentScale)
-        .translate(-x, -y);
-      this.svgContainer
-        .transition()
-        .duration(duration)
-        .call(this.zoom.transform, zoomTransform);
-    },
-    getSvgElementById(region) {
-      return this.svgContainer.select(`#${region}`);
+      this.svgContainer.setAttrs(Object.fromEntries(entries));
     },
     regionMouseOver(d) {
       this.options.addHighlightedRegion(d.target.id);
@@ -153,15 +52,49 @@ export default {
         selectedRegion: d.target.id,
         highlightedRegions: [d.target.id],
       });
-      this.centreRegion(d.target.id);
+      this.svgContainer.centreSvgElement(d.target.id);
+    },
+    highlightRegions(regions) {
+      regions.forEach((region) => {
+        const targetElement = this.svgContainer.getSvgElementById(region);
+        if (targetElement.node() === null) return;
+        if (targetElement.attr("highlighted") === "true") return;
+
+        this.svgContainer.setAttrs({
+          [region]: {
+            fill: setOpacity(targetElement.attr("fill"), 0.8),
+            "stroke-width": 2,
+            highlighted: "true",
+          },
+        });
+      });
+    },
+    unhighlightRegions(regions) {
+      regions.forEach((region) => {
+        const targetElement = this.svgContainer.getSvgElementById(region);
+        if (targetElement.node() === null) return;
+        if (targetElement.attr("highlighted") !== "true") return;
+
+        this.svgContainer.setAttrs({
+          [region]: {
+            fill: setOpacity(targetElement.attr("fill"), 1),
+            "stroke-width": 1,
+            highlighted: "false",
+          },
+        });
+      });
     },
   },
 };
 </script>
 
 <template>
-  <div
-    id="svg-container"
-    class="col col-9 w-100-md-down h-94vh end-0 p-0"
-  ></div>
+  <SvgContainer
+    ref="svgContainer"
+    :svgFilePath="this.options.dataset.svgMap.svgPath"
+    @svgDataLoaded="svgDataLoaded"
+    @elemMouseOver="regionMouseOver"
+    @elemMouseOut="regionMouseOut"
+    @elemClick="regionClick"
+  />
 </template>
