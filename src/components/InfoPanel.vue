@@ -7,7 +7,10 @@ export default {
 <template>
   <div
     id="info-panel"
-    class="card z-index-10 position-fixed break-word bg-secondary bg-opacity-75 top-0-lg end-0-lg bottom-0-md-down start-0-md-down w-50-md-down mt-5em me-4 w-20em"
+    class="card z-index-10 position-fixed break-word bg-opacity-75 top-0-lg end-0-lg bottom-0-md-down start-0-md-down w-50-md-down mt-5em me-4 w-20em bg-dark"
+    :style="{
+      color: 'whitesmoke',
+    }"
   >
     <div class="card-body ps-2 pt-2 pb-2">
       <div class="row">

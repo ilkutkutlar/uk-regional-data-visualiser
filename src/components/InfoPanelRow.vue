@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       normalClass: ["ps-2", "pe-2"],
-      selectedClass: ["bg-body", "border", "border-primary", "p-2"],
+      selectedClass: ["border", "border-primary", "p-2"],
     };
   },
   computed: {
@@ -23,7 +23,11 @@ export default {
 </script>
 
 <template>
-  <div class="d-flex" :class="isSelectedRow ? selectedClass : normalClass">
+  <div
+    class="d-flex"
+    :class="isSelectedRow ? selectedClass : normalClass"
+    :style="isSelectedRow ? { 'background-color': 'var(--bs-gray-700)' } : {}"
+  >
     <div class="flex-fill">
       <span class="fw-bold"> {{ year }} </span>:
       {{ value }}

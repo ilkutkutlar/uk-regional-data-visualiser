@@ -9,11 +9,13 @@ export const useOptions = defineStore("options", {
     year: "2021" as string,
     highlightedRegions: [] as Array<string>,
     selectedRegion: "" as string,
+    isDarkMode: true as boolean,
   }),
   getters: {
     selectedData: (state) => state.dataset.data[state.year],
     getSelectedValueFor: (state) => {
-      return (region: string) => state.dataset.valueFor(state.year, region, true);
+      return (region: string) =>
+        state.dataset.valueFor(state.year, region, true);
     },
   },
   actions: {

@@ -30,12 +30,18 @@ export default {
       :name="name"
       :aria-label="ariaLabel"
       class="form-select"
+      :style="{
+        'background-color': 'var(--bs-gray-800)',
+        color: 'whitesmoke',
+      }"
       v-model="this.value"
     >
       <option v-for="item in this.items" :key="item.value" :value="item.value">
         {{ item.text }}
       </option>
     </select>
-    <label :for="name">{{ label }}</label>
+    <label :for="name" :style="{ color: 'var(--bs-gray-400)' }">{{
+      label
+    }}</label>
   </div>
 </template>

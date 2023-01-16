@@ -145,19 +145,35 @@ export default {
           </TabContent>
           <TabContent id="dataset-data" tabId="dataset-data-tab">
             <div class="input-group w-100 mb-3 mt-3">
-              <span class="input-group-text">
+              <span
+                class="input-group-text"
+                :style="{
+                  'background-color': 'var(--bs-gray-800)',
+                  color: 'whitesmoke',
+                }"
+              >
                 <IconSearch />
               </span>
               <input
                 id="search-data-text"
                 type="text"
                 class="form-control border-style-solid"
+                :style="{
+                  'background-color': 'var(--bs-gray-800)',
+                  color: 'whitesmoke',
+                }"
                 placeholder="Search data..."
                 aria-label="Data search text"
                 v-model="searchText"
               />
             </div>
-            <table class="w-100 m-auto mb-3 border bg-white">
+            <table
+              class="w-100 m-auto mb-3 border"
+              :style="{
+                'background-color': 'var(--bs-gray-800)',
+                color: 'whitesmoke',
+              }"
+            >
               <tbody>
                 <tr
                   v-for="entry in Object.entries(filteredData)"
