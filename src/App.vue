@@ -33,39 +33,25 @@ export default {
       options: useOptions(),
     };
   },
+  computed: {
+    theme() {
+      return this.options.isDarkMode
+        ? { "background-color": "var(--bs-gray-800)" }
+        : {};
+    },
+  },
 };
 </script>
 
 <template>
-  <Navbar
-    :class="{
-      'bg-dark': this.options.isDarkMode,
-      'border-bottom-0': this.options.isDarkMode,
-    }"
-  />
+  <Navbar />
   <MenuOffcanvas />
   <DataSelectionBar />
   <KeyWindow />
   <RegionsInfoPanel />
 
-  <div
-    id="main"
-    class="row m-0"
-    :class="{ 'bg-grey-800': this.options.isDarkMode }"
-  >
-    <DataDetailsPanel
-      v-if="this.options.dataset.isDataDownloaded"
-      :class="{
-        'bg-dark': this.options.isDarkMode,
-        'border-end-0': this.options.isDarkMode,
-      }"
-    />
+  <div id="main" class="row m-0" :style="theme">
+    <DataDetailsPanel v-if="this.options.dataset.isDataDownloaded" />
     <RegionsMap v-if="this.options.dataset.isDataDownloaded" />
   </div>
 </template>
-
-<style>
-.bg-grey-800 {
-  background-color: var(--bs-gray-800);
-}
-</style>

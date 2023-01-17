@@ -1,7 +1,23 @@
+<script>
+import { useOptions } from "../store";
+
+export default {
+  data() {
+    return {
+      options: useOptions(),
+    };
+  },
+  computed: {
+    theme() {
+      return this.options.isDarkMode
+        ? ["navbar-dark", "bg-dark"]
+        : ["navbar-light", "bg-light", "border-bottom"];
+    },
+  },
+};
+</script>
 <template>
-  <nav
-    class="navbar navbar-expand-lg navbar-light bg-light border-bottom h-6vh p-0"
-  >
+  <nav class="navbar navbar-expand-lg h-6vh p-0" :class="theme">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Maps of Britain</a>
       <button

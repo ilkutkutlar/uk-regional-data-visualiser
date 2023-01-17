@@ -27,14 +27,21 @@ export default {
       _key.unshift(["No data", Colours.GREY]);
       return _key;
     },
+    themeStyle() {
+      return this.options.isDarkMode ? { color: "whitesmoke" } : {};
+    },
+    themeClass() {
+      return this.options.isDarkMode ? ["bg-dark"] : [];
+    },
   },
 };
 </script>
 
 <template>
   <div
-    class="card z-index-10 position-fixed end-0 bottom-0 mb-4-lg me-4-lg bg-secondary bg-opacity-75 min-width-10 mw-50-md-down bg-dark"
-    :style="{ color: 'whitesmoke' }"
+    class="card z-index-10 position-fixed end-0 bottom-0 mb-4-lg me-4-lg bg-secondary bg-opacity-75 min-width-10 mw-50-md-down"
+    :class="themeClass"
+    :style="themeStyle"
   >
     <TogglerButton
       classes="row ms-3 me-3 mb-2 mt-2"

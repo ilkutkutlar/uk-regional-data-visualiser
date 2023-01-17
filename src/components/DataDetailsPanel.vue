@@ -39,6 +39,25 @@ export default {
       }
       return sortObjectByValue(data, false);
     },
+    theme() {
+      return this.options.isDarkMode ? ["bg-dark", "border-end-0"] : [];
+    },
+    tableTheme() {
+      return this.options.isDarkMode
+        ? {
+            "background-color": "var(--bs-gray-800)",
+            color: "whitesmoke",
+          }
+        : {};
+    },
+    inputTheme() {
+      return this.options.isDarkMode
+        ? {
+            "background-color": "var(--bs-gray-800)",
+            color: "whitesmoke",
+          }
+        : {};
+    },
   },
   methods: {
     dataRowMouseEnter(region) {
@@ -68,6 +87,7 @@ export default {
     class="offcanvas offcanvas-start offcanvas-side-panel-lg position-relative-lg col col-3"
     data-bs-backdrop="false"
     tabindex="-1"
+    :class="theme"
   >
     <div class="offcanvas-header d-lg-none">
       <h5 id="data-details-offcanvas-label" class="offcanvas-title">Dataset</h5>
@@ -145,35 +165,20 @@ export default {
           </TabContent>
           <TabContent id="dataset-data" tabId="dataset-data-tab">
             <div class="input-group w-100 mb-3 mt-3">
-              <span
-                class="input-group-text"
-                :style="{
-                  'background-color': 'var(--bs-gray-800)',
-                  color: 'whitesmoke',
-                }"
-              >
+              <span class="input-group-text" :style="inputTheme">
                 <IconSearch />
               </span>
               <input
                 id="search-data-text"
                 type="text"
                 class="form-control border-style-solid"
-                :style="{
-                  'background-color': 'var(--bs-gray-800)',
-                  color: 'whitesmoke',
-                }"
+                :style="inputTheme"
                 placeholder="Search data..."
                 aria-label="Data search text"
                 v-model="searchText"
               />
             </div>
-            <table
-              class="w-100 m-auto mb-3 border"
-              :style="{
-                'background-color': 'var(--bs-gray-800)',
-                color: 'whitesmoke',
-              }"
-            >
+            <table class="w-100 m-auto mb-3 border" :style="tableTheme">
               <tbody>
                 <tr
                   v-for="entry in Object.entries(filteredData)"

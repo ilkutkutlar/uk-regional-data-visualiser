@@ -1,6 +1,7 @@
 <script>
 import ArrowUp from "./icons/ArrowUp.vue";
 import ArrowDown from "./icons/ArrowDown.vue";
+import { useOptions } from "../store";
 
 export default {
   components: {
@@ -12,11 +13,17 @@ export default {
     return {
       normalClass: ["ps-2", "pe-2"],
       selectedClass: ["border", "border-primary", "p-2"],
+      options: useOptions(),
     };
   },
   computed: {
     changeDirectionIcon() {
       return this.changeFromLastYear > 0 ? ArrowUp : ArrowDown;
+    },
+    themeSelected() {
+      return this.options.isDarkMode
+        ? { "background-color": "var(--bs-gray-700)" }
+        : {};
     },
   },
 };
@@ -26,7 +33,7 @@ export default {
   <div
     class="d-flex"
     :class="isSelectedRow ? selectedClass : normalClass"
-    :style="isSelectedRow ? { 'background-color': 'var(--bs-gray-700)' } : {}"
+    :style="isSelectedRow ? themeSelected : {}"
   >
     <div class="flex-fill">
       <span class="fw-bold"> {{ year }} </span>:
