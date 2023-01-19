@@ -178,7 +178,10 @@ export default {
                 v-model="searchText"
               />
             </div>
-            <table class="w-100 m-auto mb-3 border" :style="tableTheme">
+            <table
+              class="w-100 m-auto mb-3 border bg-white"
+              :style="tableTheme"
+            >
               <tbody>
                 <tr
                   v-for="entry in Object.entries(filteredData)"

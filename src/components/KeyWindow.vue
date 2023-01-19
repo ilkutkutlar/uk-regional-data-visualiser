@@ -31,7 +31,7 @@ export default {
       return this.options.isDarkMode ? { color: "whitesmoke" } : {};
     },
     themeClass() {
-      return this.options.isDarkMode ? ["bg-dark"] : [];
+      return this.options.isDarkMode ? ["bg-dark"] : ["bg-secondary"];
     },
   },
 };
@@ -39,7 +39,7 @@ export default {
 
 <template>
   <div
-    class="card z-index-10 position-fixed end-0 bottom-0 mb-4-lg me-4-lg bg-secondary bg-opacity-75 min-width-10 mw-50-md-down"
+    class="card z-index-10 position-fixed end-0 bottom-0 mb-4-lg me-4-lg bg-opacity-75 min-width-10 mw-50-md-down border"
     :class="themeClass"
     :style="themeStyle"
   >

@@ -13,7 +13,7 @@ export default {
       return this.options.isDarkMode ? { color: "whitesmoke" } : {};
     },
     themeClass() {
-      return this.options.isDarkMode ? ["bg-dark"] : [];
+      return this.options.isDarkMode ? ["bg-dark"] : ["bg-secondary"];
     },
   },
 };
@@ -22,7 +22,7 @@ export default {
 <template>
   <div
     id="info-panel"
-    class="card z-index-10 position-fixed break-word bg-opacity-75 top-0-lg end-0-lg bottom-0-md-down start-0-md-down w-50-md-down mt-5em me-4 w-20em"
+    class="card z-index-10 position-fixed break-word bg-opacity-75 top-0-lg end-0-lg bottom-0-md-down start-0-md-down w-50-md-down mt-5em me-4 w-20em border"
     :class="themeClass"
     :style="themeStyle"
   >

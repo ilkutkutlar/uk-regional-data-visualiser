@@ -23,7 +23,7 @@ export default {
 </script>
 
 <template>
-  <div class="card" :class="outerDivClasses" :style="theme">
+  <div class="card border" :class="outerDivClasses" :style="theme">
     <div class="card-body">
       <h5 class="card-title border-bottom pb-1"><slot name="title"></slot></h5>
       <div class="card-text">

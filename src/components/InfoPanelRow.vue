@@ -23,7 +23,7 @@ export default {
     themeSelected() {
       return this.options.isDarkMode
         ? { "background-color": "var(--bs-gray-700)" }
-        : {};
+        : { "background-color": "white" };
     },
   },
 };
