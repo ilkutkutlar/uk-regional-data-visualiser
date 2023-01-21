@@ -20,7 +20,7 @@ export default {
     changeDirectionIcon() {
       return this.changeFromLastYear > 0 ? ArrowUp : ArrowDown;
     },
-    themeSelected() {
+    selectedTheme() {
       return this.options.isDarkMode
         ? { "background-color": "var(--bs-gray-700)" }
         : { "background-color": "white" };
@@ -33,7 +33,7 @@ export default {
   <div
     class="d-flex"
     :class="isSelectedRow ? selectedClass : normalClass"
-    :style="isSelectedRow ? themeSelected : {}"
+    :style="isSelectedRow ? selectedTheme : {}"
   >
     <div class="flex-fill">
       <span class="fw-bold"> {{ year }} </span>:

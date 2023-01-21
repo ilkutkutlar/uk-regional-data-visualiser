@@ -3,7 +3,7 @@ import Navbar from "./components/NavBar.vue";
 import MenuOffcanvas from "./components/MenuOffcanvas.vue";
 import DataSelectionBar from "./components/DataSelectionBar.vue";
 import KeyWindow from "./components/KeyWindow.vue";
-import RegionsInfoPanel from "./components/RegionsInfoPanel.vue";
+import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
 import { useOptions } from "./store";
@@ -15,7 +15,7 @@ export default {
     MenuOffcanvas,
     DataSelectionBar,
     KeyWindow,
-    RegionsInfoPanel,
+    InfoPanel,
     DataDetailsPanel,
     RegionsMap,
   },
@@ -48,7 +48,7 @@ export default {
   <MenuOffcanvas />
   <DataSelectionBar />
   <KeyWindow />
-  <RegionsInfoPanel />
+  <InfoPanel />
 
   <div id="main" class="row m-0" :style="theme">
     <DataDetailsPanel v-if="this.options.dataset.isDataDownloaded" />

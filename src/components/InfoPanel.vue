@@ -1,48 +1,95 @@
 <script>
+import BaseInfoPanel from "./BaseInfoPanel.vue";
+import InfoPanelRow from "./InfoPanelRow.vue";
 import { useOptions } from "../store";
 
 export default {
-  props: ["closeButtonVisible"],
+  components: {
+    BaseInfoPanel,
+    InfoPanelRow,
+  },
   data() {
     return {
       options: useOptions(),
     };
   },
-  computed: {
-    themeStyle() {
-      return this.options.isDarkMode ? { color: "whitesmoke" } : {};
+  methods: {
+    closeButtonClicked() {
+      if (this.options.selectedRegion) this.options.clearHighlightedRegions();
+      this.options.clearSelectedRegion();
     },
-    themeClass() {
-      return this.options.isDarkMode ? ["bg-dark"] : ["bg-secondary"];
+    changeBetweenYears(fromYear, toYear) {
+      const fromValue = this.options.dataset.valueFor(
+        fromYear,
+        this.displayedRegion
+      );
+      const toValue = this.options.dataset.valueFor(
+        toYear,
+        this.displayedRegion
+      );
+      if (isNaN(fromValue) || isNaN(toValue)) return "-";
+      const pcChange = ((toValue - fromValue) / fromValue) * 100;
+      return pcChange.toFixed(2);
+    },
+  },
+  computed: {
+    displayedRegion() {
+      if (this.options.selectedRegion) {
+        return this.options.selectedRegion;
+      } else if (this.options.highlightedRegions.length > 0) {
+        return this.options.highlightedRegions[0];
+      } else {
+        return "";
+      }
+    },
+    displayedYears() {
+      const years = this.options.dataset.years;
+      const currentIndex = years.indexOf(this.options.year);
+
+      const displayedYears = [this.options.year];
+      switch (currentIndex) {
+        case 0:
+          if (years.length >= 2) {
+            displayedYears.unshift(years[currentIndex + 1]);
+          }
+          if (years.length >= 3) {
+            displayedYears.unshift(years[currentIndex + 2]);
+          }
+          break;
+        case 1:
+          displayedYears.push(years[currentIndex - 1]);
+          if (years.length >= 3) {
+            displayedYears.unshift(years[currentIndex + 1]);
+          }
+          break;
+        default:
+          displayedYears.push(years[currentIndex - 1]);
+          displayedYears.push(years[currentIndex - 2]);
+      }
+      return displayedYears;
     },
   },
 };
 </script>
 
 <template>
-  <div
-    id="info-panel"
-    class="card z-index-10 position-fixed break-word bg-opacity-75 top-0-lg end-0-lg bottom-0-md-down start-0-md-down w-50-md-down mt-5em me-4 w-20em border"
-    :class="themeClass"
-    :style="themeStyle"
+  <BaseInfoPanel
+    v-show="displayedRegion"
+    :closeButtonVisible="options.selectedRegion"
+    @closeButtonClicked="closeButtonClicked"
   >
-    <div class="card-body ps-2 pt-2 pb-2">
-      <div class="row">
-        <div id="info-panel-title" class="card-title col-10 pe-0 mb-3 fw-bold">
-          <slot name="title"></slot>
-        </div>
-        <button
-          id="info-panel-close-button"
-          type="button"
-          class="btn-close col-2 m-auto"
-          aria-label="Close"
-          v-show="closeButtonVisible"
-          @click="$emit('closeButtonClicked')"
-        ></button>
-      </div>
-      <p id="info-panel-body" class="card-text">
-        <slot name="body"></slot>
-      </p>
-    </div>
-  </div>
+    <template #title>
+      {{ options.dataset.svgMap.prettyNames[displayedRegion] }}
+    </template>
+    <template #body>
+      <InfoPanelRow
+        v-for="year in displayedYears"
+        :key="year"
+        :isSelectedRow="year == options.year"
+        :year="year"
+        :value="options.dataset.valueFor(year, displayedRegion, true)"
+        :changeFromLastYear="changeBetweenYears(parseInt(year) - 1, year)"
+      />
+    </template>
+  </BaseInfoPanel>
 </template>

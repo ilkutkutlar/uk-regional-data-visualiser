@@ -1,8 +1,8 @@
 <script>
-import SelectFloating from "./partials/SelectFloating.vue";
 import IconText from "./icons/IconText.vue";
 import IconLink from "./icons/IconLink.vue";
 import IconSearch from "./icons/IconSearch.vue";
+import SelectFloating from "./partials/SelectFloating.vue";
 import TabList from "./partials/TabList.vue";
 import TabContent from "./partials/TabContent.vue";
 import Card from "./partials/Card.vue";
