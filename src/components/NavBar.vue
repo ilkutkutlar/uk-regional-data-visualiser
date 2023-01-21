@@ -20,6 +20,18 @@ export default {
   <nav class="navbar navbar-expand-lg h-6vh p-0" :class="theme">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Maps of Britain</a>
+      <div class="form-check form-switch">
+        <input
+          id="darkModeSwitch"
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          v-model="this.options.isDarkMode"
+        />
+        <label class="form-check-label text-white" for="darkModeSwitch">
+          Dark mode
+        </label>
+      </div>
       <button
         class="navbar-toggler"
         type="button"

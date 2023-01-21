@@ -75,6 +75,7 @@ export default {
       }),
       keyFormatter: (region) => this.options.dataset.svgMap.prettyNames[region],
       searchText: "",
+      testValue: false,
     };
   },
 };
@@ -98,6 +99,7 @@ export default {
         aria-label="Close"
       ></button>
     </div>
+
     <div class="offcanvas-body p-0">
       <div class="container">
         <SelectFloating
