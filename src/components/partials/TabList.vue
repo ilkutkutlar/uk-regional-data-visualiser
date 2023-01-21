@@ -1,6 +1,13 @@
 <script>
+import { useOptions } from "../../store";
+
 export default {
   props: ["tabs"],
+  data() {
+    return {
+      options: useOptions(),
+    };
+  },
 };
 </script>
 <template>
@@ -9,7 +16,7 @@ export default {
       <button
         :id="tab.id"
         class="nav-link"
-        :class="{ active: tab.active }"
+        :class="{ active: tab.active, 'text-white': this.options.isDarkMode }"
         data-bs-toggle="tab"
         :data-bs-target="`#${tab.contentId}`"
         type="button"

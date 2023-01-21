@@ -19,7 +19,7 @@ export default {
 <template>
   <nav class="navbar navbar-expand-lg h-6vh p-0" :class="theme">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Maps of Britain</a>
+      <a class="navbar-brand link-white" href="#">Maps of Britain</a>
       <div class="form-check form-switch">
         <input
           id="darkModeSwitch"
@@ -28,7 +28,11 @@ export default {
           role="switch"
           v-model="this.options.isDarkMode"
         />
-        <label class="form-check-label text-white" for="darkModeSwitch">
+        <label
+          class="form-check-label"
+          :class="{ 'text-white': this.options.isDarkMode }"
+          for="darkModeSwitch"
+        >
           Dark mode
         </label>
       </div>

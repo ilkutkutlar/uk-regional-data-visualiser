@@ -48,7 +48,10 @@ export default {
             "background-color": "var(--bs-gray-800)",
             color: "whitesmoke",
           }
-        : {};
+        : { "background-color": "white" };
+    },
+    linkTheme() {
+      return this.options.isDarkMode ? ["link-white"] : ["link-black"];
     },
     inputTheme() {
       return this.options.isDarkMode
@@ -86,9 +89,9 @@ export default {
     id="data-details-offcanvas"
     aria-labelledby="data-details-offcanvas-label"
     class="offcanvas offcanvas-start offcanvas-side-panel-lg position-relative-lg col col-3"
+    :class="theme"
     data-bs-backdrop="false"
     tabindex="-1"
-    :class="theme"
   >
     <div class="offcanvas-header d-lg-none">
       <h5 id="data-details-offcanvas-label" class="offcanvas-title">Dataset</h5>
@@ -158,6 +161,7 @@ export default {
                 <a
                   :href="options.dataset.metadata.sourceLink"
                   class="d-block"
+                  :class="linkTheme"
                   target="blank"
                 >
                   {{ options.dataset.metadata.source }}
@@ -180,10 +184,7 @@ export default {
                 v-model="searchText"
               />
             </div>
-            <table
-              class="w-100 m-auto mb-3 border bg-white"
-              :style="tableTheme"
-            >
+            <table class="w-100 m-auto mb-3 border" :style="tableTheme">
               <tbody>
                 <tr
                   v-for="entry in Object.entries(filteredData)"
