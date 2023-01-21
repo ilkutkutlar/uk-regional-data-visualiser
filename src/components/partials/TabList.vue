@@ -16,7 +16,7 @@ export default {
       <button
         :id="tab.id"
         class="nav-link"
-        :class="{ active: tab.active, 'text-white': this.options.isDarkMode }"
+        :class="{ active: tab.active }"
         data-bs-toggle="tab"
         :data-bs-target="`#${tab.contentId}`"
         type="button"

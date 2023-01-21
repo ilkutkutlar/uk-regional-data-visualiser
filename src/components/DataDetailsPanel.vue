@@ -39,28 +39,6 @@ export default {
       }
       return sortObjectByValue(data, false);
     },
-    theme() {
-      return this.options.isDarkMode ? ["bg-dark", "border-end-0"] : [];
-    },
-    tableTheme() {
-      return this.options.isDarkMode
-        ? {
-            "background-color": "var(--bs-gray-800)",
-            color: "whitesmoke",
-          }
-        : { "background-color": "white" };
-    },
-    linkTheme() {
-      return this.options.isDarkMode ? ["link-white"] : ["link-black"];
-    },
-    inputTheme() {
-      return this.options.isDarkMode
-        ? {
-            "background-color": "var(--bs-gray-800)",
-            color: "whitesmoke",
-          }
-        : {};
-    },
   },
   methods: {
     dataRowMouseEnter(region) {
@@ -89,7 +67,6 @@ export default {
     id="data-details-offcanvas"
     aria-labelledby="data-details-offcanvas-label"
     class="offcanvas offcanvas-start offcanvas-side-panel-lg position-relative-lg col col-3"
-    :class="theme"
     data-bs-backdrop="false"
     tabindex="-1"
   >
@@ -161,7 +138,6 @@ export default {
                 <a
                   :href="options.dataset.metadata.sourceLink"
                   class="d-block"
-                  :class="linkTheme"
                   target="blank"
                 >
                   {{ options.dataset.metadata.source }}
@@ -171,20 +147,19 @@ export default {
           </TabContent>
           <TabContent id="dataset-data" tabId="dataset-data-tab">
             <div class="input-group w-100 mb-3 mt-3">
-              <span class="input-group-text" :style="inputTheme">
+              <span class="input-group-text">
                 <IconSearch />
               </span>
               <input
                 id="search-data-text"
                 type="text"
                 class="form-control border-style-solid"
-                :style="inputTheme"
                 placeholder="Search data..."
                 aria-label="Data search text"
                 v-model="searchText"
               />
             </div>
-            <table class="w-100 m-auto mb-3 border" :style="tableTheme">
+            <table class="w-100 m-auto mb-3 border">
               <tbody>
                 <tr
                   v-for="entry in Object.entries(filteredData)"

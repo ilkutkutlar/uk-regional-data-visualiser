@@ -33,13 +33,6 @@ export default {
       options: useOptions(),
     };
   },
-  computed: {
-    theme() {
-      return this.options.isDarkMode
-        ? { "background-color": "var(--bs-gray-800)" }
-        : {};
-    },
-  },
 };
 </script>
 
@@ -50,7 +43,7 @@ export default {
   <KeyWindow />
   <InfoPanel />
 
-  <div id="main" class="row m-0" :style="theme">
+  <div id="main" class="row m-0">
     <DataDetailsPanel v-if="this.options.dataset.isDataDownloaded" />
     <RegionsMap v-if="this.options.dataset.isDataDownloaded" />
   </div>

@@ -12,18 +12,13 @@ export default {
   data() {
     return {
       normalClass: ["ps-2", "pe-2"],
-      selectedClass: ["border", "border-primary", "p-2"],
+      selectedClass: ["border", "p-2"],
       options: useOptions(),
     };
   },
   computed: {
     changeDirectionIcon() {
       return this.changeFromLastYear > 0 ? ArrowUp : ArrowDown;
-    },
-    selectedTheme() {
-      return this.options.isDarkMode
-        ? { "background-color": "var(--bs-gray-700)" }
-        : { "background-color": "white" };
     },
   },
 };
@@ -33,7 +28,9 @@ export default {
   <div
     class="d-flex"
     :class="isSelectedRow ? selectedClass : normalClass"
-    :style="isSelectedRow ? selectedTheme : {}"
+    :style="
+      isSelectedRow ? { 'background-color': 'var(--bs-dark-bg-subtle)' } : {}
+    "
   >
     <div class="flex-fill">
       <span class="fw-bold"> {{ year }} </span>:

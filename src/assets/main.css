@@ -4,6 +4,10 @@
     margin-right: 0.7em;
 }
 
+.offcanvas-body {
+  background-color: var(--bs-offcanvas-bg);
+}
+
 td {
   padding: 0.5em 1em 0.5em 1em;
 }

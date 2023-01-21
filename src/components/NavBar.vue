@@ -7,35 +7,34 @@ export default {
       options: useOptions(),
     };
   },
-  computed: {
-    theme() {
-      return this.options.isDarkMode
-        ? ["navbar-dark", "bg-dark"]
-        : ["navbar-light", "bg-light", "border-bottom"];
-    },
-  },
 };
 </script>
 <template>
-  <nav class="navbar navbar-expand-lg h-6vh p-0" :class="theme">
+  <nav class="navbar navbar-expand-lg h-6vh p-0">
     <div class="container-fluid">
       <a class="navbar-brand link-white" href="#">Maps of Britain</a>
-      <div class="form-check form-switch">
-        <input
-          id="darkModeSwitch"
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          v-model="this.options.isDarkMode"
-        />
-        <label
-          class="form-check-label"
-          :class="{ 'text-white': this.options.isDarkMode }"
-          for="darkModeSwitch"
+      <div class="dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
         >
-          Dark mode
-        </label>
+          Colour mode
+        </button>
+        <ul class="dropdown-menu">
+          <li data-bs-theme-value="dark">
+            <a class="dropdown-item" href="#">Dark</a>
+          </li>
+          <li data-bs-theme-value="light">
+            <a class="dropdown-item" href="#">Light</a>
+          </li>
+          <li data-bs-theme-value="auto">
+            <a class="dropdown-item" href="#">Auto</a>
+          </li>
+        </ul>
       </div>
+
       <button
         class="navbar-toggler"
         type="button"

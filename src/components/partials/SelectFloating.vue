@@ -26,21 +26,6 @@ export default {
         this.$emit("update:modelValue", value);
       },
     },
-    selectTheme() {
-      return this.options.isDarkMode
-        ? {
-            "background-color": "var(--bs-gray-800)",
-            color: "whitesmoke",
-          }
-        : {};
-    },
-    labelTheme() {
-      return this.options.isDarkMode
-        ? {
-            color: "var(--bs-gray-400)",
-          }
-        : {};
-    },
   },
 };
 </script>
@@ -52,13 +37,12 @@ export default {
       :name="name"
       :aria-label="ariaLabel"
       class="form-select"
-      :style="selectTheme"
       v-model="this.value"
     >
       <option v-for="item in this.items" :key="item.value" :value="item.value">
         {{ item.text }}
       </option>
     </select>
-    <label :for="name" :style="labelTheme">{{ label }}</label>
+    <label :for="name">{{ label }}</label>
   </div>
 </template>

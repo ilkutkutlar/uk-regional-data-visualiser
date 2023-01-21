@@ -9,21 +9,11 @@ export default {
       options: useOptions(),
     };
   },
-  computed: {
-    theme() {
-      return this.options.isDarkMode
-        ? {
-            "background-color": "var(--bs-gray-800)",
-            color: "whitesmoke",
-          }
-        : {};
-    },
-  },
 };
 </script>
 
 <template>
-  <div class="card border" :class="outerDivClasses" :style="theme">
+  <div class="card border" :class="outerDivClasses">
     <div class="card-body">
       <h5 class="card-title border-bottom pb-1"><slot name="title"></slot></h5>
       <div class="card-text">

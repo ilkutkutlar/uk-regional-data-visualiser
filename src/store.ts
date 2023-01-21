@@ -9,7 +9,7 @@ export const useOptions = defineStore("options", {
     year: "2021" as string,
     highlightedRegions: [] as Array<string>,
     selectedRegion: "" as string,
-    isDarkMode: true as boolean,
+    isDarkMode: false as boolean,
   }),
   getters: {
     selectedData: (state) => state.dataset.data[state.year],

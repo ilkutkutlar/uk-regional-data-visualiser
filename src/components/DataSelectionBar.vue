@@ -19,10 +19,7 @@ export default {
     id="bar-dataset-root"
     class="w-100 position-fixed z-index-10 d-lg-none mt-3"
   >
-    <div
-      class="border m-auto bg-light p-2 rounded-3"
-      style="width: fit-content"
-    >
+    <div class="border m-auto p-2 rounded-3" style="width: fit-content">
       <div class="w-100 d-flex">
         <div
           class="overflow-hidden ms-2 me-3"
