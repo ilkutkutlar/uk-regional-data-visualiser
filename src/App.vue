@@ -7,6 +7,11 @@ import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
 import { useOptions } from "./store";
+import {
+  setPreferredColourSchemeChangedListener,
+  setTheme,
+  getPreferredTheme,
+} from "./colour_mode";
 
 export default {
   inject: ["allDatasets"],
@@ -27,6 +32,8 @@ export default {
       });
     });
     this.options.dataset.downloadData().then(() => {});
+    setTheme(getPreferredTheme());
+    setPreferredColourSchemeChangedListener();
   },
   data() {
     return {

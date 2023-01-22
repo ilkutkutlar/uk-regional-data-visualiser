@@ -1,11 +1,22 @@
 <script>
 import { useOptions } from "../store";
+import { setTheme, saveTheme, getPreferredTheme } from "../colour_mode";
+import MoonFill from "./icons/MoonFill.vue";
+import SunFill from "./icons/SunFill.vue";
 
 export default {
+  components: { MoonFill, SunFill },
   data() {
     return {
       options: useOptions(),
+      darkMode: getPreferredTheme() == "dark",
     };
+  },
+  watch: {
+    darkMode() {
+      setTheme(this.darkMode ? "dark" : "light");
+      saveTheme(this.darkMode ? "dark" : "light");
+    },
   },
 };
 </script>
@@ -13,26 +24,18 @@ export default {
   <nav class="navbar navbar-expand-lg h-6vh p-0">
     <div class="container-fluid">
       <a class="navbar-brand link-white" href="#">Maps of Britain</a>
-      <div class="dropdown">
-        <button
-          class="btn btn-secondary dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Colour mode
-        </button>
-        <ul class="dropdown-menu">
-          <li data-bs-theme-value="dark">
-            <a class="dropdown-item" href="#">Dark</a>
-          </li>
-          <li data-bs-theme-value="light">
-            <a class="dropdown-item" href="#">Light</a>
-          </li>
-          <li data-bs-theme-value="auto">
-            <a class="dropdown-item" href="#">Auto</a>
-          </li>
-        </ul>
+
+      <div class="form-check form-switch">
+        <label class="form-check-label" for="flexSwitchCheckDefault">
+          <component :is="darkMode ? 'MoonFill' : 'SunFill'"></component>
+        </label>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckDefault"
+          v-model="darkMode"
+        />
       </div>
 
       <button
