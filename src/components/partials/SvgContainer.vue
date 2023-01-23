@@ -117,3 +117,18 @@ export default {
     class="col col-9 w-100-md-down h-94vh end-0 p-0"
   ></div>
 </template>
+
+<style>
+@media (max-width: 991.98px) {
+  .w-100-md-down {
+    width: 100% !important;
+  }
+}
+
+.full-page {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+</style>

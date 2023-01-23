@@ -83,7 +83,6 @@ export default {
     <div class="offcanvas-body p-0">
       <div class="container">
         <SelectFloating
-          id="panel-data"
           name="panel-data"
           label="Choose a dataset"
           aria-label="Dataset select"
@@ -99,7 +98,6 @@ export default {
           "
         />
         <SelectFloating
-          id="panel-data-time-year"
           name="panel-data-time-year"
           label="Year"
           aria-label="Dataset year select"
@@ -151,7 +149,6 @@ export default {
                 <IconSearch />
               </span>
               <input
-                id="search-data-text"
                 type="text"
                 class="form-control border-style-solid"
                 placeholder="Search data..."
@@ -184,3 +181,36 @@ export default {
     </div>
   </div>
 </template>
+
+<style>
+td {
+  padding: 0.5em 1em 0.5em 1em;
+}
+
+td,
+tr,
+table {
+  border-bottom: rgba(0, 0, 0, 0.1) solid 1px !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+@media (min-width: 992px) {
+  .offcanvas-side-panel-lg {
+    visibility: visible !important;
+    transform: none !important;
+    width: 25% !important;
+    height: 94vh !important;
+    top: unset !important;
+    padding: 0 !important;
+    border-right: 1px solid #dee2e6 !important;
+    background-color: #e9ecef !important;
+  }
+
+  .position-relative-lg {
+    position: relative !important;
+  }
+}
+</style>

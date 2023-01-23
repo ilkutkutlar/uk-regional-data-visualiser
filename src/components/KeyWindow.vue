@@ -51,7 +51,7 @@ export default {
         </div>
       </div>
     </TogglerButton>
-    <div id="key" class="break-word border-top card-body show">
+    <div class="break-word border-top card-body show">
       <div class="card-text vstack gap-2">
         <div v-for="keyItem in this.key" :key="keyItem[0]" class="d-flex">
           <div
@@ -64,3 +64,31 @@ export default {
     </div>
   </div>
 </template>
+
+<style>
+.key-colour-box {
+  width: 1.3em;
+  height: 1.3em;
+  margin-right: 0.7em;
+}
+
+@media (min-width: 992px) {
+  .mb-4-lg {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .me-4-lg {
+    margin-right: 1.5rem !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .mw-50-md-down {
+    max-width: 50% !important;
+  }
+}
+
+.min-width-10 {
+  min-width: 10em !important;
+}
+</style>

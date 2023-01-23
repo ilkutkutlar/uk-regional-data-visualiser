@@ -23,17 +23,17 @@ export default {
 <template>
   <nav class="navbar navbar-expand-lg h-6vh p-0 shadow-sm border-bottom">
     <div class="container-fluid">
-      <a class="navbar-brand link-white" href="#">Maps of Britain</a>
+      <a class="navbar-brand" href="#">Maps of Britain</a>
 
       <div class="form-check form-switch">
-        <label class="form-check-label" for="flexSwitchCheckDefault">
+        <label class="form-check-label" for="colourModeSwitch">
           <component :is="darkMode ? 'MoonFill' : 'SunFill'"></component>
         </label>
         <input
           class="form-check-input"
           type="checkbox"
           role="switch"
-          id="flexSwitchCheckDefault"
+          id="colourModeSwitch"
           v-model="darkMode"
         />
       </div>
@@ -52,3 +52,13 @@ export default {
     </div>
   </nav>
 </template>
+
+<style>
+.h-6vh {
+  height: 6vh !important;
+}
+
+.h-94vh {
+  height: 94vh !important;
+}
+</style>

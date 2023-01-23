@@ -50,7 +50,7 @@ export default {
   <KeyWindow />
   <InfoPanel />
 
-  <div id="main" class="row m-0">
+  <div class="row m-0">
     <DataDetailsPanel v-if="this.options.dataset.isDataDownloaded" />
     <RegionsMap v-if="this.options.dataset.isDataDownloaded" />
   </div>
