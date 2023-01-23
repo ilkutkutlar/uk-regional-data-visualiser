@@ -51,7 +51,7 @@ export default {
         </div>
       </div>
     </TogglerButton>
-    <div id="key" class="break-word border-top pt-2 show card-body p-2">
+    <div id="key" class="break-word border-top card-body show">
       <div class="card-text vstack gap-2">
         <div v-for="keyItem in this.key" :key="keyItem[0]" class="d-flex">
           <div
