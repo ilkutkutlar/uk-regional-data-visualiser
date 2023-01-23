@@ -66,7 +66,7 @@ export default {
   <div
     id="data-details-offcanvas"
     aria-labelledby="data-details-offcanvas-label"
-    class="offcanvas offcanvas-start offcanvas-side-panel-lg position-relative-lg col col-3"
+    class="offcanvas offcanvas-start offcanvas-side-panel-lg position-relative-lg col col-3 border-end"
     data-bs-backdrop="false"
     tabindex="-1"
   >
@@ -147,7 +147,7 @@ export default {
           </TabContent>
           <TabContent id="dataset-data" tabId="dataset-data-tab">
             <div class="input-group w-100 mb-3 mt-3">
-              <span class="input-group-text">
+              <span class="input-group-text text-primary">
                 <IconSearch />
               </span>
               <input
@@ -159,7 +159,7 @@ export default {
                 v-model="searchText"
               />
             </div>
-            <table class="w-100 m-auto mb-3 border">
+            <table class="table table-hover w-100 m-auto mb-3 border">
               <tbody>
                 <tr
                   v-for="entry in Object.entries(filteredData)"

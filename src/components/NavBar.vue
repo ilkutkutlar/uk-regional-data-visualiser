@@ -21,7 +21,7 @@ export default {
 };
 </script>
 <template>
-  <nav class="navbar navbar-expand-lg h-6vh p-0">
+  <nav class="navbar navbar-expand-lg h-6vh p-0 shadow-sm border-bottom">
     <div class="container-fluid">
       <a class="navbar-brand link-white" href="#">Maps of Britain</a>
 

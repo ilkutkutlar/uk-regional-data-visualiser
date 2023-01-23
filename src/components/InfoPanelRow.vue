@@ -12,7 +12,7 @@ export default {
   data() {
     return {
       normalClass: ["ps-2", "pe-2"],
-      selectedClass: ["border", "p-2"],
+      selectedClass: ["border", "p-2", "rounded-2"],
       options: useOptions(),
     };
   },
