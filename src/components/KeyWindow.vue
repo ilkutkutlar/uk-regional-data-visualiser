@@ -43,15 +43,12 @@ export default {
     >
       <h5 class="col col-10 card-title mb-0 ps-0">Key</h5>
       <div class="col p-0 col-2">
-        <div v-if="!toggleCollapsed">
-          <IconCaretDownFill />
-        </div>
-        <div v-if="toggleCollapsed">
-          <IconCaretUpFill />
-        </div>
+        <component
+          :is="toggleCollapsed ? 'IconCaretUpFill' : 'IconCaretDownFill'"
+        ></component>
       </div>
     </TogglerButton>
-    <div class="break-word border-top card-body show">
+    <div id="key" class="break-word border-top card-body show">
       <div class="card-text vstack gap-2">
         <div v-for="keyItem in this.key" :key="keyItem[0]" class="d-flex">
           <div
