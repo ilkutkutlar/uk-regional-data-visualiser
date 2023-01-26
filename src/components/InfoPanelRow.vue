@@ -12,7 +12,7 @@ export default {
   data() {
     return {
       normalClass: ["ps-2", "pe-2"],
-      selectedClass: ["border", "p-2", "rounded-2"],
+      selectedClass: ["border", "p-2", "rounded-2", "bg-dark-subtle"],
       options: useOptions(),
     };
   },
@@ -25,13 +25,7 @@ export default {
 </script>
 
 <template>
-  <div
-    class="d-flex"
-    :class="isSelectedRow ? selectedClass : normalClass"
-    :style="
-      isSelectedRow ? { 'background-color': 'var(--bs-dark-bg-subtle)' } : {}
-    "
-  >
+  <div class="d-flex" :class="isSelectedRow ? selectedClass : normalClass">
     <div class="flex-fill">
       <span class="fw-bold"> {{ year }} </span>:
       {{ value }}

@@ -83,7 +83,7 @@ export default {
     <div class="offcanvas-body p-0">
       <div class="container">
         <SelectFloating
-          name="panel-data"
+          name="panel-select-dataset"
           label="Choose a dataset"
           aria-label="Dataset select"
           outer-div-classes="mb-1 mt-3"
@@ -98,8 +98,8 @@ export default {
           "
         />
         <SelectFloating
-          name="panel-data-time-year"
-          label="Year"
+          name="panel-select-year"
+          label="Choose a year"
           aria-label="Dataset year select"
           outer-div-classes="mb-3"
           :items="yearSelectItems"
@@ -160,7 +160,6 @@ export default {
               <tbody>
                 <tr
                   v-for="entry in Object.entries(filteredData)"
-                  :id="`data-${entry[0]}`"
                   class="cursor-pointer"
                   :key="entry[0]"
                   @mouseenter="() => dataRowMouseEnter(entry[0])"
