@@ -16,7 +16,7 @@ export default {
 
 <template>
   <div class="w-100 position-fixed z-index-10 d-lg-none mt-3">
-    <div class="border m-auto p-2 rounded-3" style="width: fit-content">
+    <div class="border m-auto p-2 rounded-3 bg-body" style="width: fit-content">
       <div class="w-100 d-flex">
         <div
           class="overflow-hidden ms-2 me-3"
@@ -30,7 +30,7 @@ export default {
           </div>
         </div>
         <div
-          class="btn btn-secondary align-self-center me-2"
+          class="btn bg-body-secondary text-body align-self-center me-2"
           data-bs-toggle="offcanvas"
           data-bs-target="#data-details-offcanvas"
           aria-controls="data-details-offcanvas"
