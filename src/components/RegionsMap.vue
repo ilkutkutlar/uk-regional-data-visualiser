@@ -29,6 +29,11 @@ export default {
       });
     });
   },
+  computed: {
+    svgPath() {
+      return this.options.dataset.svgMap.svgPaths[this.options.year];
+    },
+  },
   methods: {
     svgDataLoaded() {
       const entries = this.options.dataset.svgMap.regions.map((region) => {
@@ -91,7 +96,7 @@ export default {
 <template>
   <SvgContainer
     ref="svgContainer"
-    :svgFilePath="this.options.dataset.svgMap.svgPath"
+    :svgFilePath="svgPath"
     @svgDataLoaded="svgDataLoaded"
     @elemMouseOver="regionMouseOver"
     @elemMouseOut="regionMouseOut"

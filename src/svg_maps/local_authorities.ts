@@ -802,7 +802,13 @@ export const REGIONS: string[] = [
 ];
 
 export const LocalAuthoritiesSvgMap: SvgMap = {
-  svgPath: "./data/svg/uk_local.svg",
+  svgPaths: {
+    default: "./data/svg/uk_local_2021.svg",
+    2019: "./data/svg/uk_local_2019.svg",
+    2020: "./data/svg/uk_local_2020.svg",
+    2021: "./data/svg/uk_local_2021.svg",
+    2022: "./data/svg/uk_local_2022.svg",
+  },
   prettyNames: PRETTY_NAMES,
   regions: REGIONS,
 };

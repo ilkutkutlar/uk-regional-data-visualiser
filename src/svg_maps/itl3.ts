@@ -473,7 +473,10 @@ export const REGIONS: string[] = [
 ];
 
 export const ITL3SvgMap: SvgMap = {
-  svgPath: "./data/svg/uk_itl3.svg",
+  svgPaths: {
+    default: "./data/svg/uk_itl3.svg",
+    2019: "./data/svg/uk_itl3.svg",
+  },
   prettyNames: PRETTY_NAMES,
   regions: REGIONS,
 };
