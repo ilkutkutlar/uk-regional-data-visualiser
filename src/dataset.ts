@@ -58,12 +58,12 @@ export class Dataset {
     }
   }
 
-  colourFor(year: string, regionCode: string): string | null {
+  colourOf(year: string, regionCode: string): string | null {
     const value = this.data[year][regionCode];
     return this.colourMap.mapValueToColour(value);
   }
 
-  valueFor(
+  valueOf(
     year: string,
     regionCode: string,
     formatValue: boolean = false

@@ -38,7 +38,7 @@ export default {
     svgDataLoaded() {
       const entries = Object.keys(this.options.dataset.svgMap.prettyNames).map(
         (region) => {
-          const regionColour = this.options.dataset.colourFor(
+          const regionColour = this.options.dataset.colourOf(
             this.options.year,
             region
           );

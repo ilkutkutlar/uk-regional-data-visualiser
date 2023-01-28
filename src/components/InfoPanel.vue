@@ -19,11 +19,11 @@ export default {
       this.options.clearSelectedRegion();
     },
     changeBetweenYears(fromYear, toYear) {
-      const fromValue = this.options.dataset.valueFor(
+      const fromValue = this.options.dataset.valueOf(
         fromYear,
         this.displayedRegion
       );
-      const toValue = this.options.dataset.valueFor(
+      const toValue = this.options.dataset.valueOf(
         toYear,
         this.displayedRegion
       );
@@ -87,7 +87,7 @@ export default {
         :key="year"
         :isSelectedRow="year == options.year"
         :year="year"
-        :value="options.dataset.valueFor(year, displayedRegion, true)"
+        :value="options.dataset.valueOf(year, displayedRegion, true)"
         :changeFromLastYear="changeBetweenYears(parseInt(year) - 1, year)"
       />
     </template>

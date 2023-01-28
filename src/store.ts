@@ -13,23 +13,23 @@ export const useOptions = defineStore("options", {
   }),
   getters: {
     selectedData: (state) => state.dataset.data[state.year],
-    getSelectedValueFor: (state) => {
-      return (region: string) =>
-        state.dataset.valueFor(state.year, region, true);
-    },
   },
   actions: {
     clearSelectedRegion() {
       this.selectedRegion = "";
     },
     addHighlightedRegion(value: string) {
-      this.highlightedRegions = this.highlightedRegions.concat([value]);
+      this.$patch({
+        highlightedRegions: this.highlightedRegions.concat([value]),
+      });
     },
     removeHighlightedRegion(value: string) {
-      this.highlightedRegions = removeByValue(this.highlightedRegions, value);
+      this.$patch({
+        highlightedRegions: removeByValue(this.highlightedRegions, value),
+      });
     },
     clearHighlightedRegions() {
-      this.highlightedRegions = [];
+      this.$patch({ highlightedRegions: [] });
     },
   },
 });
