@@ -433,6 +433,23 @@ export const PRETTY_NAMES: StringObject = {
   E07000005: "Chiltern",
   E07000006: "South Bucks",
   E07000007: "Wycombe",
+  S12000024: "Perth and Kinross",
+  S12000015: "Fife",
+  S12000044: "North Lanarkshire",
+  S12000046: "Glasgow City",
+  E07000201: "Forest Heath",
+  E07000204: "St Edmundsbury",
+  E07000206: "Waveney",
+  E07000205: "Suffolk Coastal",
+  E07000052: "West Dorset",
+  E07000051: "Purbeck",
+  E07000049: "East Dorset",
+  E07000050: "North Dorset",
+  E06000029: "Poole",
+  E06000028: "Bournemouth",
+  E07000048: "Christchurch",
+  E07000190: "Taunton Deane",
+  E07000191: "West Somerset",
 };
 
 export const LocalAuthoritiesSvgMap: SvgMap = {
