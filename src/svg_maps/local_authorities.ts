@@ -422,6 +422,17 @@ export const PRETTY_NAMES: StringObject = {
   K04000001: "England and Wales",
   K03000001: "Great Britain",
   K02000001: "United Kingdom",
+  E07000150: "Corby",
+  E07000151: "Daventry",
+  E07000152: "East Northamptonshire",
+  E07000153: "Kettering",
+  E07000154: "Northampton",
+  E07000155: "South Northamptonshire",
+  E07000156: "Wellingborough",
+  E07000004: "Aylesbury Vale",
+  E07000005: "Chiltern",
+  E07000006: "South Bucks",
+  E07000007: "Wycombe",
 };
 
 export const REGIONS: string[] = [
@@ -804,6 +815,9 @@ export const REGIONS: string[] = [
 export const LocalAuthoritiesSvgMap: SvgMap = {
   svgPaths: {
     default: "./data/svg/uk_local_2021.svg",
+    2016: "./data/svg/uk_local_2016.svg",
+    2017: "./data/svg/uk_local_2017.svg",
+    2018: "./data/svg/uk_local_2018.svg",
     2019: "./data/svg/uk_local_2019.svg",
     2020: "./data/svg/uk_local_2020.svg",
     2021: "./data/svg/uk_local_2021.svg",

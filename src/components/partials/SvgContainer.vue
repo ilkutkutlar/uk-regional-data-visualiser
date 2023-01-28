@@ -7,7 +7,7 @@ export default {
   props: ["svgFilePath"],
   expose: [
     "getSvgElementById",
-    "setAttrs",
+    "setElemAttrs",
     "centreSvgElement",
     "currentScale",
     "viewBoxSize",
@@ -36,14 +36,13 @@ export default {
     getSvgElementById(elemId) {
       return this.svgContainer.select(`#${elemId}`);
     },
-    setAttrs(elemIdAttrsObject) {
-      Object.keys(elemIdAttrsObject).forEach((elemId) => {
+    setElemAttrs(elemIdAttrsObject) {
+      for (const [elemId, attrs] of Object.entries(elemIdAttrsObject)) {
         const elem = this.svgContainer.select(`#${elemId}`);
-        const attrs = elemIdAttrsObject[elemId];
-        Object.keys(attrs).forEach((attr) => {
-          elem.attr(attr, attrs[attr]);
-        });
-      });
+        for (const [attrName, attrValue] of Object.entries(attrs)) {
+          elem.attr(attrName, attrValue);
+        }
+      }
     },
     centreSvgElement(elemId) {
       const elem = this.getSvgElementById(elemId);

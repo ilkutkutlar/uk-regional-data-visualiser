@@ -36,14 +36,16 @@ export default {
   },
   methods: {
     svgDataLoaded() {
-      const entries = this.options.dataset.svgMap.regions.map((region) => {
-        const regionColour = this.options.dataset.colourFor(
-          this.options.year,
-          region
-        );
-        return [region, { fill: regionColour ?? Colours.GREY }];
-      });
-      this.svgContainer.setAttrs(Object.fromEntries(entries));
+      const entries = Object.keys(this.options.dataset.svgMap.prettyNames).map(
+        (region) => {
+          const regionColour = this.options.dataset.colourFor(
+            this.options.year,
+            region
+          );
+          return [region, { fill: regionColour ?? Colours.GREY }];
+        }
+      );
+      this.svgContainer.setElemAttrs(Object.fromEntries(entries));
     },
     regionMouseOver(d) {
       this.options.addHighlightedRegion(d.target.id);
@@ -65,7 +67,7 @@ export default {
         if (targetElement.node() === null) return;
         if (targetElement.attr("highlighted") === "true") return;
 
-        this.svgContainer.setAttrs({
+        this.svgContainer.setElemAttrs({
           [region]: {
             fill: setOpacity(targetElement.attr("fill"), 0.8),
             "stroke-width": 2,
@@ -80,7 +82,7 @@ export default {
         if (targetElement.node() === null) return;
         if (targetElement.attr("highlighted") !== "true") return;
 
-        this.svgContainer.setAttrs({
+        this.svgContainer.setElemAttrs({
           [region]: {
             fill: setOpacity(targetElement.attr("fill"), 1),
             "stroke-width": 1,
