@@ -454,7 +454,7 @@ export const PRETTY_NAMES: Map<String, String> = new Map([
 
 export const LocalAuthoritiesSvgMap: SvgMap = {
   svgPaths: new Map([
-    ["default", "./data/svg/uk_local_2021.svg"],
+    ["default", "./data/svg/uk_local_2016.svg"],
     ["2016", "./data/svg/uk_local_2016.svg"],
     ["2017", "./data/svg/uk_local_2017.svg"],
     ["2018", "./data/svg/uk_local_2018.svg"],

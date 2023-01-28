@@ -31,7 +31,10 @@ export default {
   },
   computed: {
     svgPath() {
-      return this.options.dataset.svgMap.svgPaths.get(this.options.year);
+      return (
+        this.options.dataset.svgMap.svgPaths.get(this.options.year) ??
+        this.options.dataset.svgMap.svgPaths.get("default")
+      );
     },
   },
   methods: {
