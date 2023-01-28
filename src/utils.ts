@@ -1,10 +1,15 @@
 import * as d3 from "d3";
 
-import type { D3Selection, Formatter, StringObject } from "./types";
 import type { ColourMap } from "./colour_map";
 
+export type Formatter = (value: any) => string;
+export type SvgMap = {
+  svgPaths: Map<String, String>;
+  prettyNames: Map<String, String>;
+};
+
 export function filterDataByKey(
-  data: StringObject,
+  data: { [index: string]: string },
   keyFormatter: Formatter,
   filterBy: string
 ) {
@@ -27,7 +32,9 @@ export function sortObjectByValue(obj: object, sortAsc: boolean = true) {
   return Object.fromEntries(entries);
 }
 
-export function getCentreOfSvgElem(svg: D3Selection): [number, number] {
+export function getCentreOfSvgElem(
+  svg: d3.Selection<any, any, any, any>
+): [number, number] {
   const bBox = svg.node().getBBox();
   return [bBox.x + bBox.width / 2, bBox.y + bBox.height / 2];
 }
@@ -61,9 +68,8 @@ export function setOpacity(
   if (colour) {
     colour.opacity = opacity;
     return colour.toString();
-  } else {
-    return null;
   }
+  return null;
 }
 
 export function removeByValue<Type>(

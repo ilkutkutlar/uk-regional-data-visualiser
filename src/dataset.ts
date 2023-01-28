@@ -1,4 +1,4 @@
-import type { Formatter, SvgMap } from "./types";
+import type { Formatter, SvgMap } from "./utils";
 import type { ColourMap } from "./colour_map";
 
 type DatasetMetadata = {

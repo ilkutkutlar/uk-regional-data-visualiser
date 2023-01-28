@@ -31,21 +31,20 @@ export default {
   },
   computed: {
     svgPath() {
-      return this.options.dataset.svgMap.svgPaths[this.options.year];
+      return this.options.dataset.svgMap.svgPaths.get(this.options.year);
     },
   },
   methods: {
     svgDataLoaded() {
-      const entries = Object.keys(this.options.dataset.svgMap.prettyNames).map(
-        (region) => {
-          const regionColour = this.options.dataset.colourOf(
-            this.options.year,
-            region
-          );
-          return [region, { fill: regionColour ?? Colours.GREY }];
-        }
-      );
-      this.svgContainer.setElemAttrs(Object.fromEntries(entries));
+      const elemAttrs = {};
+      for (const region of this.options.dataset.svgMap.prettyNames.keys()) {
+        const regionColour = this.options.dataset.colourOf(
+          this.options.year,
+          region
+        );
+        elemAttrs[region] = { fill: regionColour ?? Colours.GREY };
+      }
+      this.svgContainer.setElemAttrs(elemAttrs);
     },
     regionMouseOver(d) {
       this.options.addHighlightedRegion(d.target.id);

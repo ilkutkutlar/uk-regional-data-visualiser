@@ -79,7 +79,7 @@ export default {
     @closeButtonClicked="closeButtonClicked"
   >
     <template #title>
-      {{ options.dataset.svgMap.prettyNames[displayedRegion] }}
+      {{ options.dataset.svgMap.prettyNames.get(displayedRegion) }}
     </template>
     <template #body>
       <InfoPanelRow

@@ -1,4 +1,4 @@
-import type { StringObject, Formatter, MouseEventHandler } from "./types";
+import type { Formatter } from "./utils";
 
 export const ValueFormatters: { [index: string]: Formatter } = {
   NONE: (value: number) => {
@@ -12,15 +12,13 @@ export const ValueFormatters: { [index: string]: Formatter } = {
   },
 };
 
-export const Colours: StringObject = {
-  PURPLE: "#9B4994",
-  LIGHT_BLUE: "#9BC5C9",
-  BLUE: "#636BD8",
-  GREEN: "#60BF40",
-  YELLOW: "#BFBF40",
-  ORANGE: "#D37B2E",
-  RED: "#BF4040",
-  GREY: "#7F7F7F",
-};
-
-export const doNothing: MouseEventHandler = () => {};
+export const enum Colours {
+  PURPLE = "#9B4994",
+  LIGHT_BLUE = "#9BC5C9",
+  BLUE = "#636BD8",
+  GREEN = "#60BF40",
+  YELLOW = "#BFBF40",
+  ORANGE = "#D37B2E",
+  RED = "#BF4040",
+  GREY = "#7F7F7F",
+}
