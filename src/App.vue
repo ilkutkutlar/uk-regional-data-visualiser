@@ -26,10 +26,19 @@ export default {
   },
   mounted() {
     this.current.$subscribe((mutation, state) => {
-      if (mutation.events.key !== "dataset") return;
-      state.dataset.downloadData().then(() => {
-        this.current.year = state.dataset.years.slice(-1)[0];
-      });
+      switch (mutation.events.key) {
+        case "dataset":
+          this.current.clearHighlightedRegions();
+          this.current.clearSelectedRegion();
+          state.dataset.downloadData().then(() => {
+            this.current.year = state.dataset.years.slice(-1)[0];
+          });
+          break;
+        case "year":
+          this.current.clearHighlightedRegions();
+          this.current.clearSelectedRegion();
+          break;
+      }
     });
     this.current.dataset.downloadData().then(() => {});
     setTheme(getPreferredTheme());
