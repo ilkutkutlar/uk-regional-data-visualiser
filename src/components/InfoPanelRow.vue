@@ -20,11 +20,22 @@ export default {
   },
   computed: {
     changeTextClass() {
-      if (isNaN(this.changeFromLastYear)) return ["text-muted"];
-      return this.changeFromLastYear > 0 ? ["text-success"] : ["text-danger"];
+      if (isNaN(this.changeFromLastYear)) {
+        return ["text-muted"];
+      } else if (this.changeFromLastYear > 0) {
+        return ["text-success"];
+      } else if (this.changeFromLastYear < 0) {
+        return ["text-danger"];
+      }
+      return ["text-warning"];
     },
     changeDirectionIcon() {
-      if (isNaN(this.changeFromLastYear)) return Dash;
+      if (
+        isNaN(this.changeFromLastYear) ||
+        this.changeFromLastYear === "0.00"
+      ) {
+        return Dash;
+      }
       return this.changeFromLastYear > 0 ? ArrowUp : ArrowDown;
     },
     changeFromLastYearPretty() {
