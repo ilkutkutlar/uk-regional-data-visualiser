@@ -19,6 +19,15 @@ export default {
       current: useCurrent(),
     };
   },
+  computed: {
+    viewBoxSize() {
+      const svgElem = this.svgContainer.select("svg");
+      return {
+        width: parseFloat(svgElem.attr("width")),
+        height: parseFloat(svgElem.attr("height")),
+      };
+    },
+  },
   watch: {
     svgFilePath() {
       this.refreshData();
@@ -33,6 +42,9 @@ export default {
     this.refreshData();
   },
   methods: {
+    currentScale() {
+      return d3.zoomTransform(this.svgContainer.node()).k;
+    },
     getSvgElementById(elemId) {
       return this.svgContainer.select(`#${elemId}`);
     },
@@ -57,9 +69,10 @@ export default {
       );
     },
     translateTo(x, y, relativeTo, duration) {
+      console.log("Current scale:", this.currentScale());
       const zoomTransform = d3.zoomIdentity
         .translate(relativeTo[0], relativeTo[1])
-        .scale(this.currentScale)
+        .scale(this.currentScale())
         .translate(-x, -y);
       this.svgContainer
         .transition()
@@ -99,18 +112,6 @@ export default {
         .attr("stroke", "#dcdcdc")
         .attr("stroke-width", "1")
         .attr("fill", "#412149");
-    },
-  },
-  computed: {
-    currentScale() {
-      return d3.zoomTransform(this.svgContainer.node()).k;
-    },
-    viewBoxSize() {
-      const svgElem = this.svgContainer.select("svg");
-      return {
-        width: parseFloat(svgElem.attr("width")),
-        height: parseFloat(svgElem.attr("height")),
-      };
     },
   },
 };

@@ -1,6 +1,4 @@
 <script>
-import { useCurrent } from "../../store";
-
 export default {
   props: [
     "outerDivClasses",
@@ -12,11 +10,6 @@ export default {
     "modelValue",
   ],
   emits: ["update:modelValue"],
-  data() {
-    return {
-      current: useCurrent(),
-    };
-  },
   computed: {
     value: {
       get() {

@@ -1,14 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script>
-import { useCurrent } from "../../store";
-
 export default {
   props: ["outerDivClasses"],
-  data() {
-    return {
-      current: useCurrent(),
-    };
-  },
 };
 </script>
 

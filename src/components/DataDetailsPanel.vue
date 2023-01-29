@@ -57,7 +57,6 @@ export default {
       keyFormatter: (region) =>
         this.current.dataset.svgMap.prettyNames.get(region),
       searchText: "",
-      testValue: false,
     };
   },
 };

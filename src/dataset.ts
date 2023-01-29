@@ -17,10 +17,6 @@ export class Dataset {
   valueFormatter: Formatter;
   data: { [index: string]: { [index: string]: any } } = {};
 
-  get regions() {
-    return Object.keys(this.data[this.years[0]]);
-  }
-
   get years() {
     return Object.keys(this.data);
   }

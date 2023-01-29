@@ -1,13 +1,6 @@
 <script>
-import { useCurrent } from "../../store";
-
 export default {
   props: ["tabs"],
-  data() {
-    return {
-      current: useCurrent(),
-    };
-  },
 };
 </script>
 <template>
