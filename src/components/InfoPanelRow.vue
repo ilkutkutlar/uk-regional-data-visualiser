@@ -1,12 +1,14 @@
 <script>
 import ArrowUp from "./icons/ArrowUp.vue";
 import ArrowDown from "./icons/ArrowDown.vue";
+import Dash from "./icons/Dash.vue";
 import { useCurrent } from "../store";
 
 export default {
   components: {
     ArrowUp,
     ArrowDown,
+    Dash,
   },
   props: ["year", "value", "changeFromLastYear", "isSelectedRow"],
   data() {
@@ -17,8 +19,17 @@ export default {
     };
   },
   computed: {
+    changeTextClass() {
+      if (isNaN(this.changeFromLastYear)) return ["text-muted"];
+      return this.changeFromLastYear > 0 ? ["text-success"] : ["text-danger"];
+    },
     changeDirectionIcon() {
+      if (isNaN(this.changeFromLastYear)) return Dash;
       return this.changeFromLastYear > 0 ? ArrowUp : ArrowDown;
+    },
+    changeFromLastYearPretty() {
+      if (isNaN(this.changeFromLastYear)) return "N/A";
+      return `${this.changeFromLastYear}%`;
     },
   },
 };
@@ -30,11 +41,8 @@ export default {
       <span class="fw-bold"> {{ year }} </span>:
       {{ value }}
     </div>
-    <div
-      class="flex-fill text-end"
-      :class="[changeFromLastYear > 0 ? 'text-success' : 'text-danger']"
-    >
-      {{ changeFromLastYear }}%
+    <div class="flex-fill text-end" :class="changeTextClass">
+      {{ changeFromLastYearPretty }}
       <component :is="changeDirectionIcon"></component>
     </div>
   </div>

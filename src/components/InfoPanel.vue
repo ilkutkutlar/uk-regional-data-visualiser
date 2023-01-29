@@ -27,7 +27,7 @@ export default {
         toYear,
         this.displayedRegion
       );
-      if (isNaN(fromValue) || isNaN(toValue)) return "-";
+      if (isNaN(fromValue) || isNaN(toValue)) return NaN;
       const pcChange = ((toValue - fromValue) / fromValue) * 100;
       return pcChange.toFixed(2);
     },
