@@ -1,22 +1,14 @@
 <script>
 import * as d3 from "d3";
 import { getCentreOfSvgElem } from "../../utils";
-import { useCurrent } from "../../store";
 
 export default {
   props: ["svgFilePath"],
-  expose: [
-    "getSvgElementById",
-    "setElemAttrs",
-    "centreSvgElement",
-    "currentScale",
-    "viewBoxSize",
-  ],
+  expose: ["getSvgElementById", "setElemAttrs", "centreSvgElement"],
   data() {
     return {
       svgContainer: null,
       zoom: null,
-      current: useCurrent(),
     };
   },
   computed: {
@@ -30,16 +22,12 @@ export default {
   },
   watch: {
     svgFilePath() {
-      this.refreshData();
+      this.loadSvgMap();
     },
   },
   mounted() {
-    this.current.$subscribe((mutation) => {
-      if (mutation.events.key !== "year") return;
-      this.refreshData();
-    });
     this.svgContainer = d3.select("#svg-container");
-    this.refreshData();
+    this.loadSvgMap();
   },
   methods: {
     currentScale() {
@@ -79,7 +67,7 @@ export default {
         .duration(duration)
         .call(this.zoom.transform, zoomTransform);
     },
-    refreshData() {
+    loadSvgMap() {
       d3.xml(this.svgFilePath).then((svgData) => {
         this.svgContainer.node().innerHTML = "";
         svgData.documentElement.classList.add("full-page");
