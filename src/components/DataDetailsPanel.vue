@@ -39,6 +39,14 @@ export default {
       }
       return sortObjectByValue(data, false);
     },
+    selectedYear: {
+      get() {
+        return this.current.year;
+      },
+      set(value) {
+        this.current.$patch({ year: value });
+      }
+    },
   },
   methods: {
     dataRowMouseEnter(region) {
@@ -103,7 +111,7 @@ export default {
           aria-label="Dataset year select"
           outer-div-classes="mb-3"
           :items="yearSelectItems"
-          v-model="current.year"
+          v-model="selectedYear"
         />
 
         <TabList

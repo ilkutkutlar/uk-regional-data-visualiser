@@ -31,7 +31,7 @@ export default {
           this.current.clearHighlightedRegions();
           this.current.clearSelectedRegion();
           state.dataset.downloadData().then(() => {
-            this.current.year = state.dataset.years.slice(-1)[0];
+            this.current.$patch({ year: state.dataset.years.slice(-1)[0] });
           });
           break;
         case "year":

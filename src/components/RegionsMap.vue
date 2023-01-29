@@ -25,6 +25,9 @@ export default {
             this.unhighlightRegions(event.oldValue);
             this.highlightRegions(event.newValue);
             break;
+          case "year":
+            this.setRegionColours();
+            break;
         }
       });
     });
@@ -38,7 +41,7 @@ export default {
     },
   },
   methods: {
-    svgDataLoaded() {
+    setRegionColours() {
       const elemAttrs = {};
       for (const region of this.current.dataset.svgMap.prettyNames.keys()) {
         const regionColour = this.current.dataset.colourOf(
@@ -48,6 +51,9 @@ export default {
         elemAttrs[region] = { fill: regionColour ?? Colours.GREY };
       }
       this.svgContainer.setElemAttrs(elemAttrs);
+    },
+    svgDataLoaded() {
+      this.setRegionColours();
     },
     regionMouseOver(d) {
       this.current.addHighlightedRegion(d.target.id);
