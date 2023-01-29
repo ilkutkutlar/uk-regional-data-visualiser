@@ -1,11 +1,11 @@
 <script>
-import { useOptions } from "../store";
+import { useCurrent } from "../store";
 
 export default {
   props: ["closeButtonVisible"],
   data() {
     return {
-      options: useOptions(),
+      current: useCurrent(),
     };
   },
 };

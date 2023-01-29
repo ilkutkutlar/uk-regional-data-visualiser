@@ -7,7 +7,7 @@ import TabList from "./partials/TabList.vue";
 import TabContent from "./partials/TabContent.vue";
 import Card from "./partials/Card.vue";
 import { filterDataByKey, sortObjectByValue } from "../utils";
-import { useOptions } from "../store";
+import { useCurrent } from "../store";
 
 export default {
   inject: ["allDatasets"],
@@ -28,12 +28,12 @@ export default {
          when this template has been initialised. Make it
          a computed property so it is updated when data
          has been downloaded */
-      return this.options.dataset.years.map((year) => {
+      return this.current.dataset.years.map((year) => {
         return { value: year, text: year };
       });
     },
     filteredData() {
-      let data = this.options.dataset.data[this.options.year] ?? {};
+      let data = this.current.dataset.data[this.current.year] ?? {};
       if (this.searchText) {
         data = filterDataByKey(data, this.keyFormatter, this.searchText);
       }
@@ -42,20 +42,20 @@ export default {
   },
   methods: {
     dataRowMouseEnter(region) {
-      this.options.addHighlightedRegion(region);
+      this.current.addHighlightedRegion(region);
     },
     dataRowMouseLeave() {
-      this.options.clearHighlightedRegions();
+      this.current.clearHighlightedRegions();
     },
   },
   data() {
     return {
-      options: useOptions(),
+      current: useCurrent(),
       dataSelectItems: this.allDatasets.map((dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
       keyFormatter: (region) =>
-        this.options.dataset.svgMap.prettyNames.get(region),
+        this.current.dataset.svgMap.prettyNames.get(region),
       searchText: "",
       testValue: false,
     };
@@ -89,10 +89,10 @@ export default {
           aria-label="Dataset select"
           outer-div-classes="mb-1 mt-3"
           :items="dataSelectItems"
-          :modelValue="options.dataset.metadata.id"
+          :modelValue="current.dataset.metadata.id"
           @input="
             (event) => {
-              this.options.dataset = this.allDatasets.find(
+              this.current.dataset = this.allDatasets.find(
                 (dataset) => dataset.metadata.id == event.target.value
               );
             }
@@ -104,7 +104,7 @@ export default {
           aria-label="Dataset year select"
           outer-div-classes="mb-3"
           :items="yearSelectItems"
-          v-model="options.year"
+          v-model="current.year"
         />
 
         <TabList
@@ -128,18 +128,18 @@ export default {
             <Card outerDivClasses="mt-3">
               <template #title><IconText />Description</template>
               <template #body>
-                {{ options.dataset.metadata.description }}
+                {{ current.dataset.metadata.description }}
               </template>
             </Card>
             <Card outerDivClasses="mt-3">
               <template #title><IconLink />Source</template>
               <template #body>
                 <a
-                  :href="options.dataset.metadata.sourceLink"
+                  :href="current.dataset.metadata.sourceLink"
                   class="d-block"
                   target="blank"
                 >
-                  {{ options.dataset.metadata.source }}
+                  {{ current.dataset.metadata.source }}
                 </a>
               </template>
             </Card>
@@ -169,7 +169,7 @@ export default {
                   <td>{{ keyFormatter(entry[0]) }}</td>
                   <td>
                     <span class="fw-bold">{{
-                      options.dataset.valueFormatter(entry[1])
+                      current.dataset.valueFormatter(entry[1])
                     }}</span>
                   </td>
                 </tr>

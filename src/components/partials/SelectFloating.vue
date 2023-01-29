@@ -1,5 +1,5 @@
 <script>
-import { useOptions } from "../../store";
+import { useCurrent } from "../../store";
 
 export default {
   props: [
@@ -14,7 +14,7 @@ export default {
   emits: ["update:modelValue"],
   data() {
     return {
-      options: useOptions(),
+      current: useCurrent(),
     };
   },
   computed: {

@@ -1,7 +1,7 @@
 <script>
 import BaseInfoPanel from "./BaseInfoPanel.vue";
 import InfoPanelRow from "./InfoPanelRow.vue";
-import { useOptions } from "../store";
+import { useCurrent } from "../store";
 
 export default {
   components: {
@@ -10,20 +10,20 @@ export default {
   },
   data() {
     return {
-      options: useOptions(),
+      current: useCurrent(),
     };
   },
   methods: {
     closeButtonClicked() {
-      if (this.options.selectedRegion) this.options.clearHighlightedRegions();
-      this.options.clearSelectedRegion();
+      if (this.current.selectedRegion) this.current.clearHighlightedRegions();
+      this.current.clearSelectedRegion();
     },
     changeBetweenYears(fromYear, toYear) {
-      const fromValue = this.options.dataset.valueOf(
+      const fromValue = this.current.dataset.valueOf(
         fromYear,
         this.displayedRegion
       );
-      const toValue = this.options.dataset.valueOf(
+      const toValue = this.current.dataset.valueOf(
         toYear,
         this.displayedRegion
       );
@@ -34,19 +34,19 @@ export default {
   },
   computed: {
     displayedRegion() {
-      if (this.options.selectedRegion) {
-        return this.options.selectedRegion;
-      } else if (this.options.highlightedRegions.length > 0) {
-        return this.options.highlightedRegions[0];
+      if (this.current.selectedRegion) {
+        return this.current.selectedRegion;
+      } else if (this.current.highlightedRegions.length > 0) {
+        return this.current.highlightedRegions[0];
       } else {
         return "";
       }
     },
     displayedYears() {
-      const years = this.options.dataset.years;
-      const currentIndex = years.indexOf(this.options.year);
+      const years = this.current.dataset.years;
+      const currentIndex = years.indexOf(this.current.year);
 
-      const displayedYears = [this.options.year];
+      const displayedYears = [this.current.year];
       switch (currentIndex) {
         case 0:
           if (years.length >= 2) {
@@ -75,19 +75,19 @@ export default {
 <template>
   <BaseInfoPanel
     v-show="displayedRegion"
-    :closeButtonVisible="options.selectedRegion"
+    :closeButtonVisible="current.selectedRegion"
     @closeButtonClicked="closeButtonClicked"
   >
     <template #title>
-      {{ options.dataset.svgMap.prettyNames.get(displayedRegion) }}
+      {{ current.dataset.svgMap.prettyNames.get(displayedRegion) }}
     </template>
     <template #body>
       <InfoPanelRow
         v-for="year in displayedYears"
         :key="year"
-        :isSelectedRow="year == options.year"
+        :isSelectedRow="year == current.year"
         :year="year"
-        :value="options.dataset.valueOf(year, displayedRegion, true)"
+        :value="current.dataset.valueOf(year, displayedRegion, true)"
         :changeFromLastYear="changeBetweenYears(parseInt(year) - 1, year)"
       />
     </template>

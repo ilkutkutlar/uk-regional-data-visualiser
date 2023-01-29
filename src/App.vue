@@ -6,7 +6,7 @@ import KeyWindow from "./components/KeyWindow.vue";
 import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
-import { useOptions } from "./store";
+import { useCurrent } from "./store";
 import {
   setPreferredColourSchemeChangedListener,
   setTheme,
@@ -25,19 +25,19 @@ export default {
     RegionsMap,
   },
   mounted() {
-    this.options.$subscribe((mutation, state) => {
+    this.current.$subscribe((mutation, state) => {
       if (mutation.events.key !== "dataset") return;
       state.dataset.downloadData().then(() => {
-        this.options.year = state.dataset.years.slice(-1)[0];
+        this.current.year = state.dataset.years.slice(-1)[0];
       });
     });
-    this.options.dataset.downloadData().then(() => {});
+    this.current.dataset.downloadData().then(() => {});
     setTheme(getPreferredTheme());
     setPreferredColourSchemeChangedListener();
   },
   data() {
     return {
-      options: useOptions(),
+      current: useCurrent(),
     };
   },
 };
@@ -51,7 +51,7 @@ export default {
   <InfoPanel />
 
   <div class="row m-0">
-    <DataDetailsPanel v-if="this.options.dataset.isDataDownloaded" />
-    <RegionsMap v-if="this.options.dataset.isDataDownloaded" />
+    <DataDetailsPanel v-if="current.dataset.isDataDownloaded" />
+    <RegionsMap v-if="current.dataset.isDataDownloaded" />
   </div>
 </template>

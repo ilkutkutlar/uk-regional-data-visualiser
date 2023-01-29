@@ -1,6 +1,6 @@
 <script>
 import IconSlider from "./icons/IconSlider.vue";
-import { useOptions } from "../store";
+import { useCurrent } from "../store";
 
 export default {
   components: {
@@ -8,7 +8,7 @@ export default {
   },
   data() {
     return {
-      options: useOptions(),
+      current: useCurrent(),
     };
   },
 };
@@ -23,10 +23,10 @@ export default {
           style="white-space: nowrap; text-overflow: ellipsis"
         >
           <div>
-            {{ options.dataset.metadata.name }}
+            {{ current.dataset.metadata.name }}
           </div>
           <div class="text-muted">
-            {{ options.year }}
+            {{ current.year }}
           </div>
         </div>
         <div

@@ -3,7 +3,7 @@ import type { Dataset } from "./dataset";
 import { earnings } from "./datasets/earnings";
 import { removeByValue } from "./utils";
 
-export const useOptions = defineStore("options", {
+export const useCurrent = defineStore("current", {
   state: () => ({
     dataset: earnings as Dataset,
     year: "2021" as string,
@@ -12,7 +12,7 @@ export const useOptions = defineStore("options", {
     isDarkMode: false as boolean,
   }),
   getters: {
-    selectedData: (state) => state.dataset.data[state.year],
+    dataForCurrentYear: (state) => state.dataset.data[state.year],
   },
   actions: {
     clearSelectedRegion() {

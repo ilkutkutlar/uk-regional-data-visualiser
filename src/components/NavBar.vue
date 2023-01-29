@@ -1,5 +1,5 @@
 <script>
-import { useOptions } from "../store";
+import { useCurrent } from "../store";
 import { setTheme, saveTheme, getPreferredTheme } from "../colour_mode";
 import MoonFill from "./icons/MoonFill.vue";
 import SunFill from "./icons/SunFill.vue";
@@ -8,7 +8,7 @@ export default {
   components: { MoonFill, SunFill },
   data() {
     return {
-      options: useOptions(),
+      current: useCurrent(),
       darkMode: getPreferredTheme() == "dark",
     };
   },

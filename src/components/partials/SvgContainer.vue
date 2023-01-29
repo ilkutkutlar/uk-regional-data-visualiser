@@ -1,7 +1,7 @@
 <script>
 import * as d3 from "d3";
 import { getCentreOfSvgElem } from "../../utils";
-import { useOptions } from "../../store";
+import { useCurrent } from "../../store";
 
 export default {
   props: ["svgFilePath"],
@@ -16,7 +16,7 @@ export default {
     return {
       svgContainer: null,
       zoom: null,
-      options: useOptions(),
+      current: useCurrent(),
     };
   },
   watch: {
@@ -25,7 +25,7 @@ export default {
     },
   },
   mounted() {
-    this.options.$subscribe((mutation) => {
+    this.current.$subscribe((mutation) => {
       if (mutation.events.key !== "year") return;
       this.refreshData();
     });

@@ -1,13 +1,13 @@
 <script>
 import { Colours } from "../constants";
 import { setOpacity } from "../utils";
-import { useOptions } from "../store";
+import { useCurrent } from "../store";
 import SvgContainer from "./partials/SvgContainer.vue";
 
 export default {
   data() {
     return {
-      options: useOptions(),
+      current: useCurrent(),
       svgContainer: null,
     };
   },
@@ -15,7 +15,7 @@ export default {
   mounted() {
     this.svgContainer = this.$refs.svgContainer;
 
-    this.options.$subscribe((mutation) => {
+    this.current.$subscribe((mutation) => {
       const events = Array.isArray(mutation.events)
         ? mutation.events
         : [mutation.events];
@@ -32,17 +32,17 @@ export default {
   computed: {
     svgPath() {
       return (
-        this.options.dataset.svgMap.svgPaths.get(this.options.year) ??
-        this.options.dataset.svgMap.svgPaths.get("default")
+        this.current.dataset.svgMap.svgPaths.get(this.current.year) ??
+        this.current.dataset.svgMap.svgPaths.get("default")
       );
     },
   },
   methods: {
     svgDataLoaded() {
       const elemAttrs = {};
-      for (const region of this.options.dataset.svgMap.prettyNames.keys()) {
-        const regionColour = this.options.dataset.colourOf(
-          this.options.year,
+      for (const region of this.current.dataset.svgMap.prettyNames.keys()) {
+        const regionColour = this.current.dataset.colourOf(
+          this.current.year,
           region
         );
         elemAttrs[region] = { fill: regionColour ?? Colours.GREY };
@@ -50,14 +50,14 @@ export default {
       this.svgContainer.setElemAttrs(elemAttrs);
     },
     regionMouseOver(d) {
-      this.options.addHighlightedRegion(d.target.id);
+      this.current.addHighlightedRegion(d.target.id);
     },
     regionMouseOut(d) {
-      if (d.target.id === this.options.selectedRegion) return;
-      this.options.removeHighlightedRegion(d.target.id);
+      if (d.target.id === this.current.selectedRegion) return;
+      this.current.removeHighlightedRegion(d.target.id);
     },
     regionClick(d) {
-      this.options.$patch({
+      this.current.$patch({
         selectedRegion: d.target.id,
         highlightedRegions: [d.target.id],
       });

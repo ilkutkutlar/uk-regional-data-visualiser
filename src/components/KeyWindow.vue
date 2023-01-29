@@ -2,7 +2,7 @@
 import TogglerButton from "./partials/TogglerButton.vue";
 import IconCaretDownFill from "./icons/IconCaretDownFill.vue";
 import IconCaretUpFill from "./icons/IconCaretUpFill.vue";
-import { useOptions } from "../store";
+import { useCurrent } from "../store";
 import { generateKey } from "../utils";
 import { Colours } from "../constants";
 
@@ -15,14 +15,14 @@ export default {
   data() {
     return {
       toggleCollapsed: false,
-      options: useOptions(),
+      current: useCurrent(),
     };
   },
   computed: {
     key() {
       const _key = generateKey(
-        this.options.dataset.colourMap,
-        this.options.dataset.valueFormatter
+        this.current.dataset.colourMap,
+        this.current.dataset.valueFormatter
       );
       _key.unshift(["No data", Colours.GREY]);
       return _key;

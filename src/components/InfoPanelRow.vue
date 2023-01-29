@@ -1,7 +1,7 @@
 <script>
 import ArrowUp from "./icons/ArrowUp.vue";
 import ArrowDown from "./icons/ArrowDown.vue";
-import { useOptions } from "../store";
+import { useCurrent } from "../store";
 
 export default {
   components: {
@@ -13,7 +13,7 @@ export default {
     return {
       normalClass: ["ps-2", "pe-2"],
       selectedClass: ["border", "p-2", "rounded-2", "bg-dark-subtle"],
-      options: useOptions(),
+      current: useCurrent(),
     };
   },
   computed: {

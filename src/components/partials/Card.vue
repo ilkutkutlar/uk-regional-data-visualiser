@@ -1,12 +1,12 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script>
-import { useOptions } from "../../store";
+import { useCurrent } from "../../store";
 
 export default {
   props: ["outerDivClasses"],
   data() {
     return {
-      options: useOptions(),
+      current: useCurrent(),
     };
   },
 };
