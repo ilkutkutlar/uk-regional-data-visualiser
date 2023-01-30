@@ -3,6 +3,7 @@ import { Colours } from "../constants";
 import { setOpacity } from "../utils";
 import { useCurrent } from "../store";
 import SvgContainer from "./partials/SvgContainer.vue";
+import _ from "lodash";
 
 export default {
   data() {
@@ -16,7 +17,7 @@ export default {
     this.svgContainer = this.$refs.svgContainer;
 
     this.current.$subscribe((mutation) => {
-      const events = Array.isArray(mutation.events)
+      const events = _.isArray(mutation.events)
         ? mutation.events
         : [mutation.events];
       events.forEach((event) => {

@@ -6,8 +6,9 @@ import SelectFloating from "./partials/SelectFloating.vue";
 import TabList from "./partials/TabList.vue";
 import TabContent from "./partials/TabContent.vue";
 import Card from "./partials/Card.vue";
-import { filterDataByKey, sortObjectByValue } from "../utils";
+import { filterDataByKey } from "../utils";
 import { useCurrent } from "../store";
+import _ from "lodash";
 
 export default {
   inject: ["allDatasets"],
@@ -37,7 +38,9 @@ export default {
       if (this.searchText) {
         data = filterDataByKey(data, this.keyFormatter, this.searchText);
       }
-      return sortObjectByValue(data, false);
+      return _.fromPairs(
+        _.sortBy(_.toPairs(data), (item) => item[1]).reverse()
+      );
     },
     selectedYear: {
       get() {
@@ -45,7 +48,7 @@ export default {
       },
       set(value) {
         this.current.$patch({ year: value });
-      }
+      },
     },
   },
   methods: {

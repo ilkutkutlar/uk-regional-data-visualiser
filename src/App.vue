@@ -12,6 +12,7 @@ import {
   setTheme,
   getPreferredTheme,
 } from "./colour_mode";
+import _ from "lodash";
 
 export default {
   inject: ["allDatasets"],
@@ -31,7 +32,7 @@ export default {
           this.current.clearHighlightedRegions();
           this.current.clearSelectedRegion();
           state.dataset.downloadData().then(() => {
-            this.current.$patch({ year: state.dataset.years.slice(-1)[0] });
+            this.current.$patch({ year: _.last(state.dataset.years) });
           });
           break;
         case "year":

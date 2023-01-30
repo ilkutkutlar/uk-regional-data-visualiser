@@ -1,5 +1,6 @@
 import type { Formatter, SvgMap } from "./utils";
 import type { ColourMap } from "./colour_map";
+import _ from "lodash";
 
 type DatasetMetadata = {
   id: string;
@@ -22,7 +23,7 @@ export class Dataset {
   }
 
   get isDataDownloaded() {
-    return Object.keys(this.data).length !== 0;
+    return !_.isEmpty(this.data);
   }
 
   constructor(

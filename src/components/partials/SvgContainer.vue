@@ -1,6 +1,7 @@
 <script>
 import * as d3 from "d3";
 import { getCentreOfSvgElem } from "../../utils";
+import _ from "lodash";
 
 export default {
   props: ["svgFilePath"],
@@ -37,12 +38,12 @@ export default {
       return this.svgContainer.select(`#${elemId}`);
     },
     setElemAttrs(elemIdAttrsObject) {
-      for (const [elemId, attrs] of Object.entries(elemIdAttrsObject)) {
+      _.toPairs(elemIdAttrsObject).forEach(([elemId, attrs]) => {
         const elem = this.svgContainer.select(`#${elemId}`);
-        for (const [attrName, attrValue] of Object.entries(attrs)) {
+        _.toPairs(attrs).forEach(([attrName, attrValue]) => {
           elem.attr(attrName, attrValue);
-        }
-      }
+        });
+      });
     },
     centreSvgElement(elemId) {
       const elem = this.getSvgElementById(elemId);

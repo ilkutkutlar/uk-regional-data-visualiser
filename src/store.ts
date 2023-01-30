@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import type { Dataset } from "./dataset";
 import { earnings } from "./datasets/earnings";
-import { removeByValue } from "./utils";
+import _ from "lodash";
 
 export const useCurrent = defineStore("current", {
   state: () => ({
@@ -25,7 +25,7 @@ export const useCurrent = defineStore("current", {
     },
     removeHighlightedRegion(value: string) {
       this.$patch({
-        highlightedRegions: removeByValue(this.highlightedRegions, value),
+        highlightedRegions: _.without(this.highlightedRegions, value),
       });
     },
     clearHighlightedRegions() {
