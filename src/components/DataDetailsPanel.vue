@@ -29,9 +29,10 @@ export default {
          when this template has been initialised. Make it
          a computed property so it is updated when data
          has been downloaded */
-      return this.current.dataset.years.map((year) => {
-        return { value: year, text: year };
-      });
+      return this.current.dataset.years;
+      // return this.current.dataset.years.map((year) => {
+      //   return { value: year, text: year };
+      // });
     },
     filteredData() {
       let data = this.current.dataset.data[this.current.year] ?? {};
@@ -58,16 +59,23 @@ export default {
     dataRowMouseLeave() {
       this.current.clearHighlightedRegions();
     },
+    datasetSelectInput(event) {
+      this.current.dataset = this.allDatasets.find(
+        (dataset) => dataset.metadata.id == event.target.value
+      );
+    },
   },
   data() {
     return {
       current: useCurrent(),
       dataSelectItems: this.allDatasets.map((dataset) => {
-        return { value: dataset.metadata.id, text: dataset.metadata.name };
+        return dataset.metadata.name;
+        // return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
       keyFormatter: (region) =>
         this.current.dataset.svgMap.prettyNames.get(region),
       searchText: "",
+      tab: null,
     };
   },
 };
@@ -93,57 +101,37 @@ export default {
 
     <div class="offcanvas-body p-0">
       <div class="container">
-        <SelectFloating
-          name="panel-select-dataset"
+        <v-select
+          class="mb-1 mt-3"
           label="Choose a dataset"
-          aria-label="Dataset select"
-          outer-div-classes="mb-1 mt-3"
           :items="dataSelectItems"
           :modelValue="current.dataset.metadata.id"
-          @input="
-            (event) => {
-              this.current.dataset = this.allDatasets.find(
-                (dataset) => dataset.metadata.id == event.target.value
-              );
-            }
-          "
-        />
-        <SelectFloating
-          name="panel-select-year"
+          @input="datasetSelectInput"
+        ></v-select>
+        <v-select
+          class="mb-3"
           label="Choose a year"
-          aria-label="Dataset year select"
-          outer-div-classes="mb-3"
           :items="yearSelectItems"
           v-model="selectedYear"
-        />
+        ></v-select>
 
-        <TabList
-          :tabs="[
-            {
-              id: 'metadata-tab',
-              contentId: 'metadata',
-              title: 'Metadata',
-              active: true,
-            },
-            {
-              id: 'dataset-data-tab',
-              contentId: 'dataset-data',
-              title: 'Data',
-              active: false,
-            },
-          ]"
-        />
-        <div class="tab-content">
-          <TabContent id="metadata" tabId="metadata-tab" :active="true">
-            <Card outerDivClasses="mt-3">
-              <template #title><IconText />Description</template>
-              <template #body>
+        <v-tabs v-model="tab" bg-color="primary" align-tabs="center" grow>
+          <v-tab value="metadata">Metadata</v-tab>
+          <v-tab value="data">Data</v-tab>
+        </v-tabs>
+
+        <v-window v-model="tab">
+          <v-window-item value="metadata">
+            <v-card variant="outlined">
+              <template #title> <IconText />Description </template>
+              <template #text>
                 {{ current.dataset.metadata.description }}
               </template>
-            </Card>
-            <Card outerDivClasses="mt-3">
-              <template #title><IconLink />Source</template>
-              <template #body>
+            </v-card>
+
+            <v-card variant="outlined">
+              <template #title> <IconLink />Source </template>
+              <template #text>
                 <a
                   :href="current.dataset.metadata.sourceLink"
                   class="d-block"
@@ -152,22 +140,19 @@ export default {
                   {{ current.dataset.metadata.source }}
                 </a>
               </template>
-            </Card>
-          </TabContent>
-          <TabContent id="dataset-data" tabId="dataset-data-tab">
-            <div class="input-group w-100 mb-3 mt-3">
-              <span class="input-group-text text-primary">
-                <IconSearch />
-              </span>
-              <input
-                type="text"
-                class="form-control border-style-solid"
-                placeholder="Search data..."
-                aria-label="Data search text"
-                v-model="searchText"
-              />
-            </div>
-            <table class="table table-hover w-100 m-auto mb-3 border">
+            </v-card>
+          </v-window-item>
+
+          <v-window-item value="data">
+            <v-text-field
+              class="mb-3 mt-3"
+              label=""
+              prepend-inner-icon="mdi-magnify"
+              placeholder="Search data..."
+              v-model="searchText"
+            ></v-text-field>
+
+            <v-table>
               <tbody>
                 <tr
                   v-for="entry in Object.entries(filteredData)"
@@ -184,9 +169,9 @@ export default {
                   </td>
                 </tr>
               </tbody>
-            </table>
-          </TabContent>
-        </div>
+            </v-table>
+          </v-window-item>
+        </v-window>
       </div>
     </div>
   </div>

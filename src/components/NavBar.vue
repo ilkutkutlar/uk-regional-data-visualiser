@@ -19,7 +19,26 @@ export default {
 };
 </script>
 <template>
-  <nav class="navbar navbar-expand-lg h-6vh p-0 shadow-sm border-bottom">
+  <v-toolbar class="h-6vh">
+    <v-toolbar-title>Maps of Britain</v-toolbar-title>
+
+    <v-switch inset v-model="darkMode"></v-switch>
+
+    <!-- <div class="form-check form-switch">
+      <label class="form-check-label" for="colourModeSwitch">
+        <component :is="darkMode ? 'MoonFill' : 'SunFill'"></component>
+      </label>
+      <input
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        id="colourModeSwitch"
+        v-model="darkMode"
+      />
+    </div> -->
+  </v-toolbar>
+
+  <!-- <nav class="navbar navbar-expand-lg h-6vh p-0 shadow-sm border-bottom">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Maps of Britain</a>
 
@@ -48,7 +67,7 @@ export default {
         <span class="navbar-toggler-icon"></span>
       </button>
     </div>
-  </nav>
+  </nav> -->
 </template>
 
 <style>

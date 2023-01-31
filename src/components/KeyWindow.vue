@@ -32,7 +32,26 @@ export default {
 </script>
 
 <template>
-  <div
+  <v-expansion-panels>
+    <v-expansion-panel
+      title="Key"
+      class="z-index-10 position-fixed end-0 bottom-0 mb-4-lg me-4-lg bg-opacity-75 min-width-10 mw-50-md-down border"
+    >
+      <v-expansion-panel-text>
+        <div class="card-text vstack gap-2">
+          <div v-for="keyItem in this.key" :key="keyItem[0]" class="d-flex">
+            <div
+              class="key-colour-box"
+              :style="{ backgroundColor: keyItem[1] }"
+            ></div>
+            <div>{{ keyItem[0] }}</div>
+          </div>
+        </div>
+      </v-expansion-panel-text>
+    </v-expansion-panel>
+  </v-expansion-panels>
+
+  <!-- <div
     class="card z-index-10 position-fixed end-0 bottom-0 mb-4-lg me-4-lg bg-opacity-75 min-width-10 mw-50-md-down border"
   >
     <TogglerButton
@@ -59,7 +78,7 @@ export default {
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <style>
