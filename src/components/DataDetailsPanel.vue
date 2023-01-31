@@ -1,11 +1,6 @@
 <script>
 import IconText from "./icons/IconText.vue";
 import IconLink from "./icons/IconLink.vue";
-import IconSearch from "./icons/IconSearch.vue";
-import SelectFloating from "./partials/SelectFloating.vue";
-import TabList from "./partials/TabList.vue";
-import TabContent from "./partials/TabContent.vue";
-import Card from "./partials/Card.vue";
 import { filterDataByKey } from "../utils";
 import { useCurrent } from "../store";
 import _ from "lodash";
@@ -13,13 +8,8 @@ import _ from "lodash";
 export default {
   inject: ["allDatasets"],
   components: {
-    SelectFloating,
-    TabList,
-    TabContent,
-    Card,
     IconText,
     IconLink,
-    IconSearch,
   },
   computed: {
     yearSelectItems() {
@@ -30,9 +20,6 @@ export default {
          a computed property so it is updated when data
          has been downloaded */
       return this.current.dataset.years;
-      // return this.current.dataset.years.map((year) => {
-      //   return { value: year, text: year };
-      // });
     },
     filteredData() {
       let data = this.current.dataset.data[this.current.year] ?? {};
@@ -51,6 +38,16 @@ export default {
         this.current.$patch({ year: value });
       },
     },
+    selectedDataset: {
+      get() {
+        return this.current.dataset.metadata.id;
+      },
+      set(value) {
+        this.current.dataset = this.allDatasets.find(
+          (dataset) => dataset.metadata.id == value
+        );
+      },
+    },
   },
   methods: {
     dataRowMouseEnter(region) {
@@ -59,18 +56,12 @@ export default {
     dataRowMouseLeave() {
       this.current.clearHighlightedRegions();
     },
-    datasetSelectInput(event) {
-      this.current.dataset = this.allDatasets.find(
-        (dataset) => dataset.metadata.id == event.target.value
-      );
-    },
   },
   data() {
     return {
       current: useCurrent(),
       dataSelectItems: this.allDatasets.map((dataset) => {
-        return dataset.metadata.name;
-        // return { value: dataset.metadata.id, text: dataset.metadata.name };
+        return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
       keyFormatter: (region) =>
         this.current.dataset.svgMap.prettyNames.get(region),
@@ -102,14 +93,16 @@ export default {
     <div class="offcanvas-body p-0">
       <div class="container">
         <v-select
-          class="mb-1 mt-3"
+          class="mt-4"
+          variant="solo"
           label="Choose a dataset"
+          item-title="text"
+          item-value="value"
           :items="dataSelectItems"
-          :modelValue="current.dataset.metadata.id"
-          @input="datasetSelectInput"
+          v-model="selectedDataset"
         ></v-select>
         <v-select
-          class="mb-3"
+          variant="solo"
           label="Choose a year"
           :items="yearSelectItems"
           v-model="selectedYear"
@@ -122,14 +115,13 @@ export default {
 
         <v-window v-model="tab">
           <v-window-item value="metadata">
-            <v-card variant="outlined">
+            <v-card variant="outlined" class="mt-5">
               <template #title> <IconText />Description </template>
               <template #text>
                 {{ current.dataset.metadata.description }}
               </template>
             </v-card>
-
-            <v-card variant="outlined">
+            <v-card variant="outlined" class="mt-5">
               <template #title> <IconLink />Source </template>
               <template #text>
                 <a

@@ -10,13 +10,13 @@ export default {
   >
     <template #title>
       <slot name="title"></slot>
-      <v-button
+      <v-btn
         type="button"
         class="btn-close col-2 m-auto"
         aria-label="Close"
         v-show="closeButtonVisible"
         @click="$emit('closeButtonClicked')"
-      ></v-button>
+      ></v-btn>
     </template>
     <template #text>
       <slot name="body"></slot>

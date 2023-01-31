@@ -1,14 +1,20 @@
 <script>
 import { setTheme, saveTheme, getPreferredTheme } from "../colour_mode";
-import MoonFill from "./icons/MoonFill.vue";
-import SunFill from "./icons/SunFill.vue";
+import { useTheme } from "vuetify";
 
 export default {
-  components: { MoonFill, SunFill },
   data() {
     return {
       darkMode: getPreferredTheme() == "dark",
+      theme: useTheme(),
     };
+  },
+  methods: {
+    toggleTheme() {
+      this.theme.global.name = this.theme.global.current.dark
+        ? "light"
+        : "dark";
+    },
   },
   watch: {
     darkMode() {
@@ -22,8 +28,8 @@ export default {
   <v-toolbar class="h-6vh">
     <v-toolbar-title>Maps of Britain</v-toolbar-title>
 
-    <v-switch inset v-model="darkMode"></v-switch>
-
+    <v-btn @click="toggleTheme">toggle theme</v-btn>
+    <!-- <v-switch inset v-model="darkMode"></v-switch> -->
     <!-- <div class="form-check form-switch">
       <label class="form-check-label" for="colourModeSwitch">
         <component :is="darkMode ? 'MoonFill' : 'SunFill'"></component>
