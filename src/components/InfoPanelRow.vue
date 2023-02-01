@@ -12,8 +12,8 @@ export default {
   props: ["year", "value", "changeFromLastYear", "isSelectedRow"],
   data() {
     return {
-      normalClass: ["ps-2", "pe-2"],
-      selectedClass: ["border", "p-2", "rounded-2", "bg-dark-subtle"],
+      normalClass: ["pt-1", ""],
+      selectedClass: ["pt-1", "rounded-2", "v-theme-light"],
     };
   },
   computed: {
@@ -47,7 +47,7 @@ export default {
 <template>
   <div class="d-flex" :class="isSelectedRow ? selectedClass : normalClass">
     <div class="flex-fill">
-      <span class="fw-bold"> {{ year }} </span>:
+      <span class="font-weight-bold"> {{ year }} </span>:
       {{ value }}
     </div>
     <div class="flex-fill text-end" :class="changeTextClass">

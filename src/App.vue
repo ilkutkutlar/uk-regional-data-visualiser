@@ -7,11 +7,6 @@ import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
 import { useCurrent } from "./store";
-import {
-  setPreferredColourSchemeChangedListener,
-  setTheme,
-  getPreferredTheme,
-} from "./colour_mode";
 import _ from "lodash";
 
 export default {
@@ -42,8 +37,6 @@ export default {
       }
     });
     this.current.dataset.downloadData().then(() => {});
-    setTheme(getPreferredTheme());
-    setPreferredColourSchemeChangedListener();
   },
   data() {
     return {
@@ -55,13 +48,36 @@ export default {
 
 <template>
   <Navbar />
-  <MenuOffcanvas />
-  <DataSelectionBar />
+  <!-- <MenuOffcanvas /> -->
+  <!-- <DataSelectionBar /> -->
   <KeyWindow />
   <InfoPanel />
 
-  <div class="row m-0">
-    <DataDetailsPanel v-if="current.dataset.isDataDownloaded" />
-    <RegionsMap v-if="current.dataset.isDataDownloaded" />
-  </div>
+  <v-row no-gutters>
+    <v-col cols="3">
+      <DataDetailsPanel v-if="current.dataset.isDataDownloaded" />
+    </v-col>
+    <v-col cols="9">
+      <RegionsMap v-if="current.dataset.isDataDownloaded" />
+    </v-col>
+  </v-row>
 </template>
+
+<style>
+@media (min-width: 992px) {
+  .offcanvas-side-panel-lg {
+    visibility: visible !important;
+    /* transform: none !important; */
+    width: 25% !important;
+    height: 94vh !important;
+    top: unset !important;
+    padding: 0 !important;
+    border-right: 1px solid #dee2e6 !important;
+    /* background-color: #e9ecef !important; */
+  }
+
+  .position-relative-lg {
+    position: relative !important;
+  }
+}
+</style>

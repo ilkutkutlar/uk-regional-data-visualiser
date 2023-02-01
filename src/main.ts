@@ -9,7 +9,7 @@ import { pubsAndBars } from "./datasets/pubs_and_bars";
 import App from "./App.vue";
 
 import "./assets/main.css";
-import "./assets/bootstrap.min.css";
+// import "./assets/bootstrap.min.css";
 
 // Vuetify
 import "vuetify/styles";

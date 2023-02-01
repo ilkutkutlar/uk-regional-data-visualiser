@@ -107,10 +107,7 @@ export default {
 </script>
 
 <template>
-  <div
-    id="svg-container"
-    class="col col-9 w-100-md-down h-94vh end-0 p-0"
-  ></div>
+  <div id="svg-container" class="w-100-md-down h-94vh end-0 p-0"></div>
 </template>
 
 <style>
@@ -125,5 +122,9 @@ export default {
   height: 100%;
   top: 0;
   left: 0;
+}
+
+.end-0 {
+  right: 0 !important;
 }
 </style>
