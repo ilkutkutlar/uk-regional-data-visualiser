@@ -1,20 +1,15 @@
 <script>
-import Navbar from "./components/NavBar.vue";
-import MenuOffcanvas from "./components/MenuOffcanvas.vue";
-import DataSelectionBar from "./components/DataSelectionBar.vue";
 import KeyWindow from "./components/KeyWindow.vue";
 import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import RegionsMap from "./components/RegionsMap.vue";
 import { useCurrent } from "./store";
 import _ from "lodash";
+import { useTheme } from "vuetify";
 
 export default {
   inject: ["allDatasets"],
   components: {
-    Navbar,
-    MenuOffcanvas,
-    DataSelectionBar,
     KeyWindow,
     InfoPanel,
     DataDetailsPanel,
@@ -38,46 +33,44 @@ export default {
     });
     this.current.dataset.downloadData().then(() => {});
   },
+  methods: {
+    toggleTheme() {
+      this.theme.global.name = this.theme.global.current.dark
+        ? "light"
+        : "dark";
+    },
+  },
   data() {
     return {
       current: useCurrent(),
+      drawer: true,
+      theme: useTheme(),
     };
   },
 };
 </script>
 
 <template>
-  <Navbar />
-  <!-- <MenuOffcanvas /> -->
-  <!-- <DataSelectionBar /> -->
-  <KeyWindow />
-  <InfoPanel />
+  <v-app>
+    <v-layout>
+      <v-app-bar prominent>
+        <v-app-bar-nav-icon
+          variant="text"
+          @click.stop="drawer = !drawer"
+        ></v-app-bar-nav-icon>
+        <v-toolbar-title>Maps of Britain</v-toolbar-title>
+        <v-btn @click="toggleTheme">toggle theme</v-btn>
+      </v-app-bar>
 
-  <v-row no-gutters>
-    <v-col cols="3">
-      <DataDetailsPanel v-if="current.dataset.isDataDownloaded" />
-    </v-col>
-    <v-col cols="9">
-      <RegionsMap v-if="current.dataset.isDataDownloaded" />
-    </v-col>
-  </v-row>
+      <v-navigation-drawer v-model="drawer" location="left" permanent>
+        <DataDetailsPanel v-if="current.dataset.isDataDownloaded" />
+      </v-navigation-drawer>
+
+      <v-main>
+        <!-- <KeyWindow />
+        <InfoPanel /> -->
+        <RegionsMap v-if="current.dataset.isDataDownloaded" />
+      </v-main>
+    </v-layout>
+  </v-app>
 </template>
-
-<style>
-@media (min-width: 992px) {
-  .offcanvas-side-panel-lg {
-    visibility: visible !important;
-    /* transform: none !important; */
-    width: 25% !important;
-    height: 94vh !important;
-    top: unset !important;
-    padding: 0 !important;
-    border-right: 1px solid #dee2e6 !important;
-    /* background-color: #e9ecef !important; */
-  }
-
-  .position-relative-lg {
-    position: relative !important;
-  }
-}
-</style>

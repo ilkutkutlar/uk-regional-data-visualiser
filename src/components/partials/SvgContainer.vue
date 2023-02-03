@@ -107,7 +107,7 @@ export default {
 </script>
 
 <template>
-  <div id="svg-container" class="w-100-md-down h-94vh end-0 p-0"></div>
+  <div id="svg-container"></div>
 </template>
 
 <style>
