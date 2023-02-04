@@ -67,8 +67,8 @@ export default {
       </v-navigation-drawer>
 
       <v-main>
-        <!-- <KeyWindow />
-        <InfoPanel /> -->
+        <KeyWindow />
+        <InfoPanel />
         <RegionsMap v-if="current.dataset.isDataDownloaded" />
       </v-main>
     </v-layout>

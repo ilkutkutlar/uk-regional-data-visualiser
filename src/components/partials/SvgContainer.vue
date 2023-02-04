@@ -71,7 +71,9 @@ export default {
     loadSvgMap() {
       d3.xml(this.svgFilePath).then((svgData) => {
         this.svgContainer.node().innerHTML = "";
-        svgData.documentElement.classList.add("full-page");
+        svgData.documentElement.setAttribute("width", "100%");
+        svgData.documentElement.setAttribute("height", "100%");
+        svgData.documentElement.setAttribute("style", "position: absolute");
         this.svgContainer.node().append(svgData.documentElement);
 
         this.setZoom();
@@ -115,13 +117,6 @@ export default {
   .w-100-md-down {
     width: 100% !important;
   }
-}
-
-.full-page {
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
 }
 
 .end-0 {
