@@ -49,14 +49,13 @@ export default {
     centreSvgElement(elemId) {
       const elem = this.getSvgElementById(elemId);
       const [centreX, centreY] = getCentreOfSvgElem(elem);
-      const viewBoxSize = this.viewBoxSize;
+      const clientRect = this.svgContainer.node().getBoundingClientRect();
+      const relativeTo = [
+        clientRect.x + clientRect.width / 2,
+        this.viewBoxSize.height / 2,
+      ];
 
-      this.translateTo(
-        centreX,
-        centreY,
-        [viewBoxSize.width / 2, viewBoxSize.height / 2],
-        1000
-      );
+      this.translateTo(centreX, centreY, relativeTo, 1000);
     },
     translateTo(x, y, relativeTo, duration) {
       console.log("Current scale:", this.currentScale());
@@ -75,6 +74,10 @@ export default {
         svgData.documentElement.setAttribute("width", "100%");
         svgData.documentElement.setAttribute("height", "100%");
         svgData.documentElement.setAttribute("style", "position: absolute");
+        svgData.documentElement.setAttribute(
+          "preserveAspectRatio",
+          "xMinYMin meet"
+        );
         this.svgContainer.node().append(svgData.documentElement);
 
         this.setZoom();
