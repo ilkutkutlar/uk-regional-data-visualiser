@@ -1,4 +1,3 @@
-import * as d3 from "d3";
 import _ from "lodash";
 
 import type { ColourMap } from "./colour_map";
@@ -44,16 +43,4 @@ export function generateKey(
       : `${valueFormatter(lower)} ${separator} ${valueFormatter(upper)}`;
     return [rangeDisplayText, mapping.colour];
   });
-}
-
-export function setOpacity(
-  colourString: string,
-  opacity: number
-): string | null {
-  const colour = d3.color(colourString);
-  if (colour) {
-    colour.opacity = opacity;
-    return colour.toString();
-  }
-  return null;
 }

@@ -15,9 +15,10 @@ export default {
   computed: {
     viewBoxSize() {
       const svgElem = this.svgContainer.select("svg");
+      const viewBoxBounds = svgElem.attr("viewBox").split(" ");
       return {
-        width: parseFloat(svgElem.attr("width")),
-        height: parseFloat(svgElem.attr("height")),
+        width: parseFloat(viewBoxBounds[2]),
+        height: parseFloat(viewBoxBounds[3]),
       };
     },
   },
