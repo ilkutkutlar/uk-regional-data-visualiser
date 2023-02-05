@@ -62,7 +62,12 @@ export default {
         <v-btn @click="toggleTheme">toggle theme</v-btn>
       </v-app-bar>
 
-      <v-navigation-drawer v-model="drawer" location="left" permanent>
+      <v-navigation-drawer
+        v-model="drawer"
+        location="left"
+        permanent
+        :width="400"
+      >
         <DataDetailsPanel v-if="current.dataset.isDataDownloaded" />
       </v-navigation-drawer>
 

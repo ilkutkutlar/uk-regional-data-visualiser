@@ -1,16 +1,10 @@
 <script>
-import IconText from "./icons/IconText.vue";
-import IconLink from "./icons/IconLink.vue";
 import { filterDataByKey } from "../utils";
 import { useCurrent } from "../store";
 import _ from "lodash";
 
 export default {
   inject: ["allDatasets"],
-  components: {
-    IconText,
-    IconLink,
-  },
   computed: {
     yearSelectItems() {
       /* This is a computed property because `years`
@@ -98,14 +92,18 @@ export default {
 
     <v-window v-model="tab">
       <v-window-item value="metadata">
-        <v-card variant="outlined" class="mt-5">
-          <template #title> <IconText />Description </template>
+        <v-card
+          variant="outlined"
+          class="mt-5"
+          prepend-icon="mdi-card-text-outline"
+        >
+          <template #title> Description </template>
           <template #text>
             {{ current.dataset.metadata.description }}
           </template>
         </v-card>
-        <v-card variant="outlined" class="mt-5">
-          <template #title> <IconLink />Source </template>
+        <v-card variant="outlined" class="mt-5" prepend-icon="mdi-link-variant">
+          <template #title> Source </template>
           <template #text>
             <a
               :href="current.dataset.metadata.sourceLink"
