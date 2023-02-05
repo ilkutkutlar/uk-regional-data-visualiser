@@ -77,7 +77,6 @@ export default {
         this.svgContainer.node().append(svgData.documentElement);
 
         this.setZoom();
-        this.setBaseStyle();
         this.svgContainer
           .selectAll("path")
           .on("mouseover", (d) => this.$emit("elemMouseOver", d))
@@ -96,14 +95,6 @@ export default {
       };
       this.svgContainer.call(this.zoom.on("zoom", zoomed));
     },
-    setBaseStyle() {
-      this.svgContainer
-        .selectAll("path")
-        .style("cursor", "pointer")
-        .attr("stroke", "#dcdcdc")
-        .attr("stroke-width", "1")
-        .attr("fill", "#412149");
-    },
   },
 };
 </script>
@@ -113,13 +104,11 @@ export default {
 </template>
 
 <style>
-@media (max-width: 991.98px) {
-  .w-100-md-down {
-    width: 100% !important;
-  }
-}
+/* TODO: do mouse-over using :hover */
 
-.end-0 {
-  right: 0 !important;
+path {
+  cursor: pointer;
+  stroke: #dcdcdc;
+  stroke-width: 1;
 }
 </style>

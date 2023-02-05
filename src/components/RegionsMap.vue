@@ -1,6 +1,5 @@
 <script>
 import { Colours } from "../constants";
-import { setOpacity } from "../utils";
 import { useCurrent } from "../store";
 import SvgContainer from "./partials/SvgContainer.vue";
 import _ from "lodash";
@@ -78,7 +77,7 @@ export default {
 
         this.svgContainer.setElemAttrs({
           [region]: {
-            fill: setOpacity(targetElement.attr("fill"), 0.8),
+            opacity: 0.8,
             "stroke-width": 2,
             highlighted: "true",
           },
@@ -93,7 +92,7 @@ export default {
 
         this.svgContainer.setElemAttrs({
           [region]: {
-            fill: setOpacity(targetElement.attr("fill"), 1),
+            opacity: 1,
             "stroke-width": 1,
             highlighted: "false",
           },
