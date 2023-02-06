@@ -47,6 +47,13 @@ export default {
       theme: useTheme(),
     };
   },
+  computed: {
+    toggleThemeButtonIcon() {
+      return this.theme.global.current.dark
+        ? "mdi-weather-night"
+        : "mdi-weather-sunny";
+    }
+  },
 };
 </script>
 
@@ -59,7 +66,7 @@ export default {
           @click.stop="drawer = !drawer"
         ></v-app-bar-nav-icon>
         <v-toolbar-title>Maps of Britain</v-toolbar-title>
-        <v-btn @click="toggleTheme">toggle theme</v-btn>
+        <v-btn @click="toggleTheme" :icon="toggleThemeButtonIcon"></v-btn>
       </v-app-bar>
 
       <v-navigation-drawer
