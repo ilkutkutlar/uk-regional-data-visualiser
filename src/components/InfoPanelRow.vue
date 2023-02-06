@@ -1,14 +1,5 @@
 <script>
-import ArrowUp from "./icons/ArrowUp.vue";
-import ArrowDown from "./icons/ArrowDown.vue";
-import Dash from "./icons/Dash.vue";
-
 export default {
-  components: {
-    ArrowUp,
-    ArrowDown,
-    Dash,
-  },
   props: ["year", "value", "changeFromLastYear", "isSelectedRow"],
   data() {
     return {
@@ -19,22 +10,24 @@ export default {
   computed: {
     changeTextClass() {
       if (isNaN(this.changeFromLastYear)) {
-        return ["text-muted"];
+        return ["text-grey"];
       } else if (this.changeFromLastYear > 0) {
-        return ["text-success"];
+        return ["text-green"];
       } else if (this.changeFromLastYear < 0) {
-        return ["text-danger"];
+        return ["text-red"];
       }
-      return ["text-warning"];
+      return ["text-yellow"];
     },
     changeDirectionIcon() {
       if (
         isNaN(this.changeFromLastYear) ||
         this.changeFromLastYear === "0.00"
       ) {
-        return Dash;
+        return "mdi-minus";
       }
-      return this.changeFromLastYear > 0 ? ArrowUp : ArrowDown;
+      return this.changeFromLastYear > 0
+        ? "mdi-arrow-up-thin"
+        : "mdi-arrow-down-thin";
     },
     changeFromLastYearPretty() {
       if (isNaN(this.changeFromLastYear)) return "N/A";
@@ -52,7 +45,7 @@ export default {
     </div>
     <div class="flex-fill text-end" :class="changeTextClass">
       {{ changeFromLastYearPretty }}
-      <component :is="changeDirectionIcon"></component>
+      <v-icon :icon="changeDirectionIcon"></v-icon>
     </div>
   </div>
 </template>

@@ -1,11 +1,7 @@
 <script>
-import IconSlider from "./icons/IconSlider.vue";
 import { useCurrent } from "../store";
 
 export default {
-  components: {
-    IconSlider,
-  },
   data() {
     return {
       current: useCurrent(),
@@ -36,9 +32,7 @@ export default {
           aria-controls="data-details-offcanvas"
           aria-expanded="false"
           aria-label="Toggle data details"
-        >
-          <IconSlider />
-        </div>
+        ></div>
       </div>
     </div>
   </div>

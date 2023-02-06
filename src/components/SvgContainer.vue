@@ -1,6 +1,6 @@
 <script>
 import * as d3 from "d3";
-import { getCentreOfSvgElem } from "../../utils";
+import { getCentreOfSvgElem } from "../utils";
 import _ from "lodash";
 
 export default {

@@ -1,7 +1,7 @@
 <script>
 import { Colours } from "../constants";
 import { useCurrent } from "../store";
-import SvgContainer from "./partials/SvgContainer.vue";
+import SvgContainer from "./SvgContainer.vue";
 import _ from "lodash";
 
 export default {
