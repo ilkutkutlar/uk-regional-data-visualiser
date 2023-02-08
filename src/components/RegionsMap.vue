@@ -54,6 +54,7 @@ export default {
     },
     svgDataLoaded() {
       this.setRegionColours();
+      this.svgContainer.centreMap();
     },
     regionMouseOver(d) {
       this.current.addHighlightedRegion(d.target.id);

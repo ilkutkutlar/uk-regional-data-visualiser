@@ -8,8 +8,6 @@ import { netInternalMigration } from "./datasets/net_internal_migration";
 import { pubsAndBars } from "./datasets/pubs_and_bars";
 import App from "./App.vue";
 
-import "./assets/main.css";
-
 // Vuetify
 import "vuetify/styles";
 import { createVuetify } from "vuetify";

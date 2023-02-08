@@ -54,9 +54,19 @@ export default {
   .bottom-0-md-down {
     bottom: 0 !important;
   }
-
   .start-0-md-down {
     left: 0 !important;
   }
+  .w-50-md-down {
+    width: 50% !important;
+  }
+}
+
+.break-word {
+  word-break: break-word;
+}
+
+.z-index-10 {
+  z-index: 10 !important;
 }
 </style>

@@ -5,7 +5,7 @@ import _ from "lodash";
 
 export default {
   props: ["svgFilePath"],
-  expose: ["getSvgElementById", "setElemAttrs", "centreSvgElement"],
+  expose: ["getSvgElementById", "setElemAttrs", "centreSvgElement", "centreMap"],
   data() {
     return {
       svgContainer: null,
@@ -46,6 +46,19 @@ export default {
         });
       });
     },
+    centreMap() {
+      const clientRect = this.svgContainer.node().getBoundingClientRect();
+      const relativeTo = [
+        clientRect.x + clientRect.width / 2,
+        this.viewBoxSize.height / 2,
+      ];
+      this.translateTo(
+        clientRect.width / 2,
+        this.viewBoxSize.height / 2,
+        relativeTo,
+        0
+      );
+    },
     centreSvgElement(elemId) {
       const elem = this.getSvgElementById(elemId);
       const [centreX, centreY] = getCentreOfSvgElem(elem);
@@ -63,10 +76,15 @@ export default {
         .translate(relativeTo[0], relativeTo[1])
         .scale(this.currentScale())
         .translate(-x, -y);
-      this.svgContainer
-        .transition()
-        .duration(duration)
-        .call(this.zoom.transform, zoomTransform);
+
+      if (duration === 0) {
+        this.svgContainer.call(this.zoom.transform, zoomTransform);
+      } else {
+        this.svgContainer
+          .transition()
+          .duration(duration)
+          .call(this.zoom.transform, zoomTransform);
+      }
     },
     loadSvgMap() {
       d3.xml(this.svgFilePath).then((svgData) => {

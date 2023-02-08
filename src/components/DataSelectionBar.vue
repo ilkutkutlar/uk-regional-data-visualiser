@@ -37,3 +37,9 @@ export default {
     </div>
   </div>
 </template>
+
+<style>
+.z-index-10 {
+  z-index: 10 !important;
+}
+</style>

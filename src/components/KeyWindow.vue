@@ -76,4 +76,8 @@ export default {
 .min-width-10 {
   min-width: 10em !important;
 }
+
+.z-index-10 {
+  z-index: 10 !important;
+}
 </style>
