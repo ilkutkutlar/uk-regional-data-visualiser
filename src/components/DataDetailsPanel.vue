@@ -93,16 +93,16 @@ export default {
     <v-window v-model="tab">
       <v-window-item value="metadata">
         <v-card
-          variant="outlined"
-          class="mt-5"
+          class="mt-5 border"
           prepend-icon="mdi-card-text-outline"
+          variant="flat"
         >
           <template #title> Description </template>
           <template #text>
             {{ current.dataset.metadata.description }}
           </template>
         </v-card>
-        <v-card variant="outlined" class="mt-5" prepend-icon="mdi-link-variant">
+        <v-card class="mt-5 border" prepend-icon="mdi-link-variant" variant="flat">
           <template #title> Source </template>
           <template #text>
             <a
@@ -125,7 +125,7 @@ export default {
           variant="outlined"
         ></v-text-field>
 
-        <v-table>
+        <v-table class="rounded border">
           <tbody>
             <tr
               v-for="entry in Object.entries(filteredData)"
@@ -150,6 +150,7 @@ export default {
 
 <style>
 tr:hover {
+  color: #26a69a;
   background-color: rgb(var(--v-theme-on-surface-variant));
 }
 
@@ -157,20 +158,12 @@ tr:hover {
   cursor: pointer;
 }
 
-@media (min-width: 992px) {
-  .offcanvas-side-panel-lg {
-    visibility: visible !important;
-    /* transform: none !important; */
-    width: 25% !important;
-    height: 94vh !important;
-    top: unset !important;
-    padding: 0 !important;
-    border-right: 1px solid #dee2e6 !important;
-    /* background-color: #e9ecef !important; */
-  }
+a:link,
+a:visited {
+  color: rgb(var(--v-theme-primary));
+}
 
-  .position-relative-lg {
-    position: relative !important;
-  }
+a:hover {
+  color: rgb(var(--v-theme-primary-darken-1));
 }
 </style>

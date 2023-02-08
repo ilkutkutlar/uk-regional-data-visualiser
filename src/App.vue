@@ -60,7 +60,7 @@ export default {
 <template>
   <v-app>
     <v-layout>
-      <v-app-bar prominent>
+      <v-app-bar prominent color="primary">
         <v-app-bar-nav-icon
           variant="text"
           @click.stop="drawer = !drawer"
@@ -74,6 +74,7 @@ export default {
         location="left"
         permanent
         :width="400"
+        color="secondary"
       >
         <DataDetailsPanel v-if="current.dataset.isDataDownloaded" />
       </v-navigation-drawer>

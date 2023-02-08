@@ -6,7 +6,7 @@ export default {
 
 <template>
   <v-card
-    class="card z-index-10 position-fixed break-word bg-opacity-75 top-0-lg end-0-lg bottom-0-md-down start-0-md-down w-50-md-down mt-5em me-4 w-20em border"
+    class="card z-index-10 position-fixed break-word bg-opacity-75 top-0-lg end-0-lg bottom-0-md-down start-0-md-down w-50-md-down mt-5em me-4 w-20em"
   >
     <template #title>
       <v-row no-gutters>
@@ -37,7 +37,7 @@ export default {
 }
 
 .mt-5em {
-  margin-top: 5em !important;
+  margin-top: 6em !important;
 }
 
 @media (min-width: 992px) {
