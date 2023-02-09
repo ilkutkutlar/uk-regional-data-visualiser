@@ -1,11 +1,13 @@
 <script>
+import _ from "lodash";
+import { useTheme } from "vuetify";
+
 import KeyWindow from "./components/KeyWindow.vue";
 import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
+import DataSelectionBar from "./components/DataSelectionBar.vue";
 import RegionsMap from "./components/RegionsMap.vue";
 import { useCurrent } from "./store";
-import _ from "lodash";
-import { useTheme } from "vuetify";
 
 export default {
   inject: ["allDatasets"],
@@ -13,6 +15,7 @@ export default {
     KeyWindow,
     InfoPanel,
     DataDetailsPanel,
+    DataSelectionBar,
     RegionsMap,
   },
   mounted() {
@@ -82,6 +85,7 @@ export default {
       <v-main>
         <KeyWindow />
         <InfoPanel />
+        <DataSelectionBar />
         <RegionsMap v-if="current.dataset.isDataDownloaded" />
       </v-main>
     </v-layout>

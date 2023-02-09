@@ -29,7 +29,7 @@ export default {
       title="Key"
       class="z-index-10 position-fixed end-0 bottom-0 mb-4-lg me-4-lg min-width-10"
     >
-      <v-expansion-panel-text>
+      <v-expansion-panel-text class="pt-3">
         <div v-for="keyItem in this.key" :key="keyItem[0]" class="d-flex mb-2">
           <div
             class="key-colour-box"

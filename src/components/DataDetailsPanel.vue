@@ -163,7 +163,6 @@ export default {
 <style>
 tr:hover {
   color: #26a69a;
-  /* background-color: rgb(var(--v-theme-on-surface-variant)); */
   background-color: rgb(var(--v-theme-primary), var(--v-selected-opacity));
 }
 
