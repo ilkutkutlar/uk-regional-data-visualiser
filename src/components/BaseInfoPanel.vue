@@ -6,7 +6,7 @@ export default {
 
 <template>
   <v-card
-    class="card z-index-10 position-fixed break-word bg-opacity-75 top-0-lg end-0-lg bottom-0-md-down start-0-md-down w-50-md-down mt-5em me-4 w-20em"
+    class="card z-index-10 position-fixed break-word bg-opacity-75 top-0 end-0 me-4 w-20em mt-5em-lg start-0-md-down w-100-md-down top-64px-md-down"
   >
     <template #title>
       <v-row no-gutters>
@@ -32,21 +32,29 @@ export default {
 </template>
 
 <style>
+.break-word {
+  word-break: break-word;
+}
+
+.z-index-10 {
+  z-index: 10 !important;
+}
+
 .w-20em {
   width: 20em !important;
 }
 
-.mt-5em {
-  margin-top: 6em !important;
+.top-0 {
+  top: 0 !important;
+}
+
+.end-0 {
+  right: 0 !important;
 }
 
 @media (min-width: 992px) {
-  .top-0-lg {
-    top: 0 !important;
-  }
-
-  .end-0-lg {
-    right: 0 !important;
+  .mt-5em-lg {
+    margin-top: 6em !important;
   }
 }
 
@@ -57,16 +65,11 @@ export default {
   .start-0-md-down {
     left: 0 !important;
   }
-  .w-50-md-down {
-    width: 50% !important;
+  .w-100-md-down {
+    width: 100% !important;
   }
-}
-
-.break-word {
-  word-break: break-word;
-}
-
-.z-index-10 {
-  z-index: 10 !important;
+  .top-64px-md-down {
+    top: 64px !important;
+  }
 }
 </style>
