@@ -28,6 +28,9 @@ export default {
           case "year":
             this.setRegionColours();
             break;
+          case "selectedRegion":
+            this.svgContainer.centreSvgElement(event.newValue);
+            break;
         }
       });
     });
@@ -68,7 +71,6 @@ export default {
         selectedRegion: d.target.id,
         highlightedRegions: [d.target.id],
       });
-      this.svgContainer.centreSvgElement(d.target.id);
     },
     highlightRegions(regions) {
       regions.forEach((region) => {

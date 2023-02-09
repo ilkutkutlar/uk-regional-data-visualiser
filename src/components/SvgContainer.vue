@@ -5,7 +5,12 @@ import _ from "lodash";
 
 export default {
   props: ["svgFilePath"],
-  expose: ["getSvgElementById", "setElemAttrs", "centreSvgElement", "centreMap"],
+  expose: [
+    "getSvgElementById",
+    "setElemAttrs",
+    "centreSvgElement",
+    "centreMap",
+  ],
   data() {
     return {
       svgContainer: null,

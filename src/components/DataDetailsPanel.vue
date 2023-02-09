@@ -47,14 +47,20 @@ export default {
     dataRowMouseEnter(region) {
       this.current.addHighlightedRegion(region);
     },
-    dataRowMouseLeave() {
-      this.current.clearHighlightedRegions();
+    dataRowMouseLeave(region) {
+      if (region === this.current.selectedRegion) return;
+      this.current.removeHighlightedRegion(region);
+    },
+    dataRowClick(region) {
+      this.current.$patch({
+        selectedRegion: region,
+        highlightedRegions: [region],
+      });
     },
   },
   data() {
     return {
       current: useCurrent(),
-      drawer: true,
       dataSelectItems: this.allDatasets.map((dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
@@ -102,7 +108,11 @@ export default {
             {{ current.dataset.metadata.description }}
           </template>
         </v-card>
-        <v-card class="mt-5 border" prepend-icon="mdi-link-variant" variant="flat">
+        <v-card
+          class="mt-5 border"
+          prepend-icon="mdi-link-variant"
+          variant="flat"
+        >
           <template #title> Source </template>
           <template #text>
             <a
@@ -130,9 +140,11 @@ export default {
             <tr
               v-for="entry in Object.entries(filteredData)"
               class="cursor-pointer"
+              :class="{ selected: this.current.selectedRegion === entry[0] }"
               :key="entry[0]"
+              @click="() => dataRowClick(entry[0])"
               @mouseenter="() => dataRowMouseEnter(entry[0])"
-              @mouseleave="dataRowMouseLeave"
+              @mouseleave="() => dataRowMouseLeave(entry[0])"
             >
               <td>{{ keyFormatter(entry[0]) }}</td>
               <td>
@@ -151,7 +163,12 @@ export default {
 <style>
 tr:hover {
   color: #26a69a;
-  background-color: rgb(var(--v-theme-on-surface-variant));
+  /* background-color: rgb(var(--v-theme-on-surface-variant)); */
+  background-color: rgb(var(--v-theme-primary), var(--v-selected-opacity));
+}
+
+.selected {
+  background-color: rgb(var(--v-theme-primary), var(--v-selected-opacity));
 }
 
 .cursor-pointer {
