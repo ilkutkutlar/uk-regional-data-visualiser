@@ -71,7 +71,7 @@ export default {
 </script>
 
 <template>
-  <v-card id="info-panel-root" v-show="displayedRegion" class="ma-2">
+  <v-card id="info-panel-root" v-show="displayedRegion">
     <template #title>
       <v-row no-gutters>
         <v-col cols="10">
@@ -111,14 +111,15 @@ export default {
   top: var(--v-layout-top) !important;
   right: 0;
   width: 20em;
-  margin-top: 2em;
-  margin-right: 2em;
+  margin-top: 1.5em;
+  margin-right: 1.5em;
 }
 
 @media (max-width: 991.98px) {
   #info-panel-root {
     width: unset;
     left: 0;
+    margin: 8px;
   }
 }
 </style>

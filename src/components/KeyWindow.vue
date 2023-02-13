@@ -50,8 +50,8 @@ export default {
 
 @media (min-width: 992px) {
   #key-window-root {
-    margin-bottom: 1.5rem !important;
-    margin-right: 1.5rem !important;
+    margin-bottom: 1.5em !important;
+    margin-right: 1.5em !important;
   }
 }
 
