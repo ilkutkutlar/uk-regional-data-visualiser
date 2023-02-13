@@ -11,23 +11,30 @@ export default {
 </script>
 
 <template>
-  <div class="position-fixed z-index-10 d-lg-none mt-3" style="bottom: 0">
-    <div class="border m-auto p-2" style="width: fit-content">
-      <div class="d-flex">
-        <div
-          class="overflow-hidden ms-2 me-3"
-          style="white-space: nowrap; text-overflow: ellipsis"
-        >
-          <div>
+  <v-card id="bottom-card" class="ma-2 d-md-none">
+    <v-card-text>
+      <v-row class="px-2">
+        <v-col cols="3" class="text-right">
+          <v-btn
+            size="small"
+            variant="tonal"
+            class="me-2"
+            icon="mdi-tune"
+            color="primary"
+            @click="this.current.toggleDrawer"
+          ></v-btn>
+        </v-col>
+        <v-col cols="9">
+          <div class="text-left">
+            <div class="font-weight-thin">Dataset</div>
             {{ current.dataset.metadata.name }}
-          </div>
-          <div class="text-muted">
+            <span class="mx-3 font-weight-thin text-primary">|</span>
             {{ current.year }}
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
 </template>
 
 <style>

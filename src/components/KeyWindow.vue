@@ -25,10 +25,7 @@ export default {
 
 <template>
   <v-expansion-panels>
-    <v-expansion-panel
-      title="Key"
-      class="z-index-10 position-fixed end-0 bottom-0 mb-4-lg me-4-lg min-width-10"
-    >
+    <v-expansion-panel id="key-window-root" title="Key">
       <v-expansion-panel-text class="pt-3">
         <div v-for="keyItem in this.key" :key="keyItem[0]" class="d-flex mb-2">
           <div
@@ -43,41 +40,32 @@ export default {
 </template>
 
 <style>
-.end-0 {
+#key-window-root {
+  z-index: 10;
+  position: fixed;
+  min-width: 10em !important;
   right: 0 !important;
+  bottom: var(--v-layout-bottom) !important;
 }
 
-.bottom-0 {
-  bottom: 0 !important;
+@media (min-width: 992px) {
+  #key-window-root {
+    margin-bottom: 1.5rem !important;
+    margin-right: 1.5rem !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  #key-window-root {
+    max-width: 70% !important;
+    margin-bottom: 1em !important;
+    margin-right: 0.5em !important;
+  }
 }
 
 .key-colour-box {
   width: 1.3em;
   height: 1.3em;
   margin-right: 0.7em;
-}
-
-@media (min-width: 992px) {
-  .mb-4-lg {
-    margin-bottom: 1.5rem !important;
-  }
-
-  .me-4-lg {
-    margin-right: 1.5rem !important;
-  }
-}
-
-@media (max-width: 991.98px) {
-  .mw-50-md-down {
-    max-width: 50% !important;
-  }
-}
-
-.min-width-10 {
-  min-width: 10em !important;
-}
-
-.z-index-10 {
-  z-index: 10 !important;
 }
 </style>

@@ -10,6 +10,7 @@ export const useCurrent = defineStore("current", {
     highlightedRegions: [] as Array<string>,
     selectedRegion: "" as string,
     isDarkMode: false as boolean,
+    drawer: false as boolean,
   }),
   getters: {
     dataForCurrentYear: (state) => state.dataset.data[state.year],
@@ -30,6 +31,9 @@ export const useCurrent = defineStore("current", {
     },
     clearHighlightedRegions() {
       this.$patch({ highlightedRegions: [] });
+    },
+    toggleDrawer() {
+      this.drawer = !this.drawer;
     },
   },
 });
