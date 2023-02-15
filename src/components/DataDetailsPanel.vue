@@ -76,7 +76,6 @@ export default {
 <template>
   <v-container>
     <v-select
-      class="mt-4"
       variant="outlined"
       label="Choose a dataset"
       item-title="text"
@@ -89,6 +88,7 @@ export default {
       label="Choose a year"
       :items="yearSelectItems"
       v-model="selectedYear"
+      attach
     ></v-select>
 
     <v-tabs v-model="tab" align-tabs="center" grow>
@@ -181,5 +181,9 @@ a:visited {
 
 a:hover {
   color: rgb(var(--v-theme-primary-darken-1));
+}
+
+.v-list.bg-transparent {
+  background-color: rgb(var(--v-theme-surface)) !important;
 }
 </style>
