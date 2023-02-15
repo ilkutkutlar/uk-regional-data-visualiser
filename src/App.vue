@@ -99,9 +99,9 @@ export default {
       <v-main id="main">
         <KeyWindow />
         <InfoPanel />
+        <DataSelectionBar />
         <RegionsMap v-if="current.dataset.isDataDownloaded" />
       </v-main>
-      <DataSelectionBar />
     </v-layout>
   </v-app>
 </template>

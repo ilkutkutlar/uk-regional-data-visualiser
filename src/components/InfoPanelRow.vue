@@ -1,12 +1,6 @@
 <script>
 export default {
   props: ["year", "value", "changeFromLastYear", "isSelectedRow"],
-  data() {
-    return {
-      normalClass: ["pt-1", ""],
-      selectedClass: ["pt-1", "rounded-2", "v-theme-light"],
-    };
-  },
   computed: {
     changeTextClass() {
       if (isNaN(this.changeFromLastYear)) {
@@ -38,14 +32,18 @@ export default {
 </script>
 
 <template>
-  <div class="d-flex" :class="isSelectedRow ? selectedClass : normalClass">
-    <div class="flex-fill">
-      <span class="font-weight-bold"> {{ year }} </span>:
+  <tr>
+    <td>
+      <v-icon :icon="isSelectedRow ? 'mdi-chevron-right' : ''"></v-icon>
+      <span class="font-weight-bold text-primary">
+        {{ year }}
+      </span>
+      <span class="mx-2 font-weight-thin">|</span>
       {{ value }}
-    </div>
-    <div class="flex-fill text-end" :class="changeTextClass">
+    </td>
+    <td class="text-end" :class="changeTextClass">
       {{ changeFromLastYearPretty }}
       <v-icon :icon="changeDirectionIcon"></v-icon>
-    </div>
-  </div>
+    </td>
+  </tr>
 </template>

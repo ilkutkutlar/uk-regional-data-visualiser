@@ -91,24 +91,28 @@ export default {
       </v-row>
     </template>
     <template #text>
-      <InfoPanelRow
-        v-for="year in displayedYears"
-        :key="year"
-        :isSelectedRow="year == current.year"
-        :year="year"
-        :value="current.dataset.valueOf(year, displayedRegion, true)"
-        :changeFromLastYear="changeBetweenYears(parseInt(year) - 1, year)"
-      />
+      <table density="compact" style="width: 100%; border-collapse: collapse">
+        <tbody>
+          <InfoPanelRow
+            v-for="year in displayedYears"
+            :key="year"
+            :isSelectedRow="year == current.year"
+            :year="year"
+            :value="current.dataset.valueOf(year, displayedRegion, true)"
+            :changeFromLastYear="changeBetweenYears(parseInt(year) - 1, year)"
+          />
+        </tbody>
+      </table>
     </template>
   </v-card>
 </template>
 
 <style>
 #info-panel-root {
-  z-index: 10 !important;
+  z-index: 10;
   position: fixed;
   word-break: break-word;
-  top: var(--v-layout-top) !important;
+  top: var(--v-layout-top);
   right: 0;
   width: 20em;
   margin-top: 1.5em;
