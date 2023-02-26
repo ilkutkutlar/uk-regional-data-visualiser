@@ -63,8 +63,10 @@ export default {
       const elem = this.getSvgElementById(elemId);
       const elemBb = elem.node().getBBox();
       const [centreX, centreY] = [
-        this.viewBoxCentre.x - elemBb.x - elemBb.width / 2,
-        this.viewBoxCentre.y - elemBb.y - elemBb.height / 2,
+        this.viewBoxCentre.x / this.currentScale() -
+          (elemBb.x + elemBb.width / 2),
+        this.viewBoxCentre.y / this.currentScale() -
+          (elemBb.y + elemBb.height / 2),
       ];
       this.translateTo(centreX, centreY, 1000);
     },
