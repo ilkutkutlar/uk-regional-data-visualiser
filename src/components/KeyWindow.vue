@@ -27,12 +27,16 @@ export default {
   <v-expansion-panels>
     <v-expansion-panel id="key-window-root" title="Key">
       <v-expansion-panel-text class="pt-3">
-        <div v-for="keyItem in this.key" :key="keyItem[0]" class="d-flex mb-2">
+        <div
+          v-for="[range, colour] in this.key"
+          :key="range"
+          class="d-flex mb-2"
+        >
           <div
             class="key-colour-box"
-            :style="{ backgroundColor: keyItem[1] }"
+            :style="{ backgroundColor: colour }"
           ></div>
-          <div>{{ keyItem[0] }}</div>
+          <div>{{ range }}</div>
         </div>
       </v-expansion-panel-text>
     </v-expansion-panel>

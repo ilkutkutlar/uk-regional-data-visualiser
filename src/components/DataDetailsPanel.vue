@@ -1,5 +1,4 @@
 <script>
-import { filterDataByKey } from "../utils";
 import { useCurrent } from "../store";
 import _ from "lodash";
 
@@ -18,11 +17,19 @@ export default {
     filteredData() {
       let data = this.current.dataset.data[this.current.year] ?? {};
       if (this.searchText) {
-        data = filterDataByKey(data, this.keyFormatter, this.searchText);
+        data = _.pickBy(data, (_, key) => {
+          const formatted = this.keyFormatter(key) ?? "";
+          return formatted
+            .toLowerCase()
+            .includes(this.searchText.toLowerCase());
+        });
       }
-      return _.fromPairs(
-        _.sortBy(_.toPairs(data), (item) => item[1]).reverse()
-      );
+      return _.chain(data)
+        .toPairs()
+        .sortBy((item) => item[1])
+        .reverse()
+        .fromPairs()
+        .value();
     },
     selectedYear: {
       get() {
@@ -138,18 +145,18 @@ export default {
         <v-table class="rounded border">
           <tbody>
             <tr
-              v-for="entry in Object.entries(filteredData)"
+              v-for="(value, region) in filteredData"
               class="cursor-pointer"
-              :class="{ selected: this.current.selectedRegion === entry[0] }"
-              :key="entry[0]"
-              @click="() => dataRowClick(entry[0])"
-              @mouseenter="() => dataRowMouseEnter(entry[0])"
-              @mouseleave="() => dataRowMouseLeave(entry[0])"
+              :class="{ selected: this.current.selectedRegion === region }"
+              :key="region"
+              @click="() => dataRowClick(region)"
+              @mouseenter="() => dataRowMouseEnter(region)"
+              @mouseleave="() => dataRowMouseLeave(region)"
             >
-              <td>{{ keyFormatter(entry[0]) }}</td>
+              <td>{{ keyFormatter(region) }}</td>
               <td>
                 <span class="font-weight-bold">{{
-                  current.dataset.valueFormatter(entry[1])
+                  current.dataset.valueFormatter(value)
                 }}</span>
               </td>
             </tr>

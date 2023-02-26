@@ -8,18 +8,6 @@ export type SvgMap = {
   prettyNames: Map<String, String>;
 };
 
-export function filterDataByKey(
-  data: { [index: string]: string },
-  keyFormatter: Formatter,
-  filterBy: string
-) {
-  const filter = (item: any) => {
-    const formatted = keyFormatter(item[0]) ?? "";
-    return formatted.toLowerCase().includes(filterBy.toLowerCase());
-  };
-  return _.chain(data).toPairs().filter(filter).fromPairs().value();
-}
-
 export function getCentreOfSvgElem(
   svg: d3.Selection<any, any, any, any>
 ): [number, number] {
@@ -32,7 +20,8 @@ export function generateKey(
   valueFormatter: Formatter
 ): Array<[string, string]> {
   const rangeHasNegativeNums = colourMap.colourMap.some((entry) => {
-    return Number(entry.range[0]) < 0 || Number(entry.range[1]) < 0;
+    const [lower, upper] = entry.range;
+    return Number(lower) < 0 || Number(upper) < 0;
   });
   const separator = rangeHasNegativeNums ? "to" : "-";
 
