@@ -1,6 +1,5 @@
 <script>
 import * as d3 from "d3";
-import { getCentreOfSvgElem } from "../utils";
 import _ from "lodash";
 
 export default {
@@ -24,6 +23,12 @@ export default {
       return {
         width: parseFloat(viewBoxBounds[2]),
         height: parseFloat(viewBoxBounds[3]),
+      };
+    },
+    viewBoxCentre() {
+      return {
+        x: this.viewBoxSize.width / 2,
+        y: this.viewBoxSize.height / 2,
       };
     },
   },
@@ -52,35 +57,22 @@ export default {
       });
     },
     centreMap() {
-      const clientRect = this.svgContainer.node().getBoundingClientRect();
-      const relativeTo = [
-        clientRect.x + clientRect.width / 2,
-        this.viewBoxSize.height / 2,
-      ];
-      this.translateTo(
-        clientRect.width / 2,
-        this.viewBoxSize.height / 2,
-        relativeTo,
-        0
-      );
+      this.translateTo(0, 0, 0);
     },
     centreSvgElement(elemId) {
       const elem = this.getSvgElementById(elemId);
-      const [centreX, centreY] = getCentreOfSvgElem(elem);
-      const clientRect = this.svgContainer.node().getBoundingClientRect();
-      const relativeTo = [
-        clientRect.x + clientRect.width / 2,
-        this.viewBoxSize.height / 2,
+      const elemBb = elem.node().getBBox();
+      const [centreX, centreY] = [
+        this.viewBoxCentre.x - elemBb.x - elemBb.width / 2,
+        this.viewBoxCentre.y - elemBb.y - elemBb.height / 2,
       ];
-
-      this.translateTo(centreX, centreY, relativeTo, 1000);
+      this.translateTo(centreX, centreY, 1000);
     },
-    translateTo(x, y, relativeTo, duration) {
+    translateTo(x, y, duration) {
       console.log("Current scale:", this.currentScale());
       const zoomTransform = d3.zoomIdentity
-        .translate(relativeTo[0], relativeTo[1])
         .scale(this.currentScale())
-        .translate(-x, -y);
+        .translate(x, y);
 
       if (duration === 0) {
         this.svgContainer.call(this.zoom.transform, zoomTransform);
@@ -97,10 +89,6 @@ export default {
         svgData.documentElement.setAttribute("width", "100%");
         svgData.documentElement.setAttribute("height", "100%");
         svgData.documentElement.setAttribute("style", "position: absolute");
-        svgData.documentElement.setAttribute(
-          "preserveAspectRatio",
-          "xMinYMin meet"
-        );
         this.svgContainer.node().append(svgData.documentElement);
 
         this.setZoom();
