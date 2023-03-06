@@ -10,7 +10,9 @@ const metadata = {
     "Median annual gross income for residents of each region. The figures include both part-time and full-time workers.",
   source: "Office for National Statistics (ONS)",
   sourceLink: "https://www.ons.gov.uk/datasets/ashe-tables-7-and-8",
+  boundaries: "Local Authority Boundaries",
 };
+
 const colourMap = new ColourMap([
   { range: [10000, 15000], colour: Colours.RED },
   { range: [15000, 20000], colour: Colours.ORANGE },

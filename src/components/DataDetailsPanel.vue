@@ -131,6 +131,15 @@ export default {
             </a>
           </template>
         </v-card>
+
+        <v-card
+          class="mt-5 border"
+          prepend-icon="mdi-land-fields"
+          variant="flat"
+        >
+          <template #title> Boundaries </template>
+          <template #text> {{ current.dataset.metadata.boundaries }} </template>
+        </v-card>
       </v-window-item>
 
       <v-window-item value="data">

@@ -11,7 +11,9 @@ const metadata = {
   source: "Office for National Statistics (ONS)",
   sourceLink:
     "https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/datasets/publichousesandbarsbylocalauthority",
+  boundaries: "Local Authority Boundaries",
 };
+
 const colourMap = new ColourMap([
   { range: [0, 50], colour: Colours.RED },
   { range: [50, 100], colour: Colours.ORANGE },

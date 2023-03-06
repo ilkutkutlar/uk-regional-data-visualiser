@@ -11,7 +11,9 @@ const metadata = {
   source: "Office for National Statistics (ONS)",
   sourceLink:
     "https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-january-2022",
+  boundaries: "Local Authority Boundaries",
 };
+
 const colourMap = new ColourMap([
   { range: [0, 100000], colour: Colours.LIGHT_BLUE },
   { range: [100000, 200000], colour: Colours.BLUE },

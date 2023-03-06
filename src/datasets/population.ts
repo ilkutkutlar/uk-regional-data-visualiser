@@ -11,7 +11,9 @@ const metadata = {
   source: "Office for National Statistics (ONS)",
   sourceLink:
     "https://www.ons.gov.uk/datasets/mid-year-pop-est/editions/mid-2020-april-2021-geography/versions/1",
+  boundaries: "Local Authority Boundaries",
 };
+
 const colourMap = new ColourMap([
   { range: [0, 100000], colour: Colours.GREEN },
   { range: [100000, 250000], colour: Colours.YELLOW },

@@ -10,7 +10,9 @@ const metadata = {
   source: "Office for National Statistics (ONS)",
   sourceLink:
     "https://www.ons.gov.uk/economy/regionalaccounts/grossdisposablehouseholdincome/datasets/regionalgrossdisposablehouseholdincomegdhi",
+  boundaries: "ITL3",
 };
+
 const colourMap = new ColourMap([
   { range: [10000, 15000], colour: Colours.RED },
   { range: [15000, 20000], colour: Colours.ORANGE },

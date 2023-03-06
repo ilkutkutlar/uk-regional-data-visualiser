@@ -8,6 +8,7 @@ type DatasetMetadata = {
   description: string;
   source: string;
   sourceLink: string;
+  boundaries: string;
 };
 
 export class Dataset {
