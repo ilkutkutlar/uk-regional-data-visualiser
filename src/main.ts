@@ -6,6 +6,8 @@ import { gdhi } from "./datasets/gdhi";
 import { population } from "./datasets/population";
 import { netInternalMigration } from "./datasets/net_internal_migration";
 import { pubsAndBars } from "./datasets/pubs_and_bars";
+import { lifeExpectancyFemale } from "./datasets/life_expectancy_female";
+import { lifeExpectancyMale } from "./datasets/life_expectancy_male";
 import App from "./App.vue";
 
 // Vuetify
@@ -66,6 +68,8 @@ app.provide("allDatasets", [
   population,
   netInternalMigration,
   pubsAndBars,
+  lifeExpectancyFemale,
+  lifeExpectancyMale,
 ]);
 
 app.use(pinia);
