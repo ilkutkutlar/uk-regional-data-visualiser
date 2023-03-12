@@ -34,37 +34,31 @@ export default {
     displayedRegion() {
       if (this.current.selectedRegion) {
         return this.current.selectedRegion;
-      } else if (this.current.highlightedRegions.length > 0) {
-        return this.current.highlightedRegions[0];
-      } else {
-        return "";
       }
+
+      if (this.current.highlightedRegions.length > 0) {
+        return this.current.highlightedRegions[0];
+      }
+
+      return "";
     },
     displayedYears() {
       const years = this.current.dataset.years;
       const currentIndex = years.indexOf(this.current.year);
 
-      const displayedYears = [this.current.year];
+      let lowerBound;
       switch (currentIndex) {
         case 0:
-          if (years.length >= 2) {
-            displayedYears.unshift(years[currentIndex + 1]);
-          }
-          if (years.length >= 3) {
-            displayedYears.unshift(years[currentIndex + 2]);
-          }
+          lowerBound = currentIndex;
           break;
         case 1:
-          displayedYears.push(years[currentIndex - 1]);
-          if (years.length >= 3) {
-            displayedYears.unshift(years[currentIndex + 1]);
-          }
+          lowerBound = currentIndex - 1;
           break;
         default:
-          displayedYears.push(years[currentIndex - 1]);
-          displayedYears.push(years[currentIndex - 2]);
+          lowerBound = currentIndex - 2;
       }
-      return displayedYears;
+
+      return years.slice(lowerBound, lowerBound + 3).reverse();
     },
   },
 };
