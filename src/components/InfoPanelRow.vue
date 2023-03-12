@@ -3,13 +3,9 @@ export default {
   props: ["year", "value", "changeFromLastYear", "isSelectedRow"],
   computed: {
     changeTextClass() {
-      if (isNaN(this.changeFromLastYear)) {
-        return ["text-grey"];
-      } else if (this.changeFromLastYear > 0) {
-        return ["text-green"];
-      } else if (this.changeFromLastYear < 0) {
-        return ["text-red"];
-      }
+      if (isNaN(this.changeFromLastYear)) return ["text-grey"];
+      if (this.changeFromLastYear > 0) return ["text-green"];
+      if (this.changeFromLastYear < 0) return ["text-red"];
       return ["text-yellow"];
     },
     changeDirectionIcon() {
