@@ -1,4 +1,8 @@
-import type { Formatter } from "./utils";
+export type Formatter = (value: any) => string;
+export type SvgMap = {
+  svgPaths: Map<String, String>;
+  prettyNames: Map<String, String>;
+};
 
 export const ValueFormatters: { [index: string]: Formatter } = {
   NONE: (value: number) => {

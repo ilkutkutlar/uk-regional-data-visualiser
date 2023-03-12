@@ -1,6 +1,7 @@
 <script>
 import InfoPanelRow from "./InfoPanelRow.vue";
 import { useCurrent } from "../store";
+import _ from "lodash";
 
 export default {
   components: {
@@ -31,6 +32,26 @@ export default {
     },
   },
   computed: {
+    rank() {
+      const rankIndex = _.chain(this.current.dataForCurrentYear)
+        .toPairs()
+        .sortBy((item) => item[1])
+        .reverse()
+        .findIndex((x) => x[0] === this.displayedRegion)
+        .value();
+      const rank = rankIndex + 1;
+
+      switch (rank.toString().slice(-1)) {
+        case "1":
+          return `${rank}st`;
+        case "2":
+          return `${rank}nd`;
+        case "3":
+          return `${rank}rd`;
+        default:
+          return `${rank}th`;
+      }
+    },
     displayedRegion() {
       if (this.current.selectedRegion) {
         return this.current.selectedRegion;
@@ -85,6 +106,7 @@ export default {
       </v-row>
     </template>
     <template #text>
+      <div class="text-left mb-2">{{ rank }} in the UK</div>
       <table density="compact" style="width: 100%; border-collapse: collapse">
         <tbody>
           <InfoPanelRow

@@ -1,6 +1,5 @@
 <script>
 import { useCurrent } from "../store";
-import { generateKey } from "../utils";
 import { Colours } from "../constants";
 
 export default {
@@ -10,9 +9,26 @@ export default {
       current: useCurrent(),
     };
   },
+  methods: {
+    generateKey(colourMap, valueFormatter) {
+      const rangeHasNegativeNums = colourMap.colourMap.some((entry) => {
+        const [lower, upper] = entry.range;
+        return Number(lower) < 0 || Number(upper) < 0;
+      });
+      const separator = rangeHasNegativeNums ? "to" : "-";
+
+      return colourMap.colourMap.map((mapping) => {
+        const [lower, upper] = mapping.range;
+        const rangeDisplayText = isNaN(upper)
+          ? `${valueFormatter(lower)}+`
+          : `${valueFormatter(lower)} ${separator} ${valueFormatter(upper)}`;
+        return [rangeDisplayText, mapping.colour];
+      });
+    },
+  },
   computed: {
     key() {
-      const _key = generateKey(
+      const _key = this.generateKey(
         this.current.dataset.colourMap,
         this.current.dataset.valueFormatter
       );

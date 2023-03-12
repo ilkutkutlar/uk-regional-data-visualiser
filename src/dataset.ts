@@ -1,4 +1,4 @@
-import type { Formatter, SvgMap } from "./utils";
+import type { Formatter, SvgMap } from "./constants";
 import type { ColourMap } from "./colour_map";
 import _ from "lodash";
 

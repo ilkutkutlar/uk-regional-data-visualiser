@@ -1,4 +1,4 @@
-import type { SvgMap } from "../utils";
+import type { SvgMap } from "../constants";
 
 export const PRETTY_NAMES: Map<String, String> = new Map([
   ["E92000001", "England"],
