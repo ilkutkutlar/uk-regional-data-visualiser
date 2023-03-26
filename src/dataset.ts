@@ -72,4 +72,13 @@ export class Dataset {
     }
     return formatValue ? this.valueFormatter(value) : value;
   }
+
+  prettyNameOf(regionCode: string) {
+    return this.svgMap.prettyNames.get(regionCode);
+  }
+
+  countyOf(regionCode: string) {
+    const county = this.svgMap.countyLookup.get(regionCode);
+    return county ? county[1] : undefined;
+  }
 }

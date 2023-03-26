@@ -242,4 +242,5 @@ export const ITL3SvgMap: SvgMap = {
     ["2019", "./data/svg/uk_itl3.svg"],
   ]),
   prettyNames: PRETTY_NAMES,
+  countyLookup: new Map([]),
 };

@@ -81,6 +81,12 @@ export default {
 
       return years.slice(lowerBound, lowerBound + 3).reverse();
     },
+    displayedRegionName() {
+      return this.current.dataset.prettyNameOf(this.displayedRegion);
+    },
+    displayedRegionCounty() {
+      return this.current.dataset.countyOf(this.displayedRegion);
+    },
   },
 };
 </script>
@@ -90,14 +96,15 @@ export default {
     <template #title>
       <v-row no-gutters>
         <v-col cols="10">
-          {{ current.dataset.svgMap.prettyNames.get(displayedRegion) }}
+          {{ displayedRegionName }}
           <div class="text-subtitle-1 text-medium-emphasis">
-            {{
-              (current.dataset.svgMap.countyLookup.get(displayedRegion) ??
-                [])[1]
-            }}
-            <span class="ms-2 me-2 text-high-emphasis"> ⦁ </span>
-            {{ rank }} in the UK
+            <span v-if="displayedRegionCounty">
+              {{ displayedRegionCounty }}
+              <span v-if="rank !== '0th'" class="ms-1 me-1 text-high-emphasis">
+                ⦁
+              </span>
+            </span>
+            <span v-if="rank !== '0th'">{{ rank }} in the UK</span>
           </div>
         </v-col>
         <v-col cols="2">

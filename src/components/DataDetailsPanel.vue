@@ -71,8 +71,7 @@ export default {
       dataSelectItems: this.allDatasets.map((dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
-      keyFormatter: (region) =>
-        this.current.dataset.svgMap.prettyNames.get(region),
+      keyFormatter: (region) => this.current.dataset.prettyNameOf(region),
       searchText: "",
       tab: null,
     };
