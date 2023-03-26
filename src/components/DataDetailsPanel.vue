@@ -15,7 +15,7 @@ export default {
       return this.current.dataset.years;
     },
     filteredData() {
-      let data = this.current.dataset.data[this.current.year] ?? {};
+      let data = this.current.dataForCurrentYear ?? {};
       if (this.searchText) {
         data = _.pickBy(data, (_, key) => {
           const formatted = this.keyFormatter(key) ?? "";

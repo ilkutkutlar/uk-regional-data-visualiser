@@ -10,7 +10,7 @@ const metadata = {
   source: "Office for National Statistics (ONS)",
   sourceLink:
     "https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/healthandlifeexpectancies/bulletins/lifeexpectancyforlocalareasoftheuk/between2001to2003and2018to2020",
-  boundaries: "Local Authority Boundaries",
+  boundaries: "Local Authority Districts",
 };
 
 const colourMap = new ColourMap([
