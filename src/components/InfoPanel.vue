@@ -91,6 +91,14 @@ export default {
       <v-row no-gutters>
         <v-col cols="10">
           {{ current.dataset.svgMap.prettyNames.get(displayedRegion) }}
+          <div class="text-subtitle-1 text-medium-emphasis">
+            {{
+              (current.dataset.svgMap.countyLookup.get(displayedRegion) ??
+                [])[1]
+            }}
+            <span class="ms-2 me-2 text-high-emphasis"> ⦁ </span>
+            {{ rank }} in the UK
+          </div>
         </v-col>
         <v-col cols="2">
           <v-btn
@@ -106,7 +114,6 @@ export default {
       </v-row>
     </template>
     <template #text>
-      <div class="text-left mb-2">{{ rank }} in the UK</div>
       <table density="compact" style="width: 100%; border-collapse: collapse">
         <tbody>
           <InfoPanelRow

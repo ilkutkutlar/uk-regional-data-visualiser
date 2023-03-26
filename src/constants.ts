@@ -2,6 +2,7 @@ export type Formatter = (value: any) => string;
 export type SvgMap = {
   svgPaths: Map<String, String>;
   prettyNames: Map<String, String>;
+  countyLookup: Map<String, [String, String]>;
 };
 
 export const ValueFormatters: { [index: string]: Formatter } = {
