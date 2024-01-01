@@ -74,28 +74,6 @@ export default {
         <v-btn @click="toggleTheme" :icon="toggleThemeButtonIcon"></v-btn>
       </v-app-bar>
 
-      <v-navigation-drawer
-        v-model="this.current.drawer"
-        location="left"
-        permanent
-        :width="400"
-        color="secondary"
-      >
-        <DataDetailsPanel v-if="current.dataset.isDataDownloaded" />
-        <template v-slot:append>
-          <v-container>
-            <v-btn
-              prepend-icon="mdi-close"
-              block
-              color="primary"
-              variant="tonal"
-              @click="this.current.toggleDrawer"
-              >Close</v-btn
-            >
-          </v-container>
-        </template>
-      </v-navigation-drawer>
-
       <v-main id="main">
         <KeyWindow />
         <InfoPanel />

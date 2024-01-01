@@ -67,6 +67,7 @@ export default {
       this.current.removeHighlightedRegion(d.target.id);
     },
     regionClick(d) {
+      console.log(d);
       this.current.$patch({
         selectedRegion: d.target.id,
         highlightedRegions: [d.target.id],
