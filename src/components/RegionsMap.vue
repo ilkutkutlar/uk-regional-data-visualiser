@@ -15,24 +15,17 @@ export default {
   mounted() {
     this.svgContainer = this.$refs.svgContainer;
 
-    this.current.$subscribe((mutation) => {
-      const events = _.isArray(mutation.events)
-        ? mutation.events
-        : [mutation.events];
-      events.forEach((event) => {
-        switch (event.key) {
-          case "highlightedRegions":
-            this.unhighlightRegions(event.oldValue);
-            this.highlightRegions(event.newValue);
-            break;
-          case "year":
-            this.setRegionColours();
-            break;
-          case "selectedRegion":
-            this.svgContainer.centreSvgElement(event.newValue);
-            break;
-        }
-      });
+    this.current.$subscribe((mutation, state) => {
+      if (mutation.payload.highlightedRegions != undefined) {
+        this.unhighlightRegions(state.prevHighlightedRegions);
+        this.highlightRegions(mutation.payload.highlightedRegions);
+      }
+      if (mutation.payload.selectedRegion != undefined) {
+        this.svgContainer.centreSvgElement(mutation.payload.selectedRegion);
+      }
+      if (mutation.payload.year != undefined) {
+        this.setRegionColours();
+      }
     });
   },
   computed: {
@@ -67,10 +60,7 @@ export default {
       this.current.removeHighlightedRegion(d.target.id);
     },
     regionClick(d) {
-      this.current.$patch({
-        selectedRegion: d.target.id,
-        highlightedRegions: [d.target.id],
-      });
+      this.current.selectRegion(d.target.id);
     },
     highlightRegions(regions) {
       regions.forEach((region) => {
@@ -92,7 +82,6 @@ export default {
         const targetElement = this.svgContainer.getSvgElementById(region);
         if (targetElement.node() === null) return;
         if (targetElement.attr("highlighted") !== "true") return;
-
         this.svgContainer.setElemAttrs({
           [region]: {
             opacity: 1,

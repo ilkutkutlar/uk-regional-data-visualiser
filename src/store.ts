@@ -8,6 +8,7 @@ export const useCurrent = defineStore("current", {
     dataset: earnings as Dataset,
     year: "2021" as string,
     highlightedRegions: [] as Array<string>,
+    prevHighlightedRegions: [] as Array<string>,
     selectedRegion: "" as string,
     isDarkMode: false as boolean,
     drawer: false as boolean,
@@ -21,16 +22,28 @@ export const useCurrent = defineStore("current", {
     },
     addHighlightedRegion(value: string) {
       this.$patch({
+        prevHighlightedRegions: this.highlightedRegions,
         highlightedRegions: this.highlightedRegions.concat([value]),
       });
     },
     removeHighlightedRegion(value: string) {
       this.$patch({
+        prevHighlightedRegions: this.highlightedRegions,
         highlightedRegions: _.without(this.highlightedRegions, value),
       });
     },
+    selectRegion(value: string) {
+      this.$patch({
+        prevHighlightedRegions: this.highlightedRegions,
+        highlightedRegions: [value],
+        selectedRegion: value,
+      });
+    },
     clearHighlightedRegions() {
-      this.$patch({ highlightedRegions: [] });
+      this.$patch({
+        prevHighlightedRegions: this.highlightedRegions,
+        highlightedRegions: [],
+      });
     },
     toggleDrawer() {
       this.drawer = !this.drawer;
