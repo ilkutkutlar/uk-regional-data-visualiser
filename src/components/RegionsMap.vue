@@ -2,7 +2,6 @@
 import { Colours } from "../constants";
 import { useCurrent } from "../store";
 import SvgContainer from "./SvgContainer.vue";
-import _ from "lodash";
 
 export default {
   data() {
@@ -16,14 +15,14 @@ export default {
     this.svgContainer = this.$refs.svgContainer;
 
     this.current.$subscribe((mutation, state) => {
-      if (mutation.payload.highlightedRegions != undefined) {
+      if (mutation.payload.highlightedRegions !== undefined) {
         this.unhighlightRegions(state.prevHighlightedRegions);
         this.highlightRegions(mutation.payload.highlightedRegions);
       }
-      if (mutation.payload.selectedRegion != undefined) {
+      if (mutation.payload.selectedRegion !== undefined) {
         this.svgContainer.centreSvgElement(mutation.payload.selectedRegion);
       }
-      if (mutation.payload.year != undefined) {
+      if (mutation.payload.year !== undefined) {
         this.setRegionColours();
       }
     });
