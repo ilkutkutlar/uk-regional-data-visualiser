@@ -7,42 +7,26 @@ export const useCurrent = defineStore("current", {
   state: () => ({
     dataset: earnings as Dataset,
     year: "2021" as string,
-    highlightedRegions: [] as Array<string>,
-    prevHighlightedRegions: [] as Array<string>,
-    selectedRegion: "" as string,
     isDarkMode: false as boolean,
     drawer: false as boolean,
+    highlighted: "" as string,
+    selected: "" as string,
   }),
   getters: {
     dataForCurrentYear: (state) => state.dataset.data[state.year],
   },
   actions: {
-    clearSelectedRegion() {
-      this.selectedRegion = "";
+    clearSelected() {
+      this.$patch({ selected: "" });
     },
-    addHighlightedRegion(value: string) {
+    // selectRegion(value: string) {
+    //   this.$patch({
+    //     selectedRegion: value,
+    //   });
+    // },
+    clearHighlighted() {
       this.$patch({
-        prevHighlightedRegions: this.highlightedRegions,
-        highlightedRegions: this.highlightedRegions.concat([value]),
-      });
-    },
-    removeHighlightedRegion(value: string) {
-      this.$patch({
-        prevHighlightedRegions: this.highlightedRegions,
-        highlightedRegions: _.without(this.highlightedRegions, value),
-      });
-    },
-    selectRegion(value: string) {
-      this.$patch({
-        prevHighlightedRegions: this.highlightedRegions,
-        highlightedRegions: [value],
-        selectedRegion: value,
-      });
-    },
-    clearHighlightedRegions() {
-      this.$patch({
-        prevHighlightedRegions: this.highlightedRegions,
-        highlightedRegions: [],
+        highlighted: "",
       });
     },
     toggleDrawer() {

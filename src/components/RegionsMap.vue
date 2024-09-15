@@ -1,29 +1,98 @@
 <script>
 import { Colours } from "../constants";
+import { asArray } from "ol/color";
 import { useCurrent } from "../store";
 import SvgContainer from "./SvgContainer.vue";
+import Map from "ol/Map.js";
+import View from "ol/View.js";
+import GeoJSON from "ol/format/GeoJSON.js";
+import VectorImageLayer from "ol/layer/VectorImage.js";
+import VectorSource from "ol/source/Vector.js";
+import { Fill, Stroke, Style } from "ol/style.js";
+import VectorLayer from "ol/layer/Vector.js";
 
 export default {
   data() {
     return {
       current: useCurrent(),
       svgContainer: null,
+      map: null,
+      source: null,
+      vectorLayer: null,
     };
   },
-  components: { SvgContainer },
   mounted() {
-    this.svgContainer = this.$refs.svgContainer;
+    // TODO: Create a custom source/layer type for UK map
+    this.source = new VectorSource({
+      url: "data/lad_2021.geojson",
+      format: new GeoJSON({}),
+    });
 
-    this.current.$subscribe((mutation, state) => {
-      if (mutation.payload.highlightedRegions !== undefined) {
-        this.unhighlightRegions(state.prevHighlightedRegions);
-        this.highlightRegions(mutation.payload.highlightedRegions);
+    this.vectorLayer = this.generateImageLayer();
+    const view = new View({
+      center: [0, 0],
+      zoom: 7,
+      // maxZoom: 8,
+    });
+
+    this.map = new Map({
+      layers: [this.vectorLayer],
+      target: "map",
+      view: view,
+    });
+
+    let selected = null;
+    let highlighted = null;
+
+    const featureOverlay = new VectorLayer({
+      source: new VectorSource(),
+      map: this.map,
+      style: {
+        "stroke-color": "rgba(255, 255, 255, 0.7)",
+        "stroke-width": 3,
+        "fill-color": "rgba(255, 255, 255, 0.4)",
+      },
+    });
+
+    this.map.on("singleclick", (e) => {
+      const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
+      if (feature === selected) return;
+      if (selected) {
+        featureOverlay.getSource().removeFeature(selected);
       }
-      if (mutation.payload.selectedRegion !== undefined) {
-        this.svgContainer.centreSvgElement(mutation.payload.selectedRegion);
+      if (feature) {
+        highlighted = null;
+        selected = feature;
+        this.current.$patch({ selected: feature.get("LAD21CD") });
       }
+    });
+
+    this.map.on("pointermove", (e) => {
+      if (e.dragging) return;
+
+      const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
+
+      if (feature === highlighted) return;
+      if (feature === selected) {
+        featureOverlay.getSource().removeFeature(highlighted);
+        return;
+      }
+      if (highlighted && highlighted !== selected) {
+        featureOverlay.getSource().removeFeature(highlighted);
+      }
+      if (feature) {
+        featureOverlay.getSource().addFeature(feature);
+        highlighted = feature;
+        this.current.$patch({ highlighted: feature.get("LAD21CD") });
+      }
+    });
+    // view.fit(source.getFeatures()[0].getGeometry());
+
+    // this.svgContainer = this.$refs.svgContainer;
+
+    this.current.$subscribe((mutation) => {
       if (mutation.payload.year !== undefined) {
-        this.setRegionColours();
+        this.vectorLayer.changed();
       }
     });
   },
@@ -36,58 +105,22 @@ export default {
     },
   },
   methods: {
-    setRegionColours() {
-      const elemAttrs = {};
-      for (const region of this.current.dataset.svgMap.prettyNames.keys()) {
+    generateImageLayer() {
+      function styleFunction(feature) {
         const regionColour = this.current.dataset.colourOf(
           this.current.year,
-          region
+          feature.get("LAD21CD")
         );
-        elemAttrs[region] = { fill: regionColour ?? Colours.GREY };
+        return new Style({
+          fill: new Fill({ color: regionColour }),
+          stroke: new Stroke({ width: 2, color: "rgba(255, 255, 255, 0.3)" }),
+        });
       }
-      this.svgContainer.setElemAttrs(elemAttrs);
-    },
-    svgDataLoaded() {
-      this.setRegionColours();
-      this.svgContainer.centreMap();
-    },
-    regionMouseOver(d) {
-      this.current.addHighlightedRegion(d.target.id);
-    },
-    regionMouseOut(d) {
-      if (d.target.id === this.current.selectedRegion) return;
-      this.current.removeHighlightedRegion(d.target.id);
-    },
-    regionClick(d) {
-      this.current.selectRegion(d.target.id);
-    },
-    highlightRegions(regions) {
-      regions.forEach((region) => {
-        const targetElement = this.svgContainer.getSvgElementById(region);
-        if (targetElement.node() === null) return;
-        if (targetElement.attr("highlighted") === "true") return;
-
-        this.svgContainer.setElemAttrs({
-          [region]: {
-            opacity: 0.8,
-            "stroke-width": 2,
-            highlighted: "true",
-          },
-        });
-      });
-    },
-    unhighlightRegions(regions) {
-      regions.forEach((region) => {
-        const targetElement = this.svgContainer.getSvgElementById(region);
-        if (targetElement.node() === null) return;
-        if (targetElement.attr("highlighted") !== "true") return;
-        this.svgContainer.setElemAttrs({
-          [region]: {
-            opacity: 1,
-            "stroke-width": 1,
-            highlighted: "false",
-          },
-        });
+      return new VectorImageLayer({
+        background: "#1a2b39",
+        imageRatio: 2,
+        source: this.source,
+        style: styleFunction.bind(this),
       });
     },
   },
@@ -95,12 +128,22 @@ export default {
 </script>
 
 <template>
-  <SvgContainer
+  <div id="map" class="map"></div>
+
+  <!-- <SvgContainer
     ref="svgContainer"
     :svgFilePath="svgPath"
     @svgDataLoaded="svgDataLoaded"
     @elemMouseOver="regionMouseOver"
     @elemMouseOut="regionMouseOut"
     @elemClick="regionClick"
-  />
+  /> -->
 </template>
+
+<style>
+.map {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+</style>

@@ -14,8 +14,8 @@ export default {
   },
   methods: {
     closeButtonClicked() {
-      if (this.current.selectedRegion) this.current.clearHighlightedRegions();
-      this.current.clearSelectedRegion();
+      if (this.current.selected) this.current.clearHighlighted();
+      this.current.clearSelected();
     },
     changeBetweenYears(fromYear, toYear) {
       const fromValue = this.current.dataset.valueOf(
@@ -53,12 +53,12 @@ export default {
       }
     },
     displayedRegion() {
-      if (this.current.selectedRegion) {
-        return this.current.selectedRegion;
+      if (this.current.selected) {
+        return this.current.selected;
       }
 
-      if (this.current.highlightedRegions.length > 0) {
-        return this.current.highlightedRegions[0];
+      if (this.current.highlighted) {
+        return this.current.highlighted;
       }
 
       return "";
@@ -109,7 +109,7 @@ export default {
         </v-col>
         <v-col cols="2">
           <v-btn
-            v-show="current.selectedRegion"
+            v-show="current.selected"
             class="float-end"
             @click="closeButtonClicked"
             aria-label="Close"

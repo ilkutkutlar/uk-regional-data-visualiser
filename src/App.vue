@@ -20,17 +20,18 @@ export default {
   },
   mounted() {
     this.current.$subscribe((mutation, state) => {
+      // TODO: fix this!
       switch (mutation.events.key) {
         case "dataset":
-          this.current.clearHighlightedRegions();
-          this.current.clearSelectedRegion();
+          this.current.clearHighlighted();
+          this.current.clearSelected();
           state.dataset.downloadData().then(() => {
             this.current.$patch({ year: _.last(state.dataset.years) });
           });
           break;
         case "year":
-          this.current.clearHighlightedRegions();
-          this.current.clearSelectedRegion();
+          this.current.clearHighlighted();
+          this.current.clearSelected();
           break;
       }
     });
