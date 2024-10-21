@@ -1,15 +1,14 @@
 <script>
-import { Colours } from "../constants";
-import { asArray } from "ol/color";
 import { useCurrent } from "../store";
-import SvgContainer from "./SvgContainer.vue";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 import GeoJSON from "ol/format/GeoJSON.js";
 import VectorImageLayer from "ol/layer/VectorImage.js";
 import VectorSource from "ol/source/Vector.js";
-import { Fill, Stroke, Style } from "ol/style.js";
+import { Fill, Style, Stroke } from "ol/style.js";
 import VectorLayer from "ol/layer/Vector.js";
+import { defaults, DragPan } from "ol/interaction.js";
+import { Kinetic } from "ol";
 
 export default {
   data() {
@@ -31,14 +30,19 @@ export default {
     this.vectorLayer = this.generateImageLayer();
     const view = new View({
       center: [0, 0],
+      minZoom: 7,
       zoom: 7,
-      // maxZoom: 8,
+      maxZoom: 11,
     });
 
+    // TODO: add key as a control!
     this.map = new Map({
       layers: [this.vectorLayer],
       target: "map",
       view: view,
+      interactions: defaults({ dragPan: false }).extend([
+        new DragPan({ kinetic: new Kinetic({ delay: 100 }) }),
+      ]),
     });
 
     let selected = null;
@@ -48,13 +52,14 @@ export default {
       source: new VectorSource(),
       map: this.map,
       style: {
-        "stroke-color": "rgba(255, 255, 255, 0.7)",
-        "stroke-width": 3,
+        "stroke-color": "rgba(255, 255, 255, 1)",
+        "stroke-width": 4,
         "fill-color": "rgba(255, 255, 255, 0.4)",
       },
     });
 
     this.map.on("singleclick", (e) => {
+      if (e.dragging) return;
       const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
       if (feature === selected) return;
       if (selected) {
@@ -64,6 +69,11 @@ export default {
         highlighted = null;
         selected = feature;
         this.current.$patch({ selected: feature.get("LAD21CD") });
+        view.fit(feature.getGeometry(), {
+          padding: [0, 200, 0, 0],
+          duration: 400,
+          maxZoom: 9,
+        });
       }
     });
 
@@ -86,9 +96,7 @@ export default {
         this.current.$patch({ highlighted: feature.get("LAD21CD") });
       }
     });
-    // view.fit(source.getFeatures()[0].getGeometry());
-
-    // this.svgContainer = this.$refs.svgContainer;
+    // view.centerOn(this.map.getCoordinates(), this.);
 
     this.current.$subscribe((mutation) => {
       if (mutation.payload.year !== undefined) {
@@ -112,8 +120,8 @@ export default {
           feature.get("LAD21CD")
         );
         return new Style({
-          fill: new Fill({ color: regionColour }),
-          stroke: new Stroke({ width: 2, color: "rgba(255, 255, 255, 0.3)" }),
+          fill: new Fill({ color: regionColour ?? "#bfbfbf" }),
+          stroke: new Stroke({ width: 1 }),
         });
       }
       return new VectorImageLayer({
