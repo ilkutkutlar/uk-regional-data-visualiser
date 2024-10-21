@@ -23,7 +23,7 @@ export default {
   mounted() {
     // TODO: Create a custom source/layer type for UK map
     this.source = new VectorSource({
-      url: "data/lad_2021.geojson",
+      url: "data/geojson/LAD_DEC_2021_UK_BUC.geojson",
       format: new GeoJSON({}),
     });
 
