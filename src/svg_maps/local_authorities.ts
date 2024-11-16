@@ -709,12 +709,22 @@ export const LocalAuthoritiesGeoJSON: GeoJSONMap = {
   geoJsonPaths: new Map([
     ["default", "./data/geojson/LAD_DEC_2016_UK_BUC.geojson"],
     ["2016", "./data/geojson/LAD_DEC_2016_UK_BUC.geojson"],
-    ["2017", "./data/geojson/LAD_DEC_2017_UK_BUC.geojson"],
+    ["2017", "./data/geojson/LAD_DEC_2017_UK_BUC.geojson"], // TODO: does not exist!
     ["2018", "./data/geojson/LAD_DEC_2018_UK_BUC.geojson"],
     ["2019", "./data/geojson/LAD_DEC_2019_UK_BUC.geojson"],
     ["2020", "./data/geojson/LAD_DEC_2020_UK_BUC.geojson"],
     ["2021", "./data/geojson/LAD_DEC_2021_UK_BUC.geojson"],
     ["2022", "./data/geojson/LAD_DEC_2022_UK_BUC.geojson"],
+  ]),
+  idProperties: new Map([
+    ["default", "lad16cd"],
+    ["2016", "lad16cd"],
+    ["2017", ""],
+    ["2018", "lad18cd"],
+    ["2019", "lad19cd"],
+    ["2020", "LAD20CD"],
+    ["2021", "LAD21CD"],
+    ["2022", "LAD22CD"],
   ]),
   prettyNames: PRETTY_NAMES,
   countyLookup: LAD_CODE_TO_COUNTY,

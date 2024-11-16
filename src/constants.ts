@@ -3,6 +3,7 @@ export type GeoJSONMap = {
   geoJsonPaths: Map<String, String>;
   prettyNames: Map<String, String>;
   countyLookup: Map<String, [String, String]>;
+  idProperties: Map<String, String>;
 };
 
 export const ValueFormatters: { [index: string]: Formatter } = {

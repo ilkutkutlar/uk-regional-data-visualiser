@@ -15,19 +15,13 @@ export default {
     return {
       current: useCurrent(),
       map: null,
-      source: null,
-      vectorLayer: null,
-      selected: null,
-      highlighted: null,
+      regionsLayer: null,
+      selectedRegion: null,
+      highlightedRegion: null,
     };
   },
-  watch: {
-    geoJSONMap() {
-      console.log(this.geoJSONMap);
-    },
-  },
   mounted() {
-    this.vectorLayer = this.generateImageLayer();
+    this.regionsLayer = this.createRegionsLayer(this.geoJSONIDProperty);
     const view = new View({
       center: [0, 0],
       minZoom: 7,
@@ -36,8 +30,8 @@ export default {
     });
 
     // TODO: add key as a control!
-    this.map = new Map({
-      layers: [this.vectorLayer],
+    const map = new Map({
+      layers: [this.regionsLayer],
       target: "map",
       view: view,
       interactions: defaults({ dragPan: false }).extend([
@@ -46,8 +40,8 @@ export default {
     });
 
     const featureOverlay = new VectorLayer({
+      map: map,
       source: new VectorSource(),
-      map: this.map,
       style: {
         "stroke-color": "rgba(255, 255, 255, 1)",
         "stroke-width": 4,
@@ -55,17 +49,22 @@ export default {
       },
     });
 
-    this.map.on("singleclick", (e) => {
+    map.on("singleclick", (e) => {
       if (e.dragging) return;
-      const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
-      if (feature === this.selected) return;
-      if (this.selected) {
-        featureOverlay.getSource().removeFeature(this.selected);
+
+      const feature = map.forEachFeatureAtPixel(e.pixel, (f) => f);
+
+      if (feature === this.selectedRegion) return;
+      if (this.selectedRegion) {
+        featureOverlay.getSource().removeFeature(this.selectedRegion);
       }
+
       if (feature) {
-        this.highlighted = null;
-        this.selected = feature;
-        this.current.$patch({ selected: feature.get("LAD21CD") });
+        this.highlightedRegion = null;
+        this.selectedRegion = feature;
+        this.current.$patch({
+          selected: feature.get(this.geoJSONIDProperty),
+        });
         view.fit(feature.getGeometry(), {
           padding: [0, 200, 0, 0],
           duration: 400,
@@ -74,35 +73,34 @@ export default {
       }
     });
 
-    this.map.on("pointermove", (e) => {
+    map.on("pointermove", (e) => {
+      // TODO: when pointer is outside the map, hide the info panel
       if (e.dragging) return;
 
-      const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
+      const feature = map.forEachFeatureAtPixel(e.pixel, (f) => f);
 
-      if (feature === this.highlighted) return;
-      if (feature === this.selected) {
-        featureOverlay.getSource().removeFeature(this.highlighted);
-        return;
-      }
-      if (this.highlighted && this.highlighted !== this.selected) {
-        featureOverlay.getSource().removeFeature(this.highlighted);
-      }
+      if (feature === this.highlightedRegion) return;
+      featureOverlay.getSource().removeFeature(this.highlightedRegion);
+      if (feature === this.selectedRegion) return;
+
       if (feature) {
         featureOverlay.getSource().addFeature(feature);
-        this.highlighted = feature;
-        this.current.$patch({ highlighted: feature.get("LAD21CD") });
+        this.highlightedRegion = feature;
+        this.current.$patch({
+          highlighted: feature.get(this.geoJSONIDProperty),
+        });
       }
     });
 
     this.current.$subscribe((mutation) => {
       if (mutation.payload.year !== undefined) {
-        this.vectorLayer.setSource(
+        this.regionsLayer.setSource(
           new VectorSource({
             url: this.geoJSONMap,
             format: new GeoJSON({}),
           })
         );
-        this.vectorLayer.changed();
+        this.regionsLayer.changed();
       }
     });
   },
@@ -113,13 +111,18 @@ export default {
         this.current.dataset.geoJSONMap.geoJsonPaths.get("default")
       );
     },
+    geoJSONIDProperty() {
+      return this.current.dataset.geoJSONMap.idProperties.get(
+        this.current.year
+      );
+    },
   },
   methods: {
-    generateImageLayer() {
+    createRegionsLayer() {
       function styleFunction(feature) {
         const regionColour = this.current.dataset.colourOf(
           this.current.year,
-          feature.get("LAD21CD")
+          feature.get(this.geoJSONIDProperty)
         );
         return new Style({
           fill: new Fill({ color: regionColour ?? "#bfbfbf" }),
