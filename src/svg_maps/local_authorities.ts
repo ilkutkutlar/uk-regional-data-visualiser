@@ -1,4 +1,4 @@
-import type { SvgMap } from "../constants";
+import type { GeoJSONMap } from "../constants";
 
 export const PRETTY_NAMES: Map<String, String> = new Map([
   ["E92000001", "England"],
@@ -705,16 +705,16 @@ export const LAD_CODE_TO_COUNTY: Map<String, [String, String]> = new Map([
   ["E09000031", ["E13000002", "Outer London"]],
 ]);
 
-export const LocalAuthoritiesSvgMap: SvgMap = {
-  svgPaths: new Map([
-    ["default", "./data/svg/uk_local_2016.svg"],
-    ["2016", "./data/svg/uk_local_2016.svg"],
-    ["2017", "./data/svg/uk_local_2017.svg"],
-    ["2018", "./data/svg/uk_local_2018.svg"],
-    ["2019", "./data/svg/uk_local_2019.svg"],
-    ["2020", "./data/svg/uk_local_2020.svg"],
-    ["2021", "./data/svg/uk_local_2021.svg"],
-    ["2022", "./data/svg/uk_local_2022.svg"],
+export const LocalAuthoritiesGeoJSON: GeoJSONMap = {
+  geoJsonPaths: new Map([
+    ["default", "./data/geojson/LAD_DEC_2016_UK_BUC.geojson"],
+    ["2016", "./data/geojson/LAD_DEC_2016_UK_BUC.geojson"],
+    ["2017", "./data/geojson/LAD_DEC_2017_UK_BUC.geojson"],
+    ["2018", "./data/geojson/LAD_DEC_2018_UK_BUC.geojson"],
+    ["2019", "./data/geojson/LAD_DEC_2019_UK_BUC.geojson"],
+    ["2020", "./data/geojson/LAD_DEC_2020_UK_BUC.geojson"],
+    ["2021", "./data/geojson/LAD_DEC_2021_UK_BUC.geojson"],
+    ["2022", "./data/geojson/LAD_DEC_2022_UK_BUC.geojson"],
   ]),
   prettyNames: PRETTY_NAMES,
   countyLookup: LAD_CODE_TO_COUNTY,

@@ -1,6 +1,6 @@
 export type Formatter = (value: any) => string;
-export type SvgMap = {
-  svgPaths: Map<String, String>;
+export type GeoJSONMap = {
+  geoJsonPaths: Map<String, String>;
   prettyNames: Map<String, String>;
   countyLookup: Map<String, [String, String]>;
 };

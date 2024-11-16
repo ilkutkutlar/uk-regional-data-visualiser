@@ -1,4 +1,4 @@
-import type { Formatter, SvgMap } from "./constants";
+import type { Formatter, GeoJSONMap } from "./constants";
 import type { ColourMap } from "./colour_map";
 import _ from "lodash";
 
@@ -13,7 +13,7 @@ type DatasetMetadata = {
 
 export class Dataset {
   metadata: DatasetMetadata;
-  svgMap: SvgMap;
+  geoJSONMap: GeoJSONMap;
   colourMap: ColourMap;
   dataPath: string;
   valueFormatter: Formatter;
@@ -29,13 +29,13 @@ export class Dataset {
 
   constructor(
     metadata: DatasetMetadata,
-    svgMap: SvgMap,
+    geoJSONMap: GeoJSONMap,
     colourMap: ColourMap,
     valueFormatter: Formatter,
     dataPath: string
   ) {
     this.metadata = metadata;
-    this.svgMap = svgMap;
+    this.geoJSONMap = geoJSONMap;
     this.colourMap = colourMap;
     this.valueFormatter = valueFormatter;
     this.dataPath = dataPath;
@@ -74,11 +74,11 @@ export class Dataset {
   }
 
   prettyNameOf(regionCode: string) {
-    return this.svgMap.prettyNames.get(regionCode);
+    return this.geoJSONMap.prettyNames.get(regionCode);
   }
 
   countyOf(regionCode: string) {
-    const county = this.svgMap.countyLookup.get(regionCode);
+    const county = this.geoJSONMap.countyLookup.get(regionCode);
     return county ? county[1] : undefined;
   }
 }

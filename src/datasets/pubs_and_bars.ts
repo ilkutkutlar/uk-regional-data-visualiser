@@ -1,5 +1,5 @@
 import { Colours, ValueFormatters } from "../constants";
-import { LocalAuthoritiesSvgMap } from "../svg_maps/local_authorities";
+import { LocalAuthoritiesGeoJSON } from "../svg_maps/local_authorities";
 import { ColourMap } from "../colour_map";
 import { Dataset } from "../dataset";
 
@@ -24,7 +24,7 @@ const colourMap = new ColourMap([
 
 export const pubsAndBars = new Dataset(
   metadata,
-  LocalAuthoritiesSvgMap,
+  LocalAuthoritiesGeoJSON,
   colourMap,
   ValueFormatters.NONE,
   "./data/dataset/pubs_and_bars.json"

@@ -14,19 +14,19 @@ export default {
   data() {
     return {
       current: useCurrent(),
-      svgContainer: null,
       map: null,
       source: null,
       vectorLayer: null,
+      selected: null,
+      highlighted: null,
     };
   },
+  watch: {
+    geoJSONMap() {
+      console.log(this.geoJSONMap);
+    },
+  },
   mounted() {
-    // TODO: Create a custom source/layer type for UK map
-    this.source = new VectorSource({
-      url: "data/geojson/LAD_DEC_2021_UK_BUC.geojson",
-      format: new GeoJSON({}),
-    });
-
     this.vectorLayer = this.generateImageLayer();
     const view = new View({
       center: [0, 0],
@@ -45,9 +45,6 @@ export default {
       ]),
     });
 
-    let selected = null;
-    let highlighted = null;
-
     const featureOverlay = new VectorLayer({
       source: new VectorSource(),
       map: this.map,
@@ -61,13 +58,13 @@ export default {
     this.map.on("singleclick", (e) => {
       if (e.dragging) return;
       const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
-      if (feature === selected) return;
-      if (selected) {
-        featureOverlay.getSource().removeFeature(selected);
+      if (feature === this.selected) return;
+      if (this.selected) {
+        featureOverlay.getSource().removeFeature(this.selected);
       }
       if (feature) {
-        highlighted = null;
-        selected = feature;
+        this.highlighted = null;
+        this.selected = feature;
         this.current.$patch({ selected: feature.get("LAD21CD") });
         view.fit(feature.getGeometry(), {
           padding: [0, 200, 0, 0],
@@ -82,33 +79,38 @@ export default {
 
       const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
 
-      if (feature === highlighted) return;
-      if (feature === selected) {
-        featureOverlay.getSource().removeFeature(highlighted);
+      if (feature === this.highlighted) return;
+      if (feature === this.selected) {
+        featureOverlay.getSource().removeFeature(this.highlighted);
         return;
       }
-      if (highlighted && highlighted !== selected) {
-        featureOverlay.getSource().removeFeature(highlighted);
+      if (this.highlighted && this.highlighted !== this.selected) {
+        featureOverlay.getSource().removeFeature(this.highlighted);
       }
       if (feature) {
         featureOverlay.getSource().addFeature(feature);
-        highlighted = feature;
+        this.highlighted = feature;
         this.current.$patch({ highlighted: feature.get("LAD21CD") });
       }
     });
-    // view.centerOn(this.map.getCoordinates(), this.);
 
     this.current.$subscribe((mutation) => {
       if (mutation.payload.year !== undefined) {
+        this.vectorLayer.setSource(
+          new VectorSource({
+            url: this.geoJSONMap,
+            format: new GeoJSON({}),
+          })
+        );
         this.vectorLayer.changed();
       }
     });
   },
   computed: {
-    svgPath() {
+    geoJSONMap() {
       return (
-        this.current.dataset.svgMap.svgPaths.get(this.current.year) ??
-        this.current.dataset.svgMap.svgPaths.get("default")
+        this.current.dataset.geoJSONMap.geoJsonPaths.get(this.current.year) ??
+        this.current.dataset.geoJSONMap.geoJsonPaths.get("default")
       );
     },
   },
@@ -124,10 +126,14 @@ export default {
           stroke: new Stroke({ width: 1 }),
         });
       }
+      // TODO: Create a custom source/layer type for UK map
       return new VectorImageLayer({
         background: "#1a2b39",
         imageRatio: 2,
-        source: this.source,
+        source: new VectorSource({
+          url: this.geoJSONMap,
+          format: new GeoJSON({}),
+        }),
         style: styleFunction.bind(this),
       });
     },
@@ -137,15 +143,6 @@ export default {
 
 <template>
   <div id="map" class="map"></div>
-
-  <!-- <SvgContainer
-    ref="svgContainer"
-    :svgFilePath="svgPath"
-    @svgDataLoaded="svgDataLoaded"
-    @elemMouseOver="regionMouseOver"
-    @elemMouseOut="regionMouseOut"
-    @elemClick="regionClick"
-  /> -->
 </template>
 
 <style>
