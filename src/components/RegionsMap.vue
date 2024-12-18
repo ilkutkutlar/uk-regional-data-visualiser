@@ -16,8 +16,8 @@ export default {
       current: useCurrent(),
       map: null,
       regionsLayer: null,
-      selectedRegion: null,
-      highlightedRegion: null,
+      selectedFeature: null,
+      highlightedFeature: null,
     };
   },
   mounted() {
@@ -54,14 +54,14 @@ export default {
 
       const feature = map.forEachFeatureAtPixel(e.pixel, (f) => f);
 
-      if (feature === this.selectedRegion) return;
-      if (this.selectedRegion) {
-        featureOverlay.getSource().removeFeature(this.selectedRegion);
+      if (feature === this.selectedFeature) return;
+      if (this.selectedFeature) {
+        featureOverlay.getSource().removeFeature(this.selectedFeature);
       }
 
       if (feature) {
-        this.highlightedRegion = null;
-        this.selectedRegion = feature;
+        this.highlightedFeature = null;
+        this.selectedFeature = feature;
         this.current.$patch({
           selected: feature.get(this.geoJSONIDProperty),
         });
@@ -79,19 +79,21 @@ export default {
 
       const feature = map.forEachFeatureAtPixel(e.pixel, (f) => f);
 
-      if (feature === this.highlightedRegion) return;
-      featureOverlay.getSource().removeFeature(this.highlightedRegion);
-      if (feature === this.selectedRegion) return;
+      if (!feature) return;
+      if (feature === this.highlightedFeature) return;
+      featureOverlay.getSource().removeFeature(this.highlightedFeature);
+      if (feature === this.selectedFeature) return;
 
       if (feature) {
         featureOverlay.getSource().addFeature(feature);
-        this.highlightedRegion = feature;
+        this.highlightedFeature = feature;
         this.current.$patch({
           highlighted: feature.get(this.geoJSONIDProperty),
         });
       }
     });
 
+    console.log(this.regionsLayer);
     this.current.$subscribe((mutation) => {
       if (mutation.payload.year !== undefined) {
         this.regionsLayer.setSource(
@@ -101,6 +103,13 @@ export default {
           })
         );
         this.regionsLayer.changed();
+      }
+
+      if (mutation.payload.highlighted) {
+        featureOverlay.getSource().removeFeature(this.highlightedFeature);
+        const feature = this.getFeatureByRegionId(mutation.payload.highlighted);
+        featureOverlay.getSource().addFeature(feature);
+        this.highlightedFeature = feature;
       }
     });
   },
@@ -139,6 +148,14 @@ export default {
         }),
         style: styleFunction.bind(this),
       });
+    },
+    getFeatureByRegionId(regionId) {
+      const features = this.regionsLayer.getSource().getFeatures();
+      for (const feature of features) {
+        if (feature.get(this.geoJSONIDProperty) === regionId) {
+          return feature;
+        }
+      }
     },
   },
 };

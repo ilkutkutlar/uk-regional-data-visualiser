@@ -3,6 +3,7 @@ import InfoPanelRow from "./InfoPanelRow.vue";
 import { useCurrent } from "../store";
 import _ from "lodash";
 
+// TODO: when pointer is outside the map, hide the info panel
 export default {
   components: {
     InfoPanelRow,

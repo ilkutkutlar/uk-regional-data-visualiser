@@ -19,11 +19,6 @@ export const useCurrent = defineStore("current", {
     clearSelected() {
       this.$patch({ selected: "" });
     },
-    // selectRegion(value: string) {
-    //   this.$patch({
-    //     selectedRegion: value,
-    //   });
-    // },
     clearHighlighted() {
       this.$patch({
         highlighted: "",

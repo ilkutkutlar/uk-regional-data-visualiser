@@ -52,16 +52,18 @@ export default {
   },
   methods: {
     dataRowMouseEnter(region) {
-      this.current.addHighlightedRegion(region);
+      this.current.$patch({
+        highlighted: region,
+      });
     },
     dataRowMouseLeave(region) {
-      if (region === this.current.selectedRegion) return;
-      this.current.removeHighlightedRegion(region);
+      if (region === this.current.selected) return;
+      this.current.$patch({ highlighted: "" });
     },
     dataRowClick(region) {
       this.current.$patch({
-        selectedRegion: region,
-        highlightedRegions: [region],
+        selected: region,
+        highlighted: region,
       });
     },
   },
