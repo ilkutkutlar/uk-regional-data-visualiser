@@ -49,28 +49,37 @@ export default {
       },
     });
 
+    const highlightRegion = (regionFeature) => {
+      featureOverlay.getSource().addFeature(regionFeature);
+    };
+
+    const unhighlightRegion = (regionFeature) => {
+      featureOverlay.getSource().removeFeature(regionFeature);
+    };
+
+    const centreOnRegion = (regionFeature) => {
+      view.fit(regionFeature.getGeometry(), {
+        padding: [0, 200, 0, 0],
+        duration: 400,
+        maxZoom: 9,
+      });
+    };
+
     map.on("singleclick", (e) => {
       if (e.dragging) return;
 
       const feature = map.forEachFeatureAtPixel(e.pixel, (f) => f);
 
+      if (!feature) return;
       if (feature === this.selectedFeature) return;
-      if (this.selectedFeature) {
-        featureOverlay.getSource().removeFeature(this.selectedFeature);
-      }
+      if (this.selectedFeature) unhighlightRegion(this.selectedFeature);
 
-      if (feature) {
-        this.highlightedFeature = null;
-        this.selectedFeature = feature;
-        this.current.$patch({
-          selected: feature.get(this.geoJSONIDProperty),
-        });
-        view.fit(feature.getGeometry(), {
-          padding: [0, 200, 0, 0],
-          duration: 400,
-          maxZoom: 9,
-        });
-      }
+      this.highlightedFeature = null;
+      this.selectedFeature = feature;
+      this.current.$patch({
+        selected: feature.get(this.geoJSONIDProperty),
+      });
+      centreOnRegion(feature);
     });
 
     map.on("pointermove", (e) => {
@@ -79,21 +88,11 @@ export default {
 
       const feature = map.forEachFeatureAtPixel(e.pixel, (f) => f);
 
-      if (!feature) return;
-      if (feature === this.highlightedFeature) return;
-      featureOverlay.getSource().removeFeature(this.highlightedFeature);
-      if (feature === this.selectedFeature) return;
-
-      if (feature) {
-        featureOverlay.getSource().addFeature(feature);
-        this.highlightedFeature = feature;
-        this.current.$patch({
-          highlighted: feature.get(this.geoJSONIDProperty),
-        });
-      }
+      this.current.$patch({
+        highlighted: feature,
+      });
     });
 
-    console.log(this.regionsLayer);
     this.current.$subscribe((mutation) => {
       if (mutation.payload.year !== undefined) {
         this.regionsLayer.setSource(
@@ -106,9 +105,17 @@ export default {
       }
 
       if (mutation.payload.highlighted) {
-        featureOverlay.getSource().removeFeature(this.highlightedFeature);
-        const feature = this.getFeatureByRegionId(mutation.payload.highlighted);
-        featureOverlay.getSource().addFeature(feature);
+        const feature =
+          typeof mutation.payload.highlighted == "string"
+            ? this.getFeatureByRegionId(mutation.payload.highlighted)
+            : mutation.payload.highlighted;
+
+        if (!feature) return;
+        if (feature === this.highlightedFeature) return;
+        unhighlightRegion(this.highlightedFeature);
+        if (feature === this.selectedFeature) return;
+
+        highlightRegion(feature);
         this.highlightedFeature = feature;
       }
     });
