@@ -14,15 +14,18 @@ export default {
   data() {
     return {
       current: useCurrent(),
-      map: null,
       regionsLayer: null,
+      view: null,
+      map: null,
+      featureOverlay: null,
       selectedFeature: null,
       highlightedFeature: null,
     };
   },
   mounted() {
     this.regionsLayer = this.createRegionsLayer(this.geoJSONIDProperty);
-    const view = new View({
+
+    this.view = new View({
       center: [0, 0],
       minZoom: 7,
       zoom: 7,
@@ -30,17 +33,17 @@ export default {
     });
 
     // TODO: add key as a control!
-    const map = new Map({
+    this.map = new Map({
       layers: [this.regionsLayer],
       target: "map",
-      view: view,
+      view: this.view,
       interactions: defaults({ dragPan: false }).extend([
         new DragPan({ kinetic: new Kinetic({ delay: 100 }) }),
       ]),
     });
 
-    const featureOverlay = new VectorLayer({
-      map: map,
+    this.featureOverlay = new VectorLayer({
+      map: this.map,
       source: new VectorSource(),
       style: {
         "stroke-color": "rgba(255, 255, 255, 1)",
@@ -49,26 +52,10 @@ export default {
       },
     });
 
-    const applyHighlightOverlay = (regionFeature) => {
-      featureOverlay.getSource().addFeature(regionFeature);
-    };
-
-    const removeHighlightOverlay = (regionFeature) => {
-      featureOverlay.getSource().removeFeature(regionFeature);
-    };
-
-    const centreOnRegion = (regionFeature) => {
-      view.fit(regionFeature.getGeometry(), {
-        padding: [0, 200, 0, 0],
-        duration: 400,
-        maxZoom: 9,
-      });
-    };
-
-    map.on("singleclick", (e) => {
+    this.map.on("singleclick", (e) => {
       if (e.dragging) return;
 
-      const feature = map.forEachFeatureAtPixel(e.pixel, (f) => f);
+      const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
       if (!feature) return;
 
       this.current.$patch({
@@ -76,11 +63,11 @@ export default {
       });
     });
 
-    map.on("pointermove", (e) => {
+    this.map.on("pointermove", (e) => {
       // TODO: when pointer is outside the map, hide the info panel
       if (e.dragging) return;
 
-      const feature = map.forEachFeatureAtPixel(e.pixel, (f) => f);
+      const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
       if (!feature) return;
 
       this.current.$patch({
@@ -92,7 +79,7 @@ export default {
       if (mutation.payload.year) {
         this.regionsLayer.setSource(
           new VectorSource({
-            url: this.geoJSONMap,
+            url: this.geoJSONFilePath,
             format: new GeoJSON({}),
           })
         );
@@ -106,10 +93,10 @@ export default {
 
         if (!feature) return;
         if (feature === this.highlightedFeature) return;
-        removeHighlightOverlay(this.highlightedFeature);
+        this.removeHighlightOverlay(this.highlightedFeature);
         if (feature === this.selectedFeature) return;
 
-        applyHighlightOverlay(feature);
+        this.applyHighlightOverlay(feature);
         this.highlightedFeature = feature;
       }
 
@@ -120,7 +107,9 @@ export default {
 
         if (!feature) return;
         if (feature === this.selectedFeature) return;
-        if (this.selectedFeature) removeHighlightOverlay(this.selectedFeature);
+        if (this.selectedFeature) {
+          this.removeHighlightOverlay(this.selectedFeature);
+        }
 
         this.highlightedFeature = null;
         this.selectedFeature = feature;
@@ -129,11 +118,9 @@ export default {
     });
   },
   computed: {
-    geoJSONMap() {
-      return (
-        this.current.dataset.geoJSONMap.geoJsonPaths.get(this.current.year) ??
-        this.current.dataset.geoJSONMap.geoJsonPaths.get("default")
-      );
+    geoJSONFilePath() {
+      const geoJSONPaths = this.current.dataset.geoJSONMap.geoJSONPaths;
+      return geoJSONPaths.get(this.current.year) ?? geoJSONPaths.get("default");
     },
     geoJSONIDProperty() {
       return this.current.dataset.geoJSONMap.idProperties.get(
@@ -142,6 +129,19 @@ export default {
     },
   },
   methods: {
+    applyHighlightOverlay(regionFeature) {
+      this.featureOverlay.getSource().addFeature(regionFeature);
+    },
+    removeHighlightOverlay(regionFeature) {
+      this.featureOverlay.getSource().removeFeature(regionFeature);
+    },
+    centreOnRegion(regionFeature) {
+      this.view.fit(regionFeature.getGeometry(), {
+        padding: [0, 200, 0, 0],
+        duration: 400,
+        maxZoom: 9,
+      });
+    },
     createRegionsLayer() {
       function styleFunction(feature) {
         const regionColour = this.current.dataset.colourOf(
@@ -158,7 +158,7 @@ export default {
         background: "#1a2b39",
         imageRatio: 2,
         source: new VectorSource({
-          url: this.geoJSONMap,
+          url: this.geoJSONFilePath,
           format: new GeoJSON({}),
         }),
         style: styleFunction.bind(this),

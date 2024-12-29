@@ -706,7 +706,7 @@ export const LAD_CODE_TO_COUNTY: Map<String, [String, String]> = new Map([
 ]);
 
 export const LocalAuthoritiesGeoJSON: GeoJSONMap = {
-  geoJsonPaths: new Map([
+  geoJSONPaths: new Map([
     ["default", "./data/geojson/LAD_DEC_2016_UK_BUC.geojson"],
     ["2016", "./data/geojson/LAD_DEC_2016_UK_BUC.geojson"],
     ["2017", "./data/geojson/LAD_DEC_2017_UK_BUC.geojson"], // TODO: does not exist!
