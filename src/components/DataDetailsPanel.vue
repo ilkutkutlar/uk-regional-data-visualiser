@@ -44,6 +44,10 @@ export default {
         return this.current.dataset.metadata.id;
       },
       set(value) {
+        /* `dataset` must be set directly as patching does not
+           actually set `dataset` to point to the new dataset,
+           instead setting each of its class attributes to
+           the new dataset's values, which causes issues. */
         this.current.dataset = this.allDatasets.find(
           (dataset) => dataset.metadata.id == value
         );

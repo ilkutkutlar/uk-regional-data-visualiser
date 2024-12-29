@@ -113,7 +113,7 @@ export default {
 
         this.highlightedFeature = null;
         this.selectedFeature = feature;
-        centreOnRegion(feature);
+        this.centreOnRegion(feature);
       }
     });
   },

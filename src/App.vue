@@ -20,7 +20,7 @@ export default {
   },
   mounted() {
     this.current.$subscribe((mutation, state) => {
-      // TODO: fix this!
+      // TODO: fix this! Should not be using events in production!
       switch (mutation.events.key) {
         case "dataset":
           this.current.clearHighlighted();
