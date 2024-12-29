@@ -49,11 +49,11 @@ export default {
       },
     });
 
-    const highlightRegion = (regionFeature) => {
+    const applyHighlightOverlay = (regionFeature) => {
       featureOverlay.getSource().addFeature(regionFeature);
     };
 
-    const unhighlightRegion = (regionFeature) => {
+    const removeHighlightOverlay = (regionFeature) => {
       featureOverlay.getSource().removeFeature(regionFeature);
     };
 
@@ -69,17 +69,11 @@ export default {
       if (e.dragging) return;
 
       const feature = map.forEachFeatureAtPixel(e.pixel, (f) => f);
-
       if (!feature) return;
-      if (feature === this.selectedFeature) return;
-      if (this.selectedFeature) unhighlightRegion(this.selectedFeature);
 
-      this.highlightedFeature = null;
-      this.selectedFeature = feature;
       this.current.$patch({
-        selected: feature.get(this.geoJSONIDProperty),
+        selectedRegionID: feature.get(this.geoJSONIDProperty),
       });
-      centreOnRegion(feature);
     });
 
     map.on("pointermove", (e) => {
@@ -87,14 +81,15 @@ export default {
       if (e.dragging) return;
 
       const feature = map.forEachFeatureAtPixel(e.pixel, (f) => f);
+      if (!feature) return;
 
       this.current.$patch({
-        highlighted: feature,
+        highlightedRegionID: feature.get(this.geoJSONIDProperty),
       });
     });
 
     this.current.$subscribe((mutation) => {
-      if (mutation.payload.year !== undefined) {
+      if (mutation.payload.year) {
         this.regionsLayer.setSource(
           new VectorSource({
             url: this.geoJSONMap,
@@ -104,19 +99,32 @@ export default {
         this.regionsLayer.changed();
       }
 
-      if (mutation.payload.highlighted) {
-        const feature =
-          typeof mutation.payload.highlighted == "string"
-            ? this.getFeatureByRegionId(mutation.payload.highlighted)
-            : mutation.payload.highlighted;
+      if (mutation.payload.highlightedRegionID) {
+        const feature = this.getFeatureByRegionId(
+          mutation.payload.highlightedRegionID
+        );
 
         if (!feature) return;
         if (feature === this.highlightedFeature) return;
-        unhighlightRegion(this.highlightedFeature);
+        removeHighlightOverlay(this.highlightedFeature);
         if (feature === this.selectedFeature) return;
 
-        highlightRegion(feature);
+        applyHighlightOverlay(feature);
         this.highlightedFeature = feature;
+      }
+
+      if (mutation.payload.selectedRegionID) {
+        const feature = this.getFeatureByRegionId(
+          mutation.payload.selectedRegionID
+        );
+
+        if (!feature) return;
+        if (feature === this.selectedFeature) return;
+        if (this.selectedFeature) removeHighlightOverlay(this.selectedFeature);
+
+        this.highlightedFeature = null;
+        this.selectedFeature = feature;
+        centreOnRegion(feature);
       }
     });
   },

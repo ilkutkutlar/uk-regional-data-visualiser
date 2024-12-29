@@ -9,19 +9,19 @@ export const useCurrent = defineStore("current", {
     year: "2021" as string,
     isDarkMode: false as boolean,
     drawer: false as boolean,
-    highlighted: "" as string,
-    selected: "" as string,
+    highlightedRegionID: "" as string,
+    selectedRegionID: "" as string,
   }),
   getters: {
     dataForCurrentYear: (state) => state.dataset.data[state.year],
   },
   actions: {
     clearSelected() {
-      this.$patch({ selected: "" });
+      this.$patch({ selectedRegionID: "" });
     },
     clearHighlighted() {
       this.$patch({
-        highlighted: "",
+        highlightedRegionID: "",
       });
     },
     toggleDrawer() {

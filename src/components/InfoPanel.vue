@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     closeButtonClicked() {
-      if (this.current.selected) this.current.clearHighlighted();
+      if (this.current.selectedRegionID) this.current.clearHighlighted();
       this.current.clearSelected();
     },
     changeBetweenYears(fromYear, toYear) {
@@ -54,12 +54,12 @@ export default {
       }
     },
     displayedRegion() {
-      if (this.current.selected) {
-        return this.current.selected;
+      if (this.current.selectedRegionID) {
+        return this.current.selectedRegionID;
       }
 
-      if (this.current.highlighted) {
-        return this.current.highlighted;
+      if (this.current.highlightedRegionID) {
+        return this.current.highlightedRegionID;
       }
 
       return "";
@@ -110,7 +110,7 @@ export default {
         </v-col>
         <v-col cols="2">
           <v-btn
-            v-show="current.selected"
+            v-show="current.selectedRegionID"
             class="float-end"
             @click="closeButtonClicked"
             aria-label="Close"
