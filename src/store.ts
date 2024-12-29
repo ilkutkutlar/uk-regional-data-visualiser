@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import type { Dataset } from "./dataset";
 import { earnings } from "./datasets/earnings";
-import _ from "lodash";
 
 export const useCurrent = defineStore("current", {
   state: () => ({

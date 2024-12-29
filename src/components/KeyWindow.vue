@@ -9,6 +9,16 @@ export default {
       current: useCurrent(),
     };
   },
+  computed: {
+    key() {
+      const _key = this.generateKey(
+        this.current.dataset.colourMap,
+        this.current.dataset.valueFormatter
+      );
+      _key.unshift(["No data", Colours.GREY]);
+      return _key;
+    },
+  },
   methods: {
     generateKey(colourMap, valueFormatter) {
       const rangeHasNegativeNums = colourMap.colourMap.some((entry) => {
@@ -24,16 +34,6 @@ export default {
           : `${valueFormatter(lower)} ${separator} ${valueFormatter(upper)}`;
         return [rangeDisplayText, mapping.colour];
       });
-    },
-  },
-  computed: {
-    key() {
-      const _key = this.generateKey(
-        this.current.dataset.colourMap,
-        this.current.dataset.valueFormatter
-      );
-      _key.unshift(["No data", Colours.GREY]);
-      return _key;
     },
   },
 };

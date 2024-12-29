@@ -13,25 +13,6 @@ export default {
       current: useCurrent(),
     };
   },
-  methods: {
-    closeButtonClicked() {
-      if (this.current.selectedRegionID) this.current.clearHighlighted();
-      this.current.clearSelected();
-    },
-    changeBetweenYears(fromYear, toYear) {
-      const fromValue = this.current.dataset.valueOf(
-        fromYear,
-        this.displayedRegion
-      );
-      const toValue = this.current.dataset.valueOf(
-        toYear,
-        this.displayedRegion
-      );
-      if (isNaN(fromValue) || isNaN(toValue)) return NaN;
-      const pcChange = ((toValue - fromValue) / fromValue) * 100;
-      return pcChange.toFixed(2);
-    },
-  },
   computed: {
     rank() {
       const rankIndex = _.chain(this.current.dataForCurrentYear)
@@ -87,6 +68,25 @@ export default {
     },
     displayedRegionCounty() {
       return this.current.dataset.countyOf(this.displayedRegion);
+    },
+  },
+  methods: {
+    closeButtonClicked() {
+      if (this.current.selectedRegionID) this.current.clearHighlighted();
+      this.current.clearSelected();
+    },
+    changeBetweenYears(fromYear, toYear) {
+      const fromValue = this.current.dataset.valueOf(
+        fromYear,
+        this.displayedRegion
+      );
+      const toValue = this.current.dataset.valueOf(
+        toYear,
+        this.displayedRegion
+      );
+      if (isNaN(fromValue) || isNaN(toValue)) return NaN;
+      const pcChange = ((toValue - fromValue) / fromValue) * 100;
+      return pcChange.toFixed(2);
     },
   },
 };

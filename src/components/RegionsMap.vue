@@ -18,9 +18,21 @@ export default {
       view: null,
       map: null,
       featureOverlay: null,
+      // TODO: this can be a computed property of current.selectedRegionID
       selectedFeature: null,
       highlightedFeature: null,
     };
+  },
+  computed: {
+    geoJSONFilePath() {
+      const geoJSONPaths = this.current.dataset.geoJSONMap.geoJSONPaths;
+      return geoJSONPaths.get(this.current.year) ?? geoJSONPaths.get("default");
+    },
+    geoJSONIDProperty() {
+      return this.current.dataset.geoJSONMap.idProperties.get(
+        this.current.year
+      );
+    },
   },
   mounted() {
     this.regionsLayer = this.createRegionsLayer(this.geoJSONIDProperty);
@@ -64,11 +76,15 @@ export default {
     });
 
     this.map.on("pointermove", (e) => {
-      // TODO: when pointer is outside the map, hide the info panel
       if (e.dragging) return;
 
       const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
-      if (!feature) return;
+      if (!feature) {
+        if (this.highlightedFeature) {
+          this.current.clearHighlighted();
+        }
+        return;
+      }
 
       this.current.$patch({
         highlightedRegionID: feature.get(this.geoJSONIDProperty),
@@ -133,17 +149,6 @@ export default {
       }
     });
   },
-  computed: {
-    geoJSONFilePath() {
-      const geoJSONPaths = this.current.dataset.geoJSONMap.geoJSONPaths;
-      return geoJSONPaths.get(this.current.year) ?? geoJSONPaths.get("default");
-    },
-    geoJSONIDProperty() {
-      return this.current.dataset.geoJSONMap.idProperties.get(
-        this.current.year
-      );
-    },
-  },
   methods: {
     applyHighlightOverlay(regionFeature) {
       this.featureOverlay.getSource().addFeature(regionFeature);
@@ -182,12 +187,9 @@ export default {
     },
     getFeatureByRegionId(regionId) {
       const features = this.regionsLayer.getSource().getFeatures();
-      // TODO: use .find() here
-      for (const feature of features) {
-        if (feature.get(this.geoJSONIDProperty) === regionId) {
-          return feature;
-        }
-      }
+      return features.find(
+        (feature) => feature.get(this.geoJSONIDProperty) === regionId
+      );
     },
   },
 };

@@ -18,6 +18,19 @@ export default {
     DataSelectionBar,
     RegionsMap,
   },
+  data() {
+    return {
+      current: useCurrent(),
+      theme: useTheme(),
+    };
+  },
+  computed: {
+    toggleThemeButtonIcon() {
+      return this.theme.global.current.dark
+        ? "mdi-weather-night"
+        : "mdi-weather-sunny";
+    },
+  },
   mounted() {
     this.current.$onAction(({ name, store, after }) => {
       switch (name) {
@@ -45,19 +58,6 @@ export default {
     },
     onResize() {
       this.current.drawer = window.innerWidth >= 992;
-    },
-  },
-  data() {
-    return {
-      current: useCurrent(),
-      theme: useTheme(),
-    };
-  },
-  computed: {
-    toggleThemeButtonIcon() {
-      return this.theme.global.current.dark
-        ? "mdi-weather-night"
-        : "mdi-weather-sunny";
     },
   },
 };

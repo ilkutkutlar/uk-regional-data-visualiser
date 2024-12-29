@@ -4,6 +4,17 @@ import _ from "lodash";
 
 export default {
   inject: ["allDatasets"],
+  data() {
+    return {
+      current: useCurrent(),
+      dataSelectItems: this.allDatasets.map((dataset) => {
+        return { value: dataset.metadata.id, text: dataset.metadata.name };
+      }),
+      keyFormatter: (region) => this.current.dataset.prettyNameOf(region),
+      searchText: "",
+      tab: null,
+    };
+  },
   computed: {
     yearSelectItems() {
       /* This is a computed property because `years`
@@ -65,17 +76,6 @@ export default {
         selectedRegionID: region,
       });
     },
-  },
-  data() {
-    return {
-      current: useCurrent(),
-      dataSelectItems: this.allDatasets.map((dataset) => {
-        return { value: dataset.metadata.id, text: dataset.metadata.name };
-      }),
-      keyFormatter: (region) => this.current.dataset.prettyNameOf(region),
-      searchText: "",
-      tab: null,
-    };
   },
 };
 </script>
