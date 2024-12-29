@@ -16,6 +16,16 @@ export const useCurrent = defineStore("current", {
     dataForCurrentYear: (state) => state.dataset.data[state.year],
   },
   actions: {
+    setDataset(newDataset: Dataset) {
+      /* `dataset` must be set directly as patching does not
+          actually set `dataset` to point to the new dataset,
+          instead setting each of its class attributes to
+          the new dataset's values, which causes issues. */
+      this.dataset = newDataset;
+    },
+    setYear(newYear: string) {
+      this.year = newYear;
+    },
     clearSelected() {
       this.$patch({ selectedRegionID: "" });
     },

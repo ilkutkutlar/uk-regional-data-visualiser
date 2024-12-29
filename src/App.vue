@@ -19,20 +19,20 @@ export default {
     RegionsMap,
   },
   mounted() {
-    this.current.$subscribe((mutation, state) => {
-      // TODO: fix this! Should not be using events in production!
-      switch (mutation.events.key) {
-        case "dataset":
+    this.current.$onAction(({ name, store, after }) => {
+      switch (name) {
+        case "setYear":
           this.current.clearHighlighted();
           this.current.clearSelected();
-          state.dataset.downloadData().then(() => {
-            this.current.$patch({ year: _.last(state.dataset.years) });
+          break;
+        case "setDataset":
+          this.current.clearHighlighted();
+          this.current.clearSelected();
+          after(() => {
+            store.dataset
+              .downloadData()
+              .then(() => this.current.setYear(_.last(store.dataset.years)));
           });
-          break;
-        case "year":
-          this.current.clearHighlighted();
-          this.current.clearSelected();
-          break;
       }
     });
     this.current.dataset.downloadData().then(() => {});

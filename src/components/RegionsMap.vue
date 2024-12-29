@@ -32,7 +32,7 @@ export default {
       maxZoom: 11,
     });
 
-    // TODO: add key as a control!
+    // TODO: add key as a control
     this.map = new Map({
       layers: [this.regionsLayer],
       target: "map",
@@ -75,17 +75,33 @@ export default {
       });
     });
 
-    this.current.$subscribe((mutation) => {
-      if (mutation.payload.year) {
-        this.regionsLayer.setSource(
-          new VectorSource({
-            url: this.geoJSONFilePath,
-            format: new GeoJSON({}),
-          })
-        );
-        this.regionsLayer.changed();
+    this.current.$onAction(({ name, after }) => {
+      switch (name) {
+        case "setYear":
+          after(() => {
+            this.regionsLayer.setSource(
+              new VectorSource({
+                url: this.geoJSONFilePath,
+                format: new GeoJSON({}),
+              })
+            );
+            this.regionsLayer.changed();
+          });
+          break;
+        case "clearHighlighted":
+          this.removeHighlightOverlay(this.highlightedFeature);
+          this.highlightedFeature = null;
+          break;
+        case "clearSelected":
+          this.removeHighlightOverlay(this.selectedFeature);
+          this.selectedFeature = null;
+          break;
       }
+    });
+    this.current.$subscribe((mutation) => {
+      if (mutation.type !== "patch object") return;
 
+      // TODO: consider using actions instead
       if (mutation.payload.highlightedRegionID) {
         const feature = this.getFeatureByRegionId(
           mutation.payload.highlightedRegionID
@@ -166,6 +182,7 @@ export default {
     },
     getFeatureByRegionId(regionId) {
       const features = this.regionsLayer.getSource().getFeatures();
+      // TODO: use .find() here
       for (const feature of features) {
         if (feature.get(this.geoJSONIDProperty) === regionId) {
           return feature;
