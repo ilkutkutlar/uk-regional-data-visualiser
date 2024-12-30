@@ -1,5 +1,6 @@
 <script>
 import { useCurrent } from "../store";
+import { useTheme } from "vuetify";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 import GeoJSON from "ol/format/GeoJSON.js";
@@ -9,11 +10,13 @@ import { Fill, Style, Stroke } from "ol/style.js";
 import VectorLayer from "ol/layer/Vector.js";
 import { defaults, DragPan } from "ol/interaction.js";
 import { Kinetic } from "ol";
+import { Colours } from "@/constants";
 
 export default {
   data() {
     return {
       current: useCurrent(),
+      theme: useTheme(),
       regionsLayer: null,
       view: null,
       map: null,
@@ -32,6 +35,9 @@ export default {
       return this.current.dataset.geoJSONMap.idProperties.get(
         this.current.year
       );
+    },
+    backgroundColour() {
+      return this.theme.global.current.dark ? "#212121" : "#F5F5F5";
     },
   },
   mounted() {
@@ -69,7 +75,7 @@ export default {
 
       const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
       if (!feature) return;
-      console.log(this.view);
+
       this.current.$patch({
         selectedRegionID: feature.get(this.geoJSONIDProperty),
       });
@@ -149,6 +155,11 @@ export default {
       }
     });
   },
+  watch: {
+    "theme.global.name"() {
+      this.regionsLayer.setBackground(this.backgroundColour);
+    },
+  },
   methods: {
     applyHighlightOverlay(regionFeature) {
       this.featureOverlay.getSource().addFeature(regionFeature);
@@ -171,13 +182,13 @@ export default {
           feature.get(this.geoJSONIDProperty)
         );
         return new Style({
-          fill: new Fill({ color: regionColour ?? "#bfbfbf" }),
+          fill: new Fill({ color: regionColour ?? Colours.GREY }),
           stroke: new Stroke({ width: 1 }),
         });
       }
       // TODO: Create a custom source/layer type for UK map
       return new VectorImageLayer({
-        background: "#1a2b39",
+        background: this.backgroundColour,
         imageRatio: 2,
         source: new VectorSource({
           url: this.geoJSONFilePath,

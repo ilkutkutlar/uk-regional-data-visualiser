@@ -26,5 +26,5 @@ export const enum Colours {
   YELLOW = "#BFBF40",
   ORANGE = "#D37B2E",
   RED = "#BF4040",
-  GREY = "#7F7F7F",
+  GREY = "#BFBFBF",
 }
