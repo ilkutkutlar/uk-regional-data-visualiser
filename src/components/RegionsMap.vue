@@ -69,7 +69,7 @@ export default {
 
       const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
       if (!feature) return;
-
+      console.log(this.view);
       this.current.$patch({
         selectedRegionID: feature.get(this.geoJSONIDProperty),
       });
@@ -157,10 +157,11 @@ export default {
       this.featureOverlay.getSource().removeFeature(regionFeature);
     },
     centreOnRegion(regionFeature) {
+      const zoom = this.view.getZoom() > 9 ? this.view.getZoom() : 9;
       this.view.fit(regionFeature.getGeometry(), {
         padding: [0, 200, 0, 0],
         duration: 400,
-        maxZoom: 9,
+        maxZoom: zoom,
       });
     },
     createRegionsLayer() {
