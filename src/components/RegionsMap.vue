@@ -176,7 +176,7 @@ export default {
       });
     },
     createRegionsLayer() {
-      styleFunction = (feature) => {
+      const styleFunction = (feature) => {
         const regionColour = this.current.dataset.colourOf(
           this.current.year,
           feature.get(this.geoJSONIDProperty)

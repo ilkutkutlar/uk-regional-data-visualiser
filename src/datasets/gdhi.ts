@@ -22,6 +22,7 @@ const colourMap = new ColourMap([
   { range: [35000, NaN], colour: Colours.PURPLE },
 ]);
 
+// TODO: fix this - we are not using SVG anymore!
 export const gdhi = new Dataset(
   metadata,
   ITL3SvgMap,
