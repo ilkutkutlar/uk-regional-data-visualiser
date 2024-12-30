@@ -1,13 +1,12 @@
 <script>
 import _ from "lodash";
-import { useTheme } from "vuetify";
-
-import KeyWindow from "./components/KeyWindow.vue";
-import InfoPanel from "./components/InfoPanel.vue";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import DataSelectionBar from "./components/DataSelectionBar.vue";
+import InfoPanel from "./components/InfoPanel.vue";
+import KeyWindow from "./components/KeyWindow.vue";
 import RegionsMap from "./components/RegionsMap.vue";
 import { useCurrent } from "./store";
+import { useTheme } from "vuetify";
 
 export default {
   inject: ["allDatasets"],

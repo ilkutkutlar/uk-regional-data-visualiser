@@ -1,6 +1,6 @@
 <script>
-import { useCurrent } from "../store";
 import { Colours } from "../constants";
+import { useCurrent } from "../store";
 
 export default {
   data() {

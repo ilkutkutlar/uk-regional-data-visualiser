@@ -1,6 +1,6 @@
 import type { Formatter, GeoJSONMap } from "./constants";
-import type { ColourMap } from "./colour_map";
 import _ from "lodash";
+import type { ColourMap } from "./colour_map";
 
 type DatasetMetadata = {
   id: string;

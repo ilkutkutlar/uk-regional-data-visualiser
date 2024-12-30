@@ -1,6 +1,6 @@
 <script>
-import { useCurrent } from "../store";
 import _ from "lodash";
+import { useCurrent } from "../store";
 
 export default {
   inject: ["allDatasets"],
@@ -56,7 +56,7 @@ export default {
       },
       set(value) {
         this.current.setDataset(
-          this.allDatasets.find((dataset) => dataset.metadata.id == value)
+          this.allDatasets.find((dataset) => dataset.metadata.id === value)
         );
       },
     },

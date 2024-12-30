@@ -1,7 +1,7 @@
 <script>
+import _ from "lodash";
 import InfoPanelRow from "./InfoPanelRow.vue";
 import { useCurrent } from "../store";
-import _ from "lodash";
 
 export default {
   components: {

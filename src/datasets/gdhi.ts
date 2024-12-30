@@ -1,7 +1,7 @@
 import { Colours, ValueFormatters } from "../constants";
-import { ITL3SvgMap } from "../svg_maps/itl3";
 import { ColourMap } from "../colour_map";
 import { Dataset } from "../dataset";
+import { ITL3SvgMap } from "../svg_maps/itl3";
 
 const metadata = {
   id: "gdhi_itl3",

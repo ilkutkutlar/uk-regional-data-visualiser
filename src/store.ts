@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
 import type { Dataset } from "./dataset";
+import { defineStore } from "pinia";
 import { earnings } from "./datasets/earnings";
 
 export const useCurrent = defineStore("current", {

@@ -1,16 +1,16 @@
 <script>
+import { defaults, DragPan } from "ol/interaction.js";
+import { Fill, Stroke, Style } from "ol/style.js";
+import { Colours } from "@/constants";
+import GeoJSON from "ol/format/GeoJSON.js";
+import { Kinetic } from "ol";
+import Map from "ol/Map.js";
 import { useCurrent } from "../store";
 import { useTheme } from "vuetify";
-import Map from "ol/Map.js";
-import View from "ol/View.js";
-import GeoJSON from "ol/format/GeoJSON.js";
 import VectorImageLayer from "ol/layer/VectorImage.js";
-import VectorSource from "ol/source/Vector.js";
-import { Fill, Style, Stroke } from "ol/style.js";
 import VectorLayer from "ol/layer/Vector.js";
-import { defaults, DragPan } from "ol/interaction.js";
-import { Kinetic } from "ol";
-import { Colours } from "@/constants";
+import VectorSource from "ol/source/Vector.js";
+import View from "ol/View.js";
 
 export default {
   data() {
@@ -176,7 +176,7 @@ export default {
       });
     },
     createRegionsLayer() {
-      function styleFunction(feature) {
+      styleFunction = (feature) => {
         const regionColour = this.current.dataset.colourOf(
           this.current.year,
           feature.get(this.geoJSONIDProperty)
@@ -185,7 +185,7 @@ export default {
           fill: new Fill({ color: regionColour ?? Colours.GREY }),
           stroke: new Stroke({ width: 1 }),
         });
-      }
+      };
       // TODO: Create a custom source/layer type for UK map
       return new VectorImageLayer({
         background: this.backgroundColour,

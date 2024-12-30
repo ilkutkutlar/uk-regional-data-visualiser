@@ -1,7 +1,7 @@
 import { Colours, ValueFormatters } from "../constants";
-import { LocalAuthoritiesGeoJSON } from "../svg_maps/local_authorities";
 import { ColourMap } from "../colour_map";
 import { Dataset } from "../dataset";
+import { LocalAuthoritiesGeoJSON } from "../svg_maps/local_authorities";
 
 const metadata = {
   id: "pubs_and_bars_local",
