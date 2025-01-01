@@ -83,6 +83,7 @@ export default {
 <template>
   <v-container>
     <v-select
+      id="dataset-select"
       variant="outlined"
       label="Choose a dataset"
       item-title="text"
@@ -91,6 +92,7 @@ export default {
       v-model="selectedDataset"
     ></v-select>
     <v-select
+      id="dataset-year-select"
       variant="outlined"
       label="Choose a year"
       :items="yearSelectItems"
@@ -104,7 +106,7 @@ export default {
     </v-tabs>
 
     <v-window v-model="tab">
-      <v-window-item value="metadata">
+      <v-window-item id="metadata-window-item" value="metadata">
         <v-card
           class="mt-5 border"
           prepend-icon="mdi-card-text-outline"
@@ -142,7 +144,7 @@ export default {
         </v-card>
       </v-window-item>
 
-      <v-window-item value="data">
+      <v-window-item id="data-window-item" value="data">
         <v-text-field
           class="mt-5"
           prepend-inner-icon="mdi-magnify"
