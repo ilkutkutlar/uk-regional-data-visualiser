@@ -67,6 +67,7 @@ export default {
     <v-layout>
       <v-app-bar prominent color="primary">
         <v-app-bar-nav-icon
+          id="drawer-toggle-button"
           variant="text"
           @click.stop="this.current.toggleDrawer"
         ></v-app-bar-nav-icon>
@@ -85,6 +86,7 @@ export default {
         <template v-slot:append>
           <v-container>
             <v-btn
+              id="close-drawer-button"
               prepend-icon="mdi-close"
               block
               color="primary"
