@@ -16,7 +16,6 @@ module.exports = {
     "sort-imports": ["error", { ignoreCase: true, allowSeparatedGroups: true }],
     "no-duplicate-imports": "error",
     "no-use-before-define": "error",
-    "capitalized-comments": "warn",
     complexity: "warn",
     "dot-notation": "warn",
     eqeqeq: "error",
