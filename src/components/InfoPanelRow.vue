@@ -28,18 +28,23 @@ export default {
 </script>
 
 <template>
-  <tr>
+  <tr data-cy="row">
     <td>
-      <v-icon :icon="isSelectedRow ? 'mdi-chevron-right' : ''"></v-icon>
-      <span class="font-weight-bold text-primary">
+      <v-icon
+        data-cy="select-icon"
+        :icon="isSelectedRow ? 'mdi-chevron-right' : ''"
+      ></v-icon>
+      <span data-cy="year" class="font-weight-bold text-primary">
         {{ year }}
       </span>
       <span class="mx-2 font-weight-thin">|</span>
-      {{ value }}
+      <span data-cy="value">
+        {{ value }}
+      </span>
     </td>
-    <td class="text-end" :class="changeTextClass">
+    <td data-cy="change" class="text-end" :class="changeTextClass">
       {{ changeFromLastYearPretty }}
-      <v-icon :icon="changeDirectionIcon"></v-icon>
+      <v-icon data-cy="change-icon" :icon="changeDirectionIcon"></v-icon>
     </td>
   </tr>
 </template>

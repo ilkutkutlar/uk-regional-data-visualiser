@@ -14,6 +14,7 @@ export default {
   },
   computed: {
     rank() {
+      console.log(this.current.dataForCurrentYear);
       const rankIndex = _.chain(this.current.dataForCurrentYear)
         .toPairs()
         .sortBy((item) => item[1])
