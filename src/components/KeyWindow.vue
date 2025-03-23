@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { Colours } from "../constants";
 import { useCurrent } from "../store";
 
@@ -13,7 +13,7 @@ export default {
     key() {
       const _key = this.generateKey(
         this.current.dataset.colourMap,
-        this.current.dataset.valueFormatter
+        this.current.dataset.valueFormatter,
       );
       _key.unshift(["No data", Colours.GREY]);
       return _key;
@@ -43,11 +43,7 @@ export default {
   <v-expansion-panels>
     <v-expansion-panel id="key-window-root" title="Key">
       <v-expansion-panel-text class="pt-3">
-        <div
-          v-for="[range, colour] in this.key"
-          :key="range"
-          class="d-flex mb-2"
-        >
+        <div v-for="[range, colour] in key" :key="range" class="d-flex mb-2">
           <div
             class="key-colour-box"
             :style="{ backgroundColor: colour }"

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { defaults, DragPan } from "ol/interaction.js";
 import { Fill, Stroke, Style } from "ol/style.js";
 import { Colours } from "@/constants";
@@ -33,11 +33,16 @@ export default {
     },
     geoJSONIDProperty() {
       return this.current.dataset.geoJSONMap.idProperties.get(
-        this.current.year
+        this.current.year,
       );
     },
     backgroundColour() {
       return this.theme.global.current.dark ? "#212121" : "#F5F5F5";
+    },
+  },
+  watch: {
+    "theme.global.name"() {
+      this.regionsLayer.setBackground(this.backgroundColour);
     },
   },
   mounted() {
@@ -105,7 +110,7 @@ export default {
               new VectorSource({
                 url: this.geoJSONFilePath,
                 format: new GeoJSON({}),
-              })
+              }),
             );
             this.regionsLayer.changed();
           });
@@ -126,7 +131,7 @@ export default {
       // TODO: consider using actions instead
       if (mutation.payload.highlightedRegionID) {
         const feature = this.getFeatureByRegionId(
-          mutation.payload.highlightedRegionID
+          mutation.payload.highlightedRegionID,
         );
 
         if (!feature) return;
@@ -140,7 +145,7 @@ export default {
 
       if (mutation.payload.selectedRegionID) {
         const feature = this.getFeatureByRegionId(
-          mutation.payload.selectedRegionID
+          mutation.payload.selectedRegionID,
         );
 
         if (!feature) return;
@@ -154,11 +159,6 @@ export default {
         this.centreOnRegion(feature);
       }
     });
-  },
-  watch: {
-    "theme.global.name"() {
-      this.regionsLayer.setBackground(this.backgroundColour);
-    },
   },
   methods: {
     applyHighlightOverlay(regionFeature) {
@@ -179,7 +179,7 @@ export default {
       const styleFunction = (feature) => {
         const regionColour = this.current.dataset.colourOf(
           this.current.year,
-          feature.get(this.geoJSONIDProperty)
+          feature.get(this.geoJSONIDProperty),
         );
         return new Style({
           fill: new Fill({ color: regionColour ?? Colours.GREY }),
@@ -200,7 +200,7 @@ export default {
     getFeatureByRegionId(regionId) {
       const features = this.regionsLayer.getSource().getFeatures();
       return features.find(
-        (feature) => feature.get(this.geoJSONIDProperty) === regionId
+        (feature) => feature.get(this.geoJSONIDProperty) === regionId,
       );
     },
   },

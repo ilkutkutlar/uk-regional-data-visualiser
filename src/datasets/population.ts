@@ -26,5 +26,5 @@ export const population = new Dataset(
   LocalAuthoritiesGeoJSON,
   colourMap,
   ValueFormatters.LARGE_NUMBER,
-  "./data/dataset/population.json"
+  "./data/dataset/population.json",
 );

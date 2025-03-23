@@ -3,11 +3,11 @@
 const assertInfoPanelDisplaysManchester = () => {
   cy.get("#info-panel-root .v-card-title .v-col-10").should(
     "contain.text",
-    "Manchester"
+    "Manchester",
   );
   cy.get("#info-panel-root .v-card-text table tbody").should(
     "contain.text",
-    "£23,003"
+    "£23,003",
   );
 };
 

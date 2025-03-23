@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import _ from "lodash";
 import DataDetailsPanel from "./components/DataDetailsPanel.vue";
 import DataSelectionBar from "./components/DataSelectionBar.vue";
@@ -9,7 +9,6 @@ import { useCurrent } from "./store";
 import { useTheme } from "vuetify";
 
 export default {
-  inject: ["allDatasets"],
   components: {
     KeyWindow,
     InfoPanel,
@@ -17,6 +16,7 @@ export default {
     DataSelectionBar,
     RegionsMap,
   },
+  inject: ["allDatasets"],
   data() {
     return {
       current: useCurrent(),
@@ -69,21 +69,21 @@ export default {
         <v-app-bar-nav-icon
           id="drawer-toggle-button"
           variant="text"
-          @click.stop="this.current.toggleDrawer"
+          @click.stop="current.toggleDrawer"
         ></v-app-bar-nav-icon>
         <v-toolbar-title>Maps of Britain</v-toolbar-title>
-        <v-btn @click="toggleTheme" :icon="toggleThemeButtonIcon"></v-btn>
+        <v-btn :icon="toggleThemeButtonIcon" @click="toggleTheme"></v-btn>
       </v-app-bar>
 
       <v-navigation-drawer
-        v-model="this.current.drawer"
+        v-model="current.drawer"
         location="left"
         permanent
         :width="400"
         color="secondary"
       >
         <DataDetailsPanel v-if="current.dataset.isDataDownloaded" />
-        <template v-slot:append>
+        <template #append>
           <v-container>
             <v-btn
               id="close-drawer-button"
@@ -91,7 +91,7 @@ export default {
               block
               color="primary"
               variant="tonal"
-              @click="this.current.toggleDrawer"
+              @click="current.toggleDrawer"
               >Close</v-btn
             >
           </v-container>

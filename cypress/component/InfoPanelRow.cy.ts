@@ -23,7 +23,7 @@ describe("<InfoPanelRow />", () => {
     cy.get('[data-cy="change-icon"]').should(
       "have.attr",
       "icon",
-      "mdi-arrow-up-thin"
+      "mdi-arrow-up-thin",
     );
 
     cy.mount(InfoPanelRow, { props: { ...testProps, changeFromLastYear: -3 } });
@@ -31,7 +31,7 @@ describe("<InfoPanelRow />", () => {
     cy.get('[data-cy="change-icon"]').should(
       "have.attr",
       "icon",
-      "mdi-arrow-down-thin"
+      "mdi-arrow-down-thin",
     );
   });
 
@@ -40,7 +40,7 @@ describe("<InfoPanelRow />", () => {
     cy.get('[data-cy="select-icon"]').should(
       "have.attr",
       "icon",
-      "mdi-chevron-right"
+      "mdi-chevron-right",
     );
   });
 });

@@ -28,5 +28,5 @@ export const gdhi = new Dataset(
   ITL3SvgMap,
   colourMap,
   ValueFormatters.CURRENCY_GBP,
-  "./data/dataset/gdhi.json"
+  "./data/dataset/gdhi.json",
 );

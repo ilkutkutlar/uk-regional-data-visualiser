@@ -1,6 +1,6 @@
 import type { SvgMap } from "../constants";
 
-const PRETTY_NAMES: Map<String, String> = new Map([
+const PRETTY_NAMES: Map<string, string> = new Map([
   ["TLB", "England"],
   ["TLC", "North East"],
   ["TLC1", "Tees Valley and Durham"],

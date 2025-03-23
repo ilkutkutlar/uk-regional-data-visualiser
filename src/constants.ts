@@ -1,9 +1,9 @@
 export type Formatter = (value: any) => string;
 export type GeoJSONMap = {
-  geoJSONPaths: Map<String, String>;
-  prettyNames: Map<String, String>;
-  countyLookup: Map<String, [String, String]>;
-  idProperties: Map<String, String>;
+  geoJSONPaths: Map<string, string>;
+  prettyNames: Map<string, string>;
+  countyLookup: Map<string, [string, string]>;
+  idProperties: Map<string, string>;
 };
 
 export const ValueFormatters: { [index: string]: Formatter } = {

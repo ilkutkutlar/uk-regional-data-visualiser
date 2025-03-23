@@ -27,5 +27,5 @@ export const pubsAndBars = new Dataset(
   LocalAuthoritiesGeoJSON,
   colourMap,
   ValueFormatters.NONE,
-  "./data/dataset/pubs_and_bars.json"
+  "./data/dataset/pubs_and_bars.json",
 );

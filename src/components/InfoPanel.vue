@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import _ from "lodash";
 import InfoPanelRow from "./InfoPanelRow.vue";
 import { useCurrent } from "../store";
@@ -14,7 +14,6 @@ export default {
   },
   computed: {
     rank() {
-      console.log(this.current.dataForCurrentYear);
       const rankIndex = _.chain(this.current.dataForCurrentYear)
         .toPairs()
         .sortBy((item) => item[1])
@@ -78,11 +77,11 @@ export default {
     changeBetweenYears(fromYear, toYear) {
       const fromValue = this.current.dataset.valueOf(
         fromYear,
-        this.displayedRegion
+        this.displayedRegion,
       );
       const toValue = this.current.dataset.valueOf(
         toYear,
-        this.displayedRegion
+        this.displayedRegion,
       );
       if (isNaN(fromValue) || isNaN(toValue)) return NaN;
       const pcChange = ((toValue - fromValue) / fromValue) * 100;
@@ -93,7 +92,7 @@ export default {
 </script>
 
 <template>
-  <v-card id="info-panel-root" v-show="displayedRegion">
+  <v-card v-show="displayedRegion" id="info-panel-root">
     <template #title>
       <v-row no-gutters>
         <v-col cols="10">
@@ -112,11 +111,11 @@ export default {
           <v-btn
             v-show="current.selectedRegionID"
             class="float-end"
-            @click="closeButtonClicked"
             aria-label="Close"
             icon="mdi-close"
             variant="plain"
             size="medium"
+            @click="closeButtonClicked"
           ></v-btn>
         </v-col>
       </v-row>
@@ -127,10 +126,12 @@ export default {
           <InfoPanelRow
             v-for="year in displayedYears"
             :key="year"
-            :isSelectedRow="year == current.year"
+            :is-selected-row="year == current.year"
             :year="year"
             :value="current.dataset.valueOf(year, displayedRegion, true)"
-            :changeFromLastYear="changeBetweenYears(parseInt(year) - 1, year)"
+            :change-from-last-year="
+              changeBetweenYears(parseInt(year) - 1, year)
+            "
           />
         </tbody>
       </table>

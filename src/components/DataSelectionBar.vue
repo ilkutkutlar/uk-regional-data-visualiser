@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { useCurrent } from "../store";
 
 export default {
@@ -21,7 +21,7 @@ export default {
             class="me-2"
             icon="mdi-tune"
             color="primary"
-            @click="this.current.toggleDrawer"
+            @click="current.toggleDrawer"
           ></v-btn>
         </v-col>
         <v-col cols="9">

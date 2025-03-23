@@ -1,6 +1,23 @@
-<script>
+<script lang="ts">
 export default {
-  props: ["year", "value", "changeFromLastYear", "isSelectedRow"],
+  props: {
+    year: {
+      type: String,
+      default: "2025",
+    },
+    value: {
+      type: String,
+      default: "0",
+    },
+    changeFromLastYear: {
+      type: Number,
+      default: 0,
+    },
+    isSelectedRow: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     changeTextClass() {
       if (isNaN(this.changeFromLastYear)) return ["text-grey"];
@@ -9,10 +26,7 @@ export default {
       return ["text-yellow"];
     },
     changeDirectionIcon() {
-      if (
-        isNaN(this.changeFromLastYear) ||
-        this.changeFromLastYear === "0.00"
-      ) {
+      if (isNaN(this.changeFromLastYear) || this.changeFromLastYear === 0) {
         return "mdi-minus";
       }
       return this.changeFromLastYear > 0

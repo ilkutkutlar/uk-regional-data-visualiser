@@ -1,15 +1,18 @@
 {
   "name": "data-maps",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "lint-fix": "eslint --fix .",
+    "format": "prettier --write src/"
   },
-  "type": "module",
   "dependencies": {
     "@mdi/font": "^7.1.96",
     "d3": "^7.9.0",

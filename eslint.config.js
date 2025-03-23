@@ -1,14 +1,14 @@
-import js from "@eslint/js";
-import pluginVue from 'eslint-plugin-vue'
-import prettierConfig from "@vue/eslint-config-prettier";
 import {
   defineConfigWithVueTs,
   vueTsConfigs,
-} from '@vue/eslint-config-typescript'
+} from "@vue/eslint-config-typescript";
+import js from "@eslint/js";
+import pluginVue from "eslint-plugin-vue";
+import prettierConfig from "@vue/eslint-config-prettier";
 
 export default defineConfigWithVueTs(
   js.configs.recommended,
-  pluginVue.configs['flat/recommended'],
+  pluginVue.configs["flat/recommended"],
   prettierConfig,
   vueTsConfigs.recommended,
   { ignores: ["node_modules/**", "dist/", ".gitignore"] },
@@ -25,7 +25,7 @@ export default defineConfigWithVueTs(
       "**/*.mts",
     ],
     languageOptions: {
-			ecmaVersion: "latest",
+      ecmaVersion: "latest",
     },
     rules: {
       complexity: "warn",
@@ -35,9 +35,13 @@ export default defineConfigWithVueTs(
       "new-cap": "warn",
       "no-console": "error",
       "no-duplicate-imports": "error",
+      "no-explicit-any": "off",
       "no-extra-bind": "warn",
       "no-use-before-define": "error",
-      "sort-imports": ["error", { ignoreCase: true, allowSeparatedGroups: true }],
+      "sort-imports": [
+        "error",
+        { ignoreCase: true, allowSeparatedGroups: true },
+      ],
     },
-  }
+  },
 );

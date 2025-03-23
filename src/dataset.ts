@@ -32,7 +32,7 @@ export class Dataset {
     geoJSONMap: GeoJSONMap,
     colourMap: ColourMap,
     valueFormatter: Formatter,
-    dataPath: string
+    dataPath: string,
   ) {
     this.metadata = metadata;
     this.geoJSONMap = geoJSONMap;
@@ -64,7 +64,7 @@ export class Dataset {
   valueOf(
     year: string,
     regionCode: string,
-    formatValue: boolean = false
+    formatValue: boolean = false,
   ): number | string {
     let value = NaN;
     if (year in this.data && regionCode in this.data[year]) {

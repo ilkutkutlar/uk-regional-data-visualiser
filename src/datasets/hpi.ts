@@ -28,5 +28,5 @@ export const hpi = new Dataset(
   LocalAuthoritiesGeoJSON,
   colourMap,
   ValueFormatters.CURRENCY_GBP,
-  "./data/dataset/hpi.json"
+  "./data/dataset/hpi.json",
 );

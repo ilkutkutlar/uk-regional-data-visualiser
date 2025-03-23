@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import _ from "lodash";
 import { useCurrent } from "../store";
 
@@ -56,7 +56,7 @@ export default {
       },
       set(value) {
         this.current.setDataset(
-          this.allDatasets.find((dataset) => dataset.metadata.id === value)
+          this.allDatasets.find((dataset) => dataset.metadata.id === value),
         );
       },
     },
@@ -84,19 +84,19 @@ export default {
   <v-container>
     <v-select
       id="dataset-select"
+      v-model="selectedDataset"
       variant="outlined"
       label="Choose a dataset"
       item-title="text"
       item-value="value"
       :items="dataSelectItems"
-      v-model="selectedDataset"
     ></v-select>
     <v-select
       id="dataset-year-select"
+      v-model="selectedYear"
       variant="outlined"
       label="Choose a year"
       :items="yearSelectItems"
-      v-model="selectedYear"
       attach
     ></v-select>
 
@@ -146,10 +146,10 @@ export default {
 
       <v-window-item id="data-window-item" value="data">
         <v-text-field
+          v-model="searchText"
           class="mt-5"
           prepend-inner-icon="mdi-magnify"
           placeholder="Search data..."
-          v-model="searchText"
           variant="outlined"
         ></v-text-field>
 
@@ -157,9 +157,9 @@ export default {
           <tbody>
             <tr
               v-for="(value, region) in filteredData"
-              class="cursor-pointer"
-              :class="{ selected: this.current.selectedRegionID === region }"
               :key="region"
+              class="cursor-pointer"
+              :class="{ selected: current.selectedRegionID === region }"
               @click="() => dataRowClick(region)"
               @mouseenter="() => dataRowMouseEnter(region)"
               @mouseleave="() => dataRowMouseLeave(region)"

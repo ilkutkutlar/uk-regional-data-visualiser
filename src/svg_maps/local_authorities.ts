@@ -1,6 +1,6 @@
 import type { GeoJSONMap } from "../constants";
 
-export const PRETTY_NAMES: Map<String, String> = new Map([
+export const PRETTY_NAMES: Map<string, string> = new Map([
   ["E92000001", "England"],
   ["W92000004", "Wales"],
   ["S92000003", "Scotland"],
@@ -452,7 +452,7 @@ export const PRETTY_NAMES: Map<String, String> = new Map([
   ["E07000191", "West Somerset"],
 ]);
 
-export const LAD_CODE_TO_COUNTY: Map<String, [String, String]> = new Map([
+export const LAD_CODE_TO_COUNTY: Map<string, [string, string]> = new Map([
   ["E07000008", ["E10000003", "Cambridgeshire"]],
   ["E07000009", ["E10000003", "Cambridgeshire"]],
   ["E07000010", ["E10000003", "Cambridgeshire"]],

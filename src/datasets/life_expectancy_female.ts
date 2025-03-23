@@ -26,5 +26,5 @@ export const lifeExpectancyFemale = new Dataset(
   LocalAuthoritiesGeoJSON,
   colourMap,
   ValueFormatters.NONE,
-  "./data/dataset/life_expectancy_female.json"
+  "./data/dataset/life_expectancy_female.json",
 );

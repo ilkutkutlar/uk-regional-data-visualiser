@@ -27,5 +27,5 @@ export const netInternalMigration = new Dataset(
   LocalAuthoritiesGeoJSON,
   colourMap,
   ValueFormatters.NONE,
-  "./data/dataset/net_internal_migration.json"
+  "./data/dataset/net_internal_migration.json",
 );

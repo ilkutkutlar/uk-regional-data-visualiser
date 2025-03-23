@@ -27,5 +27,5 @@ export const earnings = new Dataset(
   LocalAuthoritiesGeoJSON,
   colourMap,
   ValueFormatters.CURRENCY_GBP,
-  "./data/dataset/earnings.json"
+  "./data/dataset/earnings.json",
 );
