@@ -13,17 +13,7 @@ export default defineConfigWithVueTs(
   vueTsConfigs.recommended,
   { ignores: ["node_modules/**", "dist/", ".gitignore"] },
   {
-    files: [
-      "**/*.vue",
-      "**/*.js",
-      "**/*.jsx",
-      "**/*.cjs",
-      "**/*.mjs",
-      "**/*.ts",
-      "**/*.tsx",
-      "**/*.cts",
-      "**/*.mts",
-    ],
+    files: ["**/*.{vue,js,jsx,cjs,mjs,ts,tsx,cts,mts}"],
     languageOptions: {
       ecmaVersion: "latest",
     },

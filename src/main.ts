@@ -2,7 +2,6 @@ import App from "./App.vue";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { earnings } from "./datasets/earnings";
-import { gdhi } from "./datasets/gdhi";
 import { hpi } from "./datasets/hpi";
 import { lifeExpectancyFemale } from "./datasets/life_expectancy_female";
 import { lifeExpectancyMale } from "./datasets/life_expectancy_male";
@@ -64,7 +63,6 @@ const vuetify = createVuetify({
 app.provide("allDatasets", [
   earnings,
   hpi,
-  gdhi,
   population,
   netInternalMigration,
   pubsAndBars,
