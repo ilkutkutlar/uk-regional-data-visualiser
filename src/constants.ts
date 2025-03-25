@@ -1,4 +1,4 @@
-export type Formatter = (value: any) => string;
+export type Formatter = (value: number) => string;
 export type GeoJSONMap = {
   geoJSONPaths: Map<string, string>;
   prettyNames: Map<string, string>;

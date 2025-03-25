@@ -1,16 +1,24 @@
 <script lang="ts">
 import _ from "lodash";
+import { Dataset } from "../dataset";
 import { useCurrent } from "../store";
 
 export default {
-  inject: ["allDatasets"],
+  inject: {
+    allDatasets: {
+      from: "allDatasets",
+      default: [],
+    },
+  },
   data() {
     return {
       current: useCurrent(),
-      dataSelectItems: this.allDatasets.map((dataset) => {
+      dataSelectItems: this.allDatasets.map((dataset: Dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
-      keyFormatter: (region) => this.current.dataset.prettyNameOf(region),
+      keyFormatter: (region: string) => {
+        return this.current.dataset.prettyNameOf(region);
+      },
       searchText: "",
       tab: null,
     };
@@ -46,7 +54,7 @@ export default {
       get() {
         return this.current.year;
       },
-      set(value) {
+      set(value: string) {
         this.current.setYear(value);
       },
     },
@@ -54,24 +62,26 @@ export default {
       get() {
         return this.current.dataset.metadata.id;
       },
-      set(value) {
+      set(value: string) {
         this.current.setDataset(
-          this.allDatasets.find((dataset) => dataset.metadata.id === value),
+          this.allDatasets.find(
+            (dataset: Dataset) => dataset.metadata.id === value,
+          ),
         );
       },
     },
   },
   methods: {
-    dataRowMouseEnter(region) {
+    dataRowMouseEnter(region: string) {
       this.current.$patch({
         highlightedRegionID: region,
       });
     },
-    dataRowMouseLeave(region) {
+    dataRowMouseLeave(region: string) {
       if (region === this.current.selectedRegionID) return;
       this.current.clearHighlighted();
     },
-    dataRowClick(region) {
+    dataRowClick(region: string) {
       this.current.$patch({
         selectedRegionID: region,
       });
@@ -160,11 +170,11 @@ export default {
               :key="region"
               class="cursor-pointer"
               :class="{ selected: current.selectedRegionID === region }"
-              @click="() => dataRowClick(region)"
-              @mouseenter="() => dataRowMouseEnter(region)"
-              @mouseleave="() => dataRowMouseLeave(region)"
+              @click="() => dataRowClick(region.toString())"
+              @mouseenter="() => dataRowMouseEnter(region.toString())"
+              @mouseleave="() => dataRowMouseLeave(region.toString())"
             >
-              <td>{{ keyFormatter(region) }}</td>
+              <td>{{ keyFormatter(region.toString()) }}</td>
               <td>
                 <span class="font-weight-bold">{{
                   current.dataset.valueFormatter(value)

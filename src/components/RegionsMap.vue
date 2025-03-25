@@ -1,9 +1,9 @@
 <script lang="ts">
 import { defaults, DragPan } from "ol/interaction.js";
+import { Feature, Kinetic } from "ol";
 import { Fill, Stroke, Style } from "ol/style.js";
 import { Colours } from "@/constants";
 import GeoJSON from "ol/format/GeoJSON.js";
-import { Kinetic } from "ol";
 import Map from "ol/Map.js";
 import { useCurrent } from "../store";
 import { useTheme } from "vuetify";
@@ -46,7 +46,7 @@ export default {
     },
   },
   mounted() {
-    this.regionsLayer = this.createRegionsLayer(this.geoJSONIDProperty);
+    this.regionsLayer = this.createRegionsLayer();
 
     this.view = new View({
       center: [0, 0],
@@ -78,7 +78,10 @@ export default {
     this.map.on("singleclick", (e) => {
       if (e.dragging) return;
 
-      const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
+      const feature = this.map.forEachFeatureAtPixel(
+        e.pixel,
+        (f: Feature) => f,
+      );
       if (!feature) return;
 
       this.current.$patch({
@@ -89,7 +92,10 @@ export default {
     this.map.on("pointermove", (e) => {
       if (e.dragging) return;
 
-      const feature = this.map.forEachFeatureAtPixel(e.pixel, (f) => f);
+      const feature = this.map.forEachFeatureAtPixel(
+        e.pixel,
+        (f: Feature) => f,
+      );
       if (!feature) {
         if (this.highlightedFeature) {
           this.current.clearHighlighted();
@@ -161,13 +167,13 @@ export default {
     });
   },
   methods: {
-    applyHighlightOverlay(regionFeature) {
+    applyHighlightOverlay(regionFeature: Feature) {
       this.featureOverlay.getSource().addFeature(regionFeature);
     },
-    removeHighlightOverlay(regionFeature) {
+    removeHighlightOverlay(regionFeature: Feature) {
       this.featureOverlay.getSource().removeFeature(regionFeature);
     },
-    centreOnRegion(regionFeature) {
+    centreOnRegion(regionFeature: Feature) {
       const zoom = this.view.getZoom() > 9 ? this.view.getZoom() : 9;
       this.view.fit(regionFeature.getGeometry(), {
         padding: [0, 200, 0, 0],
@@ -175,8 +181,8 @@ export default {
         maxZoom: zoom,
       });
     },
-    createRegionsLayer() {
-      const styleFunction = (feature) => {
+    createRegionsLayer(): VectorImageLayer {
+      const styleFunction = (feature: Feature): Style => {
         const regionColour = this.current.dataset.colourOf(
           this.current.year,
           feature.get(this.geoJSONIDProperty),
@@ -197,10 +203,10 @@ export default {
         style: styleFunction.bind(this),
       });
     },
-    getFeatureByRegionId(regionId) {
+    getFeatureByRegionId(regionId: string): Feature {
       const features = this.regionsLayer.getSource().getFeatures();
       return features.find(
-        (feature) => feature.get(this.geoJSONIDProperty) === regionId,
+        (feature: Feature) => feature.get(this.geoJSONIDProperty) === regionId,
       );
     },
   },

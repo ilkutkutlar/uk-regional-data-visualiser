@@ -35,7 +35,7 @@ export default {
     },
     changeFromLastYearPretty() {
       if (isNaN(this.changeFromLastYear)) return "N/A";
-      return `${this.changeFromLastYear}%`;
+      return `${this.changeFromLastYear.toFixed(2)}%`;
     },
   },
 };

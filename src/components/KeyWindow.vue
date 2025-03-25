@@ -1,5 +1,6 @@
 <script lang="ts">
-import { Colours } from "../constants";
+import { Colours, type Formatter } from "../constants";
+import { ColourMap } from "../colour_map";
 import { useCurrent } from "../store";
 
 export default {
@@ -20,7 +21,7 @@ export default {
     },
   },
   methods: {
-    generateKey(colourMap, valueFormatter) {
+    generateKey(colourMap: ColourMap, valueFormatter: Formatter) {
       const rangeHasNegativeNums = colourMap.colourMap.some((entry) => {
         const [lower, upper] = entry.range;
         return Number(lower) < 0 || Number(upper) < 0;

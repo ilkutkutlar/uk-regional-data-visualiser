@@ -17,7 +17,7 @@ export class Dataset {
   colourMap: ColourMap;
   dataPath: string;
   valueFormatter: Formatter;
-  data: { [index: string]: { [index: string]: any } } = {};
+  data: { [index: string]: { [index: string]: number } } = {};
 
   get years() {
     return Object.keys(this.data);
@@ -61,16 +61,12 @@ export class Dataset {
     return this.colourMap.mapValueToColour(value);
   }
 
-  valueOf(
-    year: string,
-    regionCode: string,
-    formatValue: boolean = false,
-  ): number | string {
+  valueOf(year: string, regionCode: string): number {
     let value = NaN;
     if (year in this.data && regionCode in this.data[year]) {
       value = this.data[year][regionCode];
     }
-    return formatValue ? this.valueFormatter(value) : value;
+    return value;
   }
 
   prettyNameOf(regionCode: string) {

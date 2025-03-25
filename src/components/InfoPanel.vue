@@ -74,7 +74,7 @@ export default {
       if (this.current.selectedRegionID) this.current.clearHighlighted();
       this.current.clearSelected();
     },
-    changeBetweenYears(fromYear, toYear) {
+    changeBetweenYears(fromYear: string, toYear: string): number {
       const fromValue = this.current.dataset.valueOf(
         fromYear,
         this.displayedRegion,
@@ -84,8 +84,7 @@ export default {
         this.displayedRegion,
       );
       if (isNaN(fromValue) || isNaN(toValue)) return NaN;
-      const pcChange = ((toValue - fromValue) / fromValue) * 100;
-      return pcChange.toFixed(2);
+      return ((toValue - fromValue) / fromValue) * 100;
     },
   },
 };
@@ -128,9 +127,13 @@ export default {
             :key="year"
             :is-selected-row="year == current.year"
             :year="year"
-            :value="current.dataset.valueOf(year, displayedRegion, true)"
+            :value="
+              current.dataset.valueFormatter(
+                current.dataset.valueOf(year, displayedRegion),
+              )
+            "
             :change-from-last-year="
-              changeBetweenYears(parseInt(year) - 1, year)
+              changeBetweenYears((parseInt(year) - 1).toString(), year)
             "
           />
         </tbody>
