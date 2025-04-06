@@ -14,4 +14,34 @@ declare global {
   }
 }
 
+// import { h } from "vue";
+// import { VApp } from "vuetify/components";
+// // import Vuetify from "vuetify";
+// import { createVuetify } from 'vuetify'
+
+// import * as components from 'vuetify/components'
+// import * as directives from 'vuetify/directives'
+
+// // We recommend that you pull this out
+// // into a constants file that you share with
+// // your main.js file.
+// const vuetifyOptions = {};
+
+// Cypress.Commands.add("mount", (component, ...args) => {
+//   args.global = args.global || {};
+//   args.global.plugins = args.global.plugins || [];
+
+//   const vuetify = createVuetify({
+//     components,
+//     directives,
+//   })
+//   args.global.plugins.push(vuetify);
+
+//   return mount(
+//     () => {
+//       return h(VApp, {}, component);
+//     },
+//     ...args,
+//   );
+// });
 Cypress.Commands.add("mount", mount);
