@@ -5,15 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "test-component": "npx vitest --silent --run",
-    "test-e2e": "cypress run --quiet --e2e",
     "build": "run-p type-check build-only",
-    "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit",
+    "preview": "vite preview",
+    "test:component": "vitest --silent --run",
+    "test:e2e": "cypress run --quiet --e2e",
     "lint": "eslint .",
-    "lint-fix": "eslint --fix .",
-    "format": "prettier --write src/"
+    "lint:fix": "eslint --fix .",
+    "lint:types": "vue-tsc --noEmit",
+    "format:fix": "prettier --write src/ tests/ cypress/",
+    "format:check": "prettier --check src/ tests/ cypress/"
   },
   "dependencies": {
     "@mdi/font": "^7.1.96",
