@@ -6,7 +6,7 @@ describe("<InfoPanelRow />", () => {
   const testProps = {
     year: 2021,
     value: 25000,
-    changeFromLastYear: 5,
+    changeFromLastYear: 5.14,
     isSelectedRow: false,
   };
 
@@ -14,7 +14,7 @@ describe("<InfoPanelRow />", () => {
     cy.mount(InfoPanelRow, { props: testProps });
     cy.get('[data-cy="year"]').should("have.text", "2021");
     cy.get('[data-cy="value"]').should("have.text", "25000");
-    cy.get('[data-cy="change"]').should("contain.text", "5%");
+    cy.get('[data-cy="change"]').should("contain.text", "5.14%");
   });
 
   it("uses correct icon and text colour based on the value of change from last year", () => {
