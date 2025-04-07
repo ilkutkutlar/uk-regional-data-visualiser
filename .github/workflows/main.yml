@@ -1,5 +1,4 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Quality Assurance and Testing Pipeline
 on: [push]
 jobs:
   QualityAssurance:
@@ -20,3 +19,18 @@ jobs:
         run: npm run lint:types
       - name: Formatting check
         run: npm run format:check
+  Testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run component tests
+        run: npm run test:component
+        
