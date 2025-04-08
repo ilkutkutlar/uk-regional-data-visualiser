@@ -13,8 +13,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "lint:types": "vue-tsc --noEmit",
-    "format:fix": "prettier --write src/ tests/ cypress/",
-    "format:check": "prettier --check src/ tests/ cypress/"
+    "format:fix": "prettier --write src/ tests/",
+    "format:check": "prettier --check src/ tests/"
   },
   "dependencies": {
     "@mdi/font": "^7.1.96",
