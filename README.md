@@ -4,7 +4,7 @@ UK Data Maps is an interactive tool for visualising and exploring regional data 
 
 ## Development
 
-This project is a web app developed with the VueJS framework. Vite is used for bundling and providing a development server. ESLint is used for linting, and Prettier for auto formatting. Cypress is used as a test runner.
+This project is a web app developed with the [VueJS](https://vuejs.org/) framework. [Vite](https://vite.dev/) is used for bundling and providing a development server. [ESLint](https://eslint.org/) is used for linting, and [Prettier](https://prettier.io/) for auto formatting. [Vitest](https://vitest.dev/) is used as a test runner for component tests and [Cypress](https://www.cypress.io/) for end-to-end tests.
 
 To get set up and start developing, first install the dependencies:
 
@@ -16,19 +16,20 @@ To run the tests:
 
 ```shell
 # Component tests
-npm run test-component
+npm run test:component
 
 # End-to-end tests
-npm run test-e2e
+npm run test:e2e
 ```
 
 To run various linting and formatting tools:
 
 ```shell
-npm run lint        # Run ESLint
-npm run lint        # Run ESLint and fix errors which are auto-fixable
-npm run type-check  # Check that TypeScript types are correct
-npm run autoformat  # Run Prettier to autoformat files
+npm run lint          # Run ESLint
+npm run lint:fix      # Run ESLint and fix errors which are auto-fixable
+npm run lint:type     # Check that TypeScript types are correct
+npm run format:check  # Run Prettier to check files for formatting rule violations
+npm run format:fix    # Run Prettier to fix formatting rule violations
 ```
 
 To start the dev server:
