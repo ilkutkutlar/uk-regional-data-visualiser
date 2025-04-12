@@ -1,5 +1,5 @@
 <script lang="ts">
-import { useCurrent } from "../store";
+import { useCurrent } from "@/store";
 
 export default {
   data() {

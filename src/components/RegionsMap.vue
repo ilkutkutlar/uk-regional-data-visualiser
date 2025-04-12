@@ -1,11 +1,12 @@
 <script lang="ts">
 import { defaults, DragPan } from "ol/interaction.js";
-import { Feature, Kinetic } from "ol";
+import { Feature, Kinetic, MapBrowserEvent } from "ol";
 import { Fill, Stroke, Style } from "ol/style.js";
 import { Colours } from "@/constants";
 import GeoJSON from "ol/format/GeoJSON.js";
 import Map from "ol/Map.js";
-import { useCurrent } from "../store";
+import { type StyleLike } from "ol/style/Style";
+import { useCurrent } from "@/store";
 import { useTheme } from "vuetify";
 import VectorImageLayer from "ol/layer/VectorImage.js";
 import VectorLayer from "ol/layer/Vector.js";
@@ -32,9 +33,10 @@ export default {
       return geoJSONPaths.get(this.current.year) ?? geoJSONPaths.get("default");
     },
     geoJSONIDProperty() {
-      return this.current.dataset.geoJSONMap.idProperties.get(
+      const maybeId = this.current.dataset.geoJSONMap.idProperties.get(
         this.current.year,
       );
+      return maybeId ?? "id";
     },
     backgroundColour() {
       return this.theme.global.current.dark ? "#212121" : "#F5F5F5";
@@ -75,7 +77,7 @@ export default {
       },
     });
 
-    this.map.on("singleclick", (e) => {
+    this.map.on("singleclick", (e: MapBrowserEvent<UIEvent>) => {
       if (e.dragging) return;
 
       const feature = this.map.forEachFeatureAtPixel(
@@ -89,7 +91,7 @@ export default {
       });
     });
 
-    this.map.on("pointermove", (e) => {
+    this.map.on("pointermove", (e: MapBrowserEvent<UIEvent>) => {
       if (e.dragging) return;
 
       const feature = this.map.forEachFeatureAtPixel(
@@ -200,7 +202,7 @@ export default {
           url: this.geoJSONFilePath,
           format: new GeoJSON({}),
         }),
-        style: styleFunction.bind(this),
+        style: styleFunction.bind(this) as StyleLike,
       });
     },
     getFeatureByRegionId(regionId: string): Feature {

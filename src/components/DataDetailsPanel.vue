@@ -1,29 +1,28 @@
 <script lang="ts">
 import _ from "lodash";
-import { Dataset } from "../dataset";
-import { useCurrent } from "../store";
+import { Dataset } from "@/dataset";
+import LicenceInfoCard from "@/components/LicenceInfoCard.vue";
+import { useCurrent } from "@/store";
 
 export default {
-  inject: {
-    allDatasets: {
-      from: "allDatasets",
-      default: [],
-    },
+  components: {
+    LicenceInfoCard,
   },
+  inject: ["allDatasets"],
   data() {
     return {
       current: useCurrent(),
+      searchText: "",
+      tab: null,
       dataSelectItems: this.allDatasets.map((dataset: Dataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
-      keyFormatter: (region: string) => {
-        return this.current.dataset.prettyNameOf(region);
-      },
-      searchText: "",
-      tab: null,
     };
   },
   computed: {
+    keyFormatter() {
+      return (region: string) => this.current.dataset.prettyNameOf(region);
+    },
     yearSelectItems() {
       /* This is a computed property because `years`
          uses the "data" property, which is downloaded
@@ -145,42 +144,7 @@ export default {
           </template>
         </v-card>
 
-        <v-card class="mt-5 border" prepend-icon="mdi-license" variant="flat">
-          <template #title>Licence information</template>
-          <template #text>
-            <div
-              v-if="
-                current.dataset.metadata.licence_type ==
-                'open_government_licence_v3'
-              "
-            >
-              Contains public sector information licensed under the
-              <a
-                href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
-                target="blank"
-              >
-                Open Government Licence v3.0
-              </a>
-              .
-            </div>
-            <div
-              v-else-if="
-                current.dataset.metadata.licence_type ==
-                'open_government_licence_v3_hm_land_registry'
-              "
-            >
-              Contains HM Land Registry data © Crown copyright and database
-              right 2020. This data is licensed under the
-              <a
-                href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
-                target="blank"
-              >
-                Open Government Licence v3.0
-              </a>
-              .
-            </div>
-          </template>
-        </v-card>
+        <LicenceInfoCard :licence-type="current.dataset.metadata.licenceType" />
 
         <v-card
           class="mt-5 border"

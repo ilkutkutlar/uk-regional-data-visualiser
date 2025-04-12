@@ -1,4 +1,4 @@
-import type { GeoJSONMap } from "../constants";
+import type { GeoJSONMap } from "@/constants";
 
 export const PRETTY_NAMES: Map<string, string> = new Map([
   ["E92000001", "England"],

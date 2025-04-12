@@ -1,6 +1,6 @@
-# UK Data Maps
+# UK Regional Data Visualiser
 
-UK Data Maps is an interactive tool for visualising and exploring regional data related to the UK. This project was born out of my interest in exploring the differences between various UK regions.
+UK Regional Data Visualiser is an interactive tool for visualising and exploring regional data related to the UK. This project was born out of my interest in exploring the differences between various UK regions.
 
 ## Development
 

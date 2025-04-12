@@ -1,11 +1,11 @@
 <script lang="ts">
 import _ from "lodash";
-import DataDetailsPanel from "./components/DataDetailsPanel.vue";
-import DataSelectionBar from "./components/DataSelectionBar.vue";
-import InfoPanel from "./components/InfoPanel.vue";
-import KeyWindow from "./components/KeyWindow.vue";
-import RegionsMap from "./components/RegionsMap.vue";
-import { useCurrent } from "./store";
+import DataDetailsPanel from "@/components/DataDetailsPanel.vue";
+import DataSelectionBar from "@/components/DataSelectionBar.vue";
+import InfoPanel from "@/components/InfoPanel.vue";
+import KeyWindow from "@/components/KeyWindow.vue";
+import RegionsMap from "@/components/RegionsMap.vue";
+import { useCurrent } from "@/store";
 import { useTheme } from "vuetify";
 
 export default {
@@ -71,7 +71,7 @@ export default {
           variant="text"
           @click.stop="current.toggleDrawer"
         ></v-app-bar-nav-icon>
-        <v-toolbar-title>Maps of Britain</v-toolbar-title>
+        <v-toolbar-title>UK Regional Data Visualiser</v-toolbar-title>
         <v-btn :icon="toggleThemeButtonIcon" @click="toggleTheme"></v-btn>
       </v-app-bar>
 

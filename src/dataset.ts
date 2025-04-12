@@ -1,6 +1,6 @@
-import type { Formatter, GeoJSONMap } from "./constants";
+import type { Formatter, GeoJSONMap } from "@/constants";
 import _ from "lodash";
-import type { ColourMap } from "./colour_map";
+import type { ColourMap } from "@/colour_map";
 
 type DatasetMetadata = {
   id: string;
@@ -9,7 +9,7 @@ type DatasetMetadata = {
   source: string;
   sourceLink: string;
   boundaries: string;
-  licence_type: string;
+  licenceType: string;
 };
 
 export class Dataset {

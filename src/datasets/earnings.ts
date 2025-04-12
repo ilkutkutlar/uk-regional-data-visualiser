@@ -1,6 +1,6 @@
-import { Colours, ValueFormatters } from "../constants";
-import { ColourMap } from "../colour_map";
-import { Dataset } from "../dataset";
+import { Colours, ValueFormatters } from "@/constants";
+import { ColourMap } from "@/colour_map";
+import { Dataset } from "@/dataset";
 import { LocalAuthoritiesGeoJSON } from "../svg_maps/local_authorities";
 
 export const earnings = new Dataset(
@@ -12,7 +12,7 @@ export const earnings = new Dataset(
     source: "Office for National Statistics (ONS)",
     sourceLink: "https://www.ons.gov.uk/datasets/ashe-tables-7-and-8",
     boundaries: "Local Authority Districts",
-    licence_type: "open_government_licence_v3",
+    licenceType: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,
   new ColourMap([

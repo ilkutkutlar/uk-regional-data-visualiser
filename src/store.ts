@@ -1,6 +1,6 @@
-import type { Dataset } from "./dataset";
+import type { Dataset } from "@/dataset";
 import { defineStore } from "pinia";
-import { earnings } from "./datasets/earnings";
+import { earnings } from "@/datasets/earnings";
 
 export const useCurrent = defineStore("current", {
   state: () => ({

@@ -1,13 +1,13 @@
-import App from "./App.vue";
+import App from "@/App.vue";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import { earnings } from "./datasets/earnings";
-import { hpi } from "./datasets/hpi";
-import { lifeExpectancyFemale } from "./datasets/life_expectancy_female";
-import { lifeExpectancyMale } from "./datasets/life_expectancy_male";
-import { netInternalMigration } from "./datasets/net_internal_migration";
-import { population } from "./datasets/population";
-import { pubsAndBars } from "./datasets/pubs_and_bars";
+import { earnings } from "@/datasets/earnings";
+import { hpi } from "@/datasets/hpi";
+import { lifeExpectancyFemale } from "@/datasets/life_expectancy_female";
+import { lifeExpectancyMale } from "@/datasets/life_expectancy_male";
+import { netInternalMigration } from "@/datasets/net_internal_migration";
+import { population } from "@/datasets/population";
+import { pubsAndBars } from "@/datasets/pubs_and_bars";
 
 // Vuetify
 // TODO: https://next.vuetifyjs.com/en/features/icon-fonts/#material-design-icons-js-svg

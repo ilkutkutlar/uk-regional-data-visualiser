@@ -1,7 +1,7 @@
 <script lang="ts">
-import { Colours, type Formatter } from "../constants";
-import { ColourMap } from "../colour_map";
-import { useCurrent } from "../store";
+import { Colours, type Formatter } from "@/constants";
+import { ColourMap } from "@/colour_map";
+import { useCurrent } from "@/store";
 
 export default {
   data() {

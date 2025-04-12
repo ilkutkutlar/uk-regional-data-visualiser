@@ -1,6 +1,6 @@
-import { Colours, ValueFormatters } from "../constants";
-import { ColourMap } from "../colour_map";
-import { Dataset } from "../dataset";
+import { Colours, ValueFormatters } from "@/constants";
+import { ColourMap } from "@/colour_map";
+import { Dataset } from "@/dataset";
 import { LocalAuthoritiesGeoJSON } from "../svg_maps/local_authorities";
 
 export const hpi = new Dataset(
@@ -13,7 +13,7 @@ export const hpi = new Dataset(
     sourceLink:
       "https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-january-2022",
     boundaries: "Local Authority Districts",
-    licence_type: "open_government_licence_v3_hm_land_registry",
+    licenceType: "open_government_licence_v3_hm_land_registry",
   },
   LocalAuthoritiesGeoJSON,
   new ColourMap([

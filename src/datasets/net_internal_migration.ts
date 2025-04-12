@@ -1,7 +1,7 @@
-import { Colours, ValueFormatters } from "../constants";
-import { ColourMap } from "../colour_map";
-import { Dataset } from "../dataset";
-import { LocalAuthoritiesGeoJSON } from "../svg_maps/local_authorities";
+import { Colours, ValueFormatters } from "@/constants";
+import { ColourMap } from "@/colour_map";
+import { Dataset } from "@/dataset";
+import { LocalAuthoritiesGeoJSON } from "@/svg_maps/local_authorities";
 
 export const netInternalMigration = new Dataset(
   {
@@ -13,7 +13,7 @@ export const netInternalMigration = new Dataset(
     sourceLink:
       "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/migrationwithintheuk/datasets/internalmigrationlaandregionmovesandbysexandsingleyearofagetotals",
     boundaries: "Local Authority Districts",
-    licence_type: "open_government_licence_v3",
+    licenceType: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,
   new ColourMap([

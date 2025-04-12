@@ -1,7 +1,7 @@
-import { Colours, ValueFormatters } from "../constants";
-import { ColourMap } from "../colour_map";
-import { Dataset } from "../dataset";
-import { LocalAuthoritiesGeoJSON } from "../svg_maps/local_authorities";
+import { Colours, ValueFormatters } from "@/constants";
+import { ColourMap } from "@/colour_map";
+import { Dataset } from "@/dataset";
+import { LocalAuthoritiesGeoJSON } from "@/svg_maps/local_authorities";
 
 export const lifeExpectancyFemale = new Dataset(
   {
@@ -12,7 +12,7 @@ export const lifeExpectancyFemale = new Dataset(
     sourceLink:
       "https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/healthandlifeexpectancies/bulletins/lifeexpectancyforlocalareasoftheuk/between2001to2003and2018to2020",
     boundaries: "Local Authority Districts",
-    licence_type: "open_government_licence_v3",
+    licenceType: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,
   new ColourMap([
