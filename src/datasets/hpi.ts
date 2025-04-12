@@ -7,7 +7,7 @@ const metadata = {
   id: "hpi_local",
   name: "House prices",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer viverra lectus at ex convallis, eu semper purus maximus. In a mauris euismod, rhoncus ante a, varius velit.",
+    "House Price Index (HPI) data showing the average price of a house for each local authority district.",
   source: "Office for National Statistics (ONS)",
   sourceLink:
     "https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-january-2022",

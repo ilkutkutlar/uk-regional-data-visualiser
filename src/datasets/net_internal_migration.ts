@@ -7,10 +7,10 @@ const metadata = {
   id: "net_internal_migration",
   name: "Net Internal Migration",
   description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer viverra lectus at ex convallis, eu semper purus maximus. In a mauris euismod, rhoncus ante a, varius velit.",
+    "Net internal migration (external migration - internal migration) into each local authority district across all ages and sexes.",
   source: "Office for National Statistics (ONS)",
   sourceLink:
-    "https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-january-2022",
+    "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/migrationwithintheuk/datasets/internalmigrationlaandregionmovesandbysexandsingleyearofagetotals",
   boundaries: "Local Authority Districts",
 };
 

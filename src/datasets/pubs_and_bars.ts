@@ -6,8 +6,7 @@ import { LocalAuthoritiesGeoJSON } from "../svg_maps/local_authorities";
 const metadata = {
   id: "pubs_and_bars_local",
   name: "Number of Pubs and Bars",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer viverra lectus at ex convallis, eu semper purus maximus. In a mauris euismod, rhoncus ante a, varius velit.",
+  description: "Number of bars and public houses in each local authority district.",
   source: "Office for National Statistics (ONS)",
   sourceLink:
     "https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/datasets/publichousesandbarsbylocalauthority",
