@@ -12,6 +12,7 @@ export const earnings = new Dataset(
     source: "Office for National Statistics (ONS)",
     sourceLink: "https://www.ons.gov.uk/datasets/ashe-tables-7-and-8",
     boundaries: "Local Authority Districts",
+    licence_type: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,
   new ColourMap([

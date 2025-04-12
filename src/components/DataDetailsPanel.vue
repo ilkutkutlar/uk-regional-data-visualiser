@@ -122,17 +122,18 @@ export default {
           prepend-icon="mdi-card-text-outline"
           variant="flat"
         >
-          <template #title> Description </template>
+          <template #title>Description</template>
           <template #text>
             {{ current.dataset.metadata.description }}
           </template>
         </v-card>
+
         <v-card
           class="mt-5 border"
           prepend-icon="mdi-link-variant"
           variant="flat"
         >
-          <template #title> Source </template>
+          <template #title>Source</template>
           <template #text>
             <a
               :href="current.dataset.metadata.sourceLink"
@@ -149,8 +150,45 @@ export default {
           prepend-icon="mdi-land-fields"
           variant="flat"
         >
-          <template #title> Boundaries </template>
-          <template #text> {{ current.dataset.metadata.boundaries }} </template>
+          <template #title>Boundaries</template>
+          <template #text>{{ current.dataset.metadata.boundaries }}</template>
+        </v-card>
+
+        <v-card class="mt-5 border" prepend-icon="mdi-license" variant="flat">
+          <template #title>Licence information</template>
+          <template #text>
+            <div
+              v-if="
+                current.dataset.metadata.licence_type ==
+                'open_government_licence_v3'
+              "
+            >
+              Contains public sector information licensed under the
+              <a
+                href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+                target="blank"
+              >
+                Open Government Licence v3.0
+              </a>
+              .
+            </div>
+            <div
+              v-else-if="
+                current.dataset.metadata.licence_type ==
+                'open_government_licence_v3_hm_land_registry'
+              "
+            >
+              Contains HM Land Registry data © Crown copyright and database
+              right 2020. This data is licensed under the
+              <a
+                href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+                target="blank"
+              >
+                Open Government Licence v3.0
+              </a>
+              .
+            </div>
+          </template>
         </v-card>
       </v-window-item>
 

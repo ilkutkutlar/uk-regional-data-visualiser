@@ -9,6 +9,7 @@ type DatasetMetadata = {
   source: string;
   sourceLink: string;
   boundaries: string;
+  licence_type: string;
 };
 
 export class Dataset {

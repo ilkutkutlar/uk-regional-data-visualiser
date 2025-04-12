@@ -13,6 +13,7 @@ export const pubsAndBars = new Dataset(
     sourceLink:
       "https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/datasets/publichousesandbarsbylocalauthority",
     boundaries: "Local Authority Districts",
+    licence_type: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,
   new ColourMap([

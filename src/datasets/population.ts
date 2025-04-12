@@ -13,6 +13,7 @@ export const population = new Dataset(
     sourceLink:
       "https://www.ons.gov.uk/datasets/mid-year-pop-est/editions/mid-2020-april-2021-geography/versions/1",
     boundaries: "Local Authority Districts",
+    licence_type: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,
   new ColourMap([

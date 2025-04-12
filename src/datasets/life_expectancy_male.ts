@@ -12,6 +12,7 @@ export const lifeExpectancyMale = new Dataset(
     sourceLink:
       "https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/healthandlifeexpectancies/bulletins/lifeexpectancyforlocalareasoftheuk/between2001to2003and2018to2020",
     boundaries: "Local Authority Districts",
+    licence_type: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,
   new ColourMap([
