@@ -66,7 +66,7 @@ The boundary files for visualising regional data also come from ONS. The origina
 >
 > Contains OS data © Crown copyright and database right 2025
 
-Links to the original boundary files from the ONS are given here for reference:
+Links to the original boundary files from the ONS are given here for reference (2017 is missing from the ONS website, so is omitted from here):
 
 - [December 2016 BUC](https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2016-boundaries-uk-buc/about)
 - [December 2018 BUC](https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2018-boundaries-uk-buc-1/about)

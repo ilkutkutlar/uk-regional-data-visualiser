@@ -705,11 +705,12 @@ export const LAD_CODE_TO_COUNTY: Map<string, [string, string]> = new Map([
   ["E09000031", ["E13000002", "Outer London"]],
 ]);
 
+// Boundaries data for 2017 is missing, so we use 2016 boundaries.
 export const LocalAuthoritiesGeoJSON: GeoJSONMap = {
   geoJSONPaths: new Map([
     ["default", "./data/geojson/LAD_DEC_2016_UK_BUC.geojson"],
     ["2016", "./data/geojson/LAD_DEC_2016_UK_BUC.geojson"],
-    ["2017", "./data/geojson/LAD_DEC_2017_UK_BUC.geojson"], // TODO: does not exist!
+    ["2017", "./data/geojson/LAD_DEC_2016_UK_BUC.geojson"],
     ["2018", "./data/geojson/LAD_DEC_2018_UK_BUC.geojson"],
     ["2019", "./data/geojson/LAD_DEC_2019_UK_BUC.geojson"],
     ["2020", "./data/geojson/LAD_DEC_2020_UK_BUC.geojson"],
@@ -722,7 +723,10 @@ export const LocalAuthoritiesGeoJSON: GeoJSONMap = {
       "2016",
       "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2016-boundaries-uk-buc/about",
     ],
-    ["2017", ""],
+    [
+      "2017",
+      "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2016-boundaries-uk-buc/about",
+    ],
     [
       "2018",
       "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2018-boundaries-uk-buc-1/about",
@@ -751,7 +755,7 @@ export const LocalAuthoritiesGeoJSON: GeoJSONMap = {
   idProperties: new Map([
     ["default", "lad16cd"],
     ["2016", "lad16cd"],
-    ["2017", ""],
+    ["2017", "lad16cd"],
     ["2018", "lad18cd"],
     ["2019", "lad19cd"],
     ["2020", "LAD20CD"],
