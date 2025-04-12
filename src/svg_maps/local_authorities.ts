@@ -716,6 +716,38 @@ export const LocalAuthoritiesGeoJSON: GeoJSONMap = {
     ["2021", "./data/geojson/LAD_DEC_2021_UK_BUC.geojson"],
     ["2022", "./data/geojson/LAD_DEC_2022_UK_BUC.geojson"],
   ]),
+  sources: new Map([
+    ["default", "lad16cd"],
+    [
+      "2016",
+      "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2016-boundaries-uk-buc/about",
+    ],
+    ["2017", ""],
+    [
+      "2018",
+      "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2018-boundaries-uk-buc-1/about",
+    ],
+    [
+      "2019",
+      "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2019-boundaries-uk-buc-1/about",
+    ],
+    [
+      "2020",
+      "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2020-boundaries-uk-buc/about",
+    ],
+    [
+      "2021",
+      "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2021-boundaries-uk-buc-2/about",
+    ],
+    [
+      "2022",
+      "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2022-boundaries-uk-buc-2/about",
+    ],
+    [
+      "2023",
+      "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2023-boundaries-uk-buc-2/about",
+    ],
+  ]),
   idProperties: new Map([
     ["default", "lad16cd"],
     ["2016", "lad16cd"],

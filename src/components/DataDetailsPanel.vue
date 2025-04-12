@@ -145,15 +145,6 @@ export default {
           </template>
         </v-card>
 
-        <v-card
-          class="mt-5 border"
-          prepend-icon="mdi-land-fields"
-          variant="flat"
-        >
-          <template #title>Boundaries</template>
-          <template #text>{{ current.dataset.metadata.boundaries }}</template>
-        </v-card>
-
         <v-card class="mt-5 border" prepend-icon="mdi-license" variant="flat">
           <template #title>Licence information</template>
           <template #text>
@@ -187,6 +178,32 @@ export default {
                 Open Government Licence v3.0
               </a>
               .
+            </div>
+          </template>
+        </v-card>
+
+        <v-card
+          class="mt-5 border"
+          prepend-icon="mdi-land-fields"
+          variant="flat"
+        >
+          <template #title>Boundaries</template>
+          <template #text>
+            <a :href="current.dataset.geoJSONMap.sources.get(current.year)">
+              {{ current.dataset.metadata.boundaries }}
+            </a>
+            <div class="mt-2">
+              Source: Office for National Statistics licensed under the
+              <a
+                href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+                target="blank"
+              >
+                Open Government Licence v.3.0
+              </a>
+            </div>
+            <div class="mt-2">
+              Contains OS data © Crown copyright and database right
+              {{ new Date().getFullYear() }}
             </div>
           </template>
         </v-card>
