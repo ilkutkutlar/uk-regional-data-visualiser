@@ -22,9 +22,7 @@ export class ColourMap {
   }
 
   /**
-   * Map a value to a colour using the colour map.
-   * @param value - The value to map to a colour.
-   * @returns The colour corresponding to the value.
+   * Map a value to its corresponding colour according to the colour map.
    */
   mapValueToColour(value: number) {
     for (const mapping of this.colourMap) {

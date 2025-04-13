@@ -22,15 +22,24 @@ export default {
         .value();
       const rank = rankIndex + 1;
 
-      switch (rank.toString().slice(-1)) {
-        case "1":
-          return `${rank}st`;
-        case "2":
-          return `${rank}nd`;
-        case "3":
-          return `${rank}rd`;
-        default:
-          return `${rank}th`;
+      const rankStr = rank.toString();
+      if (
+        rankStr.endsWith("11") ||
+        rankStr.endsWith("12") ||
+        rankStr.endsWith("13")
+      ) {
+        return `${rankStr}th`;
+      } else {
+        switch (rankStr.slice(-1)) {
+          case "1":
+            return `${rank}st`;
+          case "2":
+            return `${rank}nd`;
+          case "3":
+            return `${rank}rd`;
+          default:
+            return `${rank}th`;
+        }
       }
     },
     displayedRegion() {

@@ -34,9 +34,7 @@ export class Boundaries {
 
   /**
    * Get the file path to the GeoJSON file for a given year.
-   * @param year - The year for which to get the GeoJSON file path.
    * @throws Will throw an error if the year is not found in the boundaries files.
-   * @returns The file path to the GeoJSON file for the given year.
    */
   getGeoJSONFilePathForYear(year: string): string {
     const maybeFilePath = this.boundariesFiles.get(year)?.filePath;
@@ -50,9 +48,7 @@ export class Boundaries {
 
   /**
    * Get the source URL for the GeoJSON file for a given year.
-   * @param year - The year for which to get the GeoJSON source URL.
    * @throws Will throw an error if the year is not found in the boundaries files.
-   * @returns The source URL for the GeoJSON file for the given year.
    */
   getGeoJSONSourceUrlForYear(year: string): string {
     const maybeSourceUrl = this.boundariesFiles.get(year)?.sourceUrl;
@@ -65,10 +61,10 @@ export class Boundaries {
   }
 
   /**
-   * Get the ID property for the GeoJSON file for a given year.
-   * @param year - The year for which to get the ID property.
+   * Get the ID property for the GeoJSON file for a given year. This is the property
+   * of each feature in the GeoJSON file that contain the code for the region the
+   * feature depicts.
    * @throws Will throw an error if the year is not found in the boundaries files.
-   * @returns The ID property for the GeoJSON file for the given year.
    */
   getIdPropertyForYear(year: string): string {
     const maybeIdProperty = this.boundariesFiles.get(year)?.idProperty;
@@ -82,7 +78,6 @@ export class Boundaries {
 
   /**
    * Get the pretty name for a given region code.
-   * @param regionCode - The region code for which to get the pretty name.
    * @returns The pretty name for the region code, or undefined if not found.
    */
   prettyNameOf(regionCode: string): string | undefined {
@@ -91,10 +86,9 @@ export class Boundaries {
 
   /**
    * Get the county name for a given region code.
-   * @param regionCode - The region code for which to get the county name.
    * @returns The county name for the region code, or undefined if not found.
    */
-  countyOf(regionCode: string) : string | undefined {
+  countyOf(regionCode: string): string | undefined {
     const county = this.countyLookup.get(regionCode);
     return county ? county[1] : undefined;
   }

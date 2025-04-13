@@ -25,15 +25,14 @@ export class Dataset {
 
   /**
    * Get the years for which the dataset has data.
-   * @returns The years for which the dataset has data.
    */
   get years(): string[] {
     return Object.keys(this.data);
   }
 
   /**
-   * Check whether the dataset represented by this object has been downloaded.
-   * @returns True if the dataset has been downloaded, false otherwise.
+   * Check whether the dataset represented by this class
+   * has been downloaded to this instance.
    */
   get isDataDownloaded(): boolean {
     return !_.isEmpty(this.data);
@@ -61,7 +60,7 @@ export class Dataset {
   }
 
   /**
-   * Fetch the dataset data and stores it in the dataset instance.
+   * Fetch the dataset data and store it in the dataset instance.
    * @returns promise that resolves when the data is downloaded.
    * If data has already been downloaded, returns a promise that
    * resolves immediately.
@@ -83,10 +82,8 @@ export class Dataset {
 
   /**
    * Get the colour that should be used when visualising the value for a given region for a given year.
-   * @param year - The year for which the value should be visualised.
-   * @param regionCode - The region code for which the value should be visualised.
-   * @returns The colour used for visualising the value or null if the colour map does not
-   * prescribe a colour for the value.
+   * @returns The colour used for visualising the value for the given year and
+   * region or null if the colour map does not prescribe a colour for the value.
    */
   colourOf(year: string, regionCode: string): string | null {
     const value = this.data[year][regionCode];
@@ -95,9 +92,6 @@ export class Dataset {
 
   /**
    * Get the data from the dataset for a given region for a given year.
-   * @param year - The year for which the data should be returned.
-   * @param regionCode - The region code for which the data should be returned.
-   * @returns The data from the dataset for the given region and year.
    */
   valueOf(year: string, regionCode: string): number {
     let value = NaN;
