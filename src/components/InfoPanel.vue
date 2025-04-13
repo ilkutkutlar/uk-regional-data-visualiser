@@ -111,7 +111,7 @@ export default {
             v-show="current.selectedRegionID"
             class="float-end"
             aria-label="Close"
-            icon="mdi-close"
+            icon="$close"
             variant="plain"
             size="medium"
             @click="closeButtonClicked"

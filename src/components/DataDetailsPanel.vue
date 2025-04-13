@@ -117,22 +117,14 @@ export default {
 
     <v-window v-model="tab">
       <v-window-item id="metadata-window-item" value="metadata">
-        <v-card
-          class="mt-5 border"
-          prepend-icon="mdi-card-text-outline"
-          variant="flat"
-        >
+        <v-card class="mt-5 border" prepend-icon="$cardText" variant="flat">
           <template #title>Description</template>
           <template #text>
             {{ current.dataset.metadata.description }}
           </template>
         </v-card>
 
-        <v-card
-          class="mt-5 border"
-          prepend-icon="mdi-link-variant"
-          variant="flat"
-        >
+        <v-card class="mt-5 border" prepend-icon="$linkVariant" variant="flat">
           <template #title>Source</template>
           <template #text>
             <a
@@ -147,11 +139,7 @@ export default {
 
         <LicenceInfoCard :licence-type="current.dataset.metadata.licenceType" />
 
-        <v-card
-          class="mt-5 border"
-          prepend-icon="mdi-land-fields"
-          variant="flat"
-        >
+        <v-card class="mt-5 border" prepend-icon="$landFields" variant="flat">
           <template #title>Boundaries</template>
           <template #text>
             <a
@@ -184,7 +172,7 @@ export default {
         <v-text-field
           v-model="searchText"
           class="mt-5"
-          prepend-inner-icon="mdi-magnify"
+          prepend-inner-icon="$magnify"
           placeholder="Search data..."
           variant="outlined"
         ></v-text-field>

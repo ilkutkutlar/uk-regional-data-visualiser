@@ -27,11 +27,9 @@ export default {
     },
     changeDirectionIcon() {
       if (isNaN(this.changeFromLastYear) || this.changeFromLastYear === 0) {
-        return "mdi-minus";
+        return "$minus";
       }
-      return this.changeFromLastYear > 0
-        ? "mdi-arrow-up-thin"
-        : "mdi-arrow-down-thin";
+      return this.changeFromLastYear > 0 ? "$arrowUpThin" : "$arrowDownThin";
     },
     changeFromLastYearPretty() {
       if (isNaN(this.changeFromLastYear)) return "N/A";
@@ -46,7 +44,7 @@ export default {
     <td>
       <v-icon
         data-cy="select-icon"
-        :icon="isSelectedRow ? 'mdi-chevron-right' : ''"
+        :icon="isSelectedRow ? '$chevronRight' : ''"
       ></v-icon>
       <span data-cy="year" class="font-weight-bold text-primary">
         {{ year }}

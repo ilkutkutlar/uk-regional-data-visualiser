@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-  <v-card class="mt-5 border" prepend-icon="mdi-license" variant="flat">
+  <v-card class="mt-5 border" prepend-icon="$license" variant="flat">
     <template #title>Licence information</template>
     <template #text>
       <div v-if="licenceType == 'open_government_licence_v3'">

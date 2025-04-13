@@ -25,9 +25,7 @@ export default {
   },
   computed: {
     toggleThemeButtonIcon() {
-      return this.theme.global.current.dark
-        ? "mdi-weather-night"
-        : "mdi-weather-sunny";
+      return this.theme.global.current.dark ? "$weatherNigh" : "$weatherSunny";
     },
   },
   mounted() {
@@ -87,7 +85,7 @@ export default {
           <v-container>
             <v-btn
               id="close-drawer-button"
-              prepend-icon="mdi-close"
+              prepend-icon="$close"
               block
               color="primary"
               variant="tonal"

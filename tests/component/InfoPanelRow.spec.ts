@@ -25,7 +25,7 @@ test("uses correct icon and text colour based on the value of change from last y
   let wrapper = mount(InfoPanelRow, { props: testProps });
   expect(wrapper.find('[data-cy="change"]').classes()).toContain("text-green");
   expect(wrapper.find('[data-cy="change-icon"]').attributes().icon).toEqual(
-    "mdi-arrow-up-thin",
+    "$arrowUpThin",
   );
 
   wrapper = mount(InfoPanelRow, {
@@ -33,7 +33,7 @@ test("uses correct icon and text colour based on the value of change from last y
   });
   expect(wrapper.find('[data-cy="change"]').classes()).toContain("text-red");
   expect(wrapper.find('[data-cy="change-icon"]').attributes().icon).toEqual(
-    "mdi-arrow-down-thin",
+    "$arrowDownThin",
   );
 });
 
@@ -42,6 +42,6 @@ test("displays chevron icon when the row is selected", () => {
     props: { ...testProps, isSelectedRow: true },
   });
   expect(wrapper.find('[data-cy="select-icon"]').attributes().icon).toEqual(
-    "mdi-chevron-right",
+    "$chevronRight",
   );
 });

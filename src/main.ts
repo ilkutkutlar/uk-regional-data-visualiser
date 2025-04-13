@@ -9,14 +9,25 @@ import { netInternalMigration } from "@/datasets/net_internal_migration";
 import { population } from "@/datasets/population";
 import { pubsAndBars } from "@/datasets/pubs_and_bars";
 
-// Vuetify
-// TODO: https://next.vuetifyjs.com/en/features/icon-fonts/#material-design-icons-js-svg
-// TODO: https://next.vuetifyjs.com/en/styles/colors/#sass-color-pack
-import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
-import { aliases, mdi } from "vuetify/iconsets/mdi";
+import { aliases, mdi } from "vuetify/iconsets/mdi-svg";
+import {
+  mdiArrowDownThin,
+  mdiArrowUpThin,
+  mdiCardTextOutline,
+  mdiChevronRight,
+  mdiClose,
+  mdiLandFields,
+  mdiLicense,
+  mdiLinkVariant,
+  mdiMagnify,
+  mdiMinus,
+  mdiTune,
+  mdiWeatherNight,
+  mdiWeatherSunny,
+} from "@mdi/js";
 import { createVuetify } from "vuetify";
 
 const customLightTheme = {
@@ -53,7 +64,22 @@ const vuetify = createVuetify({
   },
   icons: {
     defaultSet: "mdi",
-    aliases,
+    aliases: {
+      ...aliases,
+      cardText: mdiCardTextOutline,
+      linkVariant: mdiLinkVariant,
+      landFields: mdiLandFields,
+      magnify: mdiMagnify,
+      tune: mdiTune,
+      close: mdiClose,
+      chevronRight: mdiChevronRight,
+      minus: mdiMinus,
+      arrowUpThin: mdiArrowUpThin,
+      arrowDownThin: mdiArrowDownThin,
+      license: mdiLicense,
+      weatherNight: mdiWeatherNight,
+      weatherSunny: mdiWeatherSunny,
+    },
     sets: {
       mdi,
     },

@@ -19,7 +19,7 @@ export default {
             size="small"
             variant="tonal"
             class="me-2"
-            icon="mdi-tune"
+            icon="$tune"
             color="primary"
             @click="current.toggleDrawer"
           ></v-btn>
