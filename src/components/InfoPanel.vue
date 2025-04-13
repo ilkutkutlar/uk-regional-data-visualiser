@@ -63,10 +63,10 @@ export default {
       return years.slice(lowerBound, lowerBound + 3).reverse();
     },
     displayedRegionName() {
-      return this.current.dataset.prettyNameOf(this.displayedRegion);
+      return this.current.dataset.boundaries.prettyNameOf(this.displayedRegion);
     },
     displayedRegionCounty() {
-      return this.current.dataset.countyOf(this.displayedRegion);
+      return this.current.dataset.boundaries.countyOf(this.displayedRegion);
     },
   },
   methods: {

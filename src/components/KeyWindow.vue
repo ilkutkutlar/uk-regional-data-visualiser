@@ -6,7 +6,7 @@ import { useCurrent } from "@/store";
 export default {
   data() {
     return {
-      toggleCollapsed: false,
+      toggleCollapsed: false as boolean,
       current: useCurrent(),
     };
   },

@@ -1,11 +1,4 @@
 export type Formatter = (value: number) => string;
-export type GeoJSONMap = {
-  geoJSONPaths: Map<string, string>;
-  sources: Map<string, string>;
-  prettyNames: Map<string, string>;
-  countyLookup: Map<string, [string, string]>;
-  idProperties: Map<string, string>;
-};
 
 export const ValueFormatters: { [index: string]: Formatter } = {
   NONE: (value: number) => {

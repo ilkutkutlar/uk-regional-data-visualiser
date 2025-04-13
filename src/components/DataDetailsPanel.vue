@@ -21,7 +21,8 @@ export default {
   },
   computed: {
     keyFormatter() {
-      return (region: string) => this.current.dataset.prettyNameOf(region);
+      return (region: string) =>
+        this.current.dataset.boundaries.prettyNameOf(region);
     },
     yearSelectItems() {
       /* This is a computed property because `years`
@@ -153,7 +154,13 @@ export default {
         >
           <template #title>Boundaries</template>
           <template #text>
-            <a :href="current.dataset.geoJSONMap.sources.get(current.year)">
+            <a
+              :href="
+                current.dataset.boundaries.getGeoJSONSourceUrlForYear(
+                  current.year,
+                )
+              "
+            >
               {{ current.dataset.metadata.boundaries }}
             </a>
             <div class="mt-2">

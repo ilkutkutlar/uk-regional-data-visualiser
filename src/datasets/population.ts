@@ -1,7 +1,7 @@
 import { Colours, ValueFormatters } from "@/constants";
 import { ColourMap } from "@/colour_map";
 import { Dataset } from "@/dataset";
-import { LocalAuthoritiesGeoJSON } from "@/svg_maps/local_authorities";
+import { LocalAuthoritiesGeoJSON } from "@/boundaries/local_authorities";
 
 export const population = new Dataset(
   {

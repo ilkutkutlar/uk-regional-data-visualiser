@@ -1,6 +1,7 @@
-import type { Formatter, GeoJSONMap } from "@/constants";
 import _ from "lodash";
-import type { ColourMap } from "@/colour_map";
+import { Boundaries } from "./boundaries";
+import { type ColourMap } from "@/colour_map";
+import { type Formatter } from "@/constants";
 
 type DatasetMetadata = {
   id: string;
@@ -14,7 +15,7 @@ type DatasetMetadata = {
 
 export class Dataset {
   metadata: DatasetMetadata;
-  geoJSONMap: GeoJSONMap;
+  boundaries: Boundaries;
   colourMap: ColourMap;
   dataPath: string;
   valueFormatter: Formatter;
@@ -30,13 +31,13 @@ export class Dataset {
 
   constructor(
     metadata: DatasetMetadata,
-    geoJSONMap: GeoJSONMap,
+    boundaries: Boundaries,
     colourMap: ColourMap,
     valueFormatter: Formatter,
     dataPath: string,
   ) {
     this.metadata = metadata;
-    this.geoJSONMap = geoJSONMap;
+    this.boundaries = boundaries;
     this.colourMap = colourMap;
     this.valueFormatter = valueFormatter;
     this.dataPath = dataPath;
@@ -68,14 +69,5 @@ export class Dataset {
       value = this.data[year][regionCode];
     }
     return value;
-  }
-
-  prettyNameOf(regionCode: string) {
-    return this.geoJSONMap.prettyNames.get(regionCode);
-  }
-
-  countyOf(regionCode: string) {
-    const county = this.geoJSONMap.countyLookup.get(regionCode);
-    return county ? county[1] : undefined;
   }
 }

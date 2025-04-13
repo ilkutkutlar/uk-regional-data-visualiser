@@ -18,25 +18,25 @@ export default {
     return {
       current: useCurrent(),
       theme: useTheme(),
-      regionsLayer: null,
-      view: null,
-      map: null,
-      featureOverlay: null,
+      regionsLayer: undefined as VectorImageLayer | undefined,
+      view: undefined as View | undefined,
+      map: undefined as Map | undefined,
+      featureOverlay: undefined as VectorLayer | undefined,
       // TODO: this can be a computed property of current.selectedRegionID
-      selectedFeature: null,
-      highlightedFeature: null,
+      selectedFeature: undefined as Feature | undefined,
+      highlightedFeature: undefined as Feature | undefined,
     };
   },
   computed: {
     geoJSONFilePath() {
-      const geoJSONPaths = this.current.dataset.geoJSONMap.geoJSONPaths;
-      return geoJSONPaths.get(this.current.year) ?? geoJSONPaths.get("default");
-    },
-    geoJSONIDProperty() {
-      const maybeId = this.current.dataset.geoJSONMap.idProperties.get(
+      return this.current.dataset.boundaries.getGeoJSONFilePathForYear(
         this.current.year,
       );
-      return maybeId ?? "id";
+    },
+    geoJSONIDProperty() {
+      return this.current.dataset.boundaries.getIdPropertyForYear(
+        this.current.year,
+      );
     },
     backgroundColour() {
       return this.theme.global.current.dark ? "#212121" : "#F5F5F5";
