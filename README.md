@@ -4,6 +4,8 @@
 
 UK Regional Data Visualiser is an interactive tool for visualising and exploring regional data related to the UK. This project was born out of my interest in exploring the differences between various UK regions.
 
+If you want to try it out, the website is deployed on [GitHub Pages here](https://ilkutkutlar.github.io/uk-regional-data-visualiser/).
+
 ## Development
 
 This project is a web app developed with the [VueJS](https://vuejs.org/) framework. [Vite](https://vite.dev/) is used for bundling and providing a development server. [ESLint](https://eslint.org/) is used for linting, and [Prettier](https://prettier.io/) for auto formatting. [Vitest](https://vitest.dev/) is used as a test runner for component tests and [Cypress](https://www.cypress.io/) for end-to-end tests.
