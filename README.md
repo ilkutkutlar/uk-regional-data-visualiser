@@ -44,6 +44,8 @@ npm run dev
 
 ## Datasets
 
+### Regional data
+
 The data used in this project all come from UK's Office for National Statistics (ONS) datasets which have been cleaned and processed to fit this project's purposes.
 
 Attribution for all ONS datasets excluding house prices:
@@ -63,6 +65,19 @@ Links to the original datasets used are given here for reference:
 - [Population](https://www.ons.gov.uk/datasets/mid-year-pop-est/editions/mid-2020-april-2021-geography/versions/1)
 - [Number of Pubs and Bars](https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/datasets/publichousesandbarsbylocalauthority)
 - [House prices](https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-january-2022)
+
+### Lookups
+
+The lookups used to associate region codes to names (e.g. E08000003 => Manchester) and to associate a region to a county (e.g.   E08000014 => Merseyside) come from ONS. Attribution for the lookups is:
+
+> Source: Office for National Statistics licensed under the [Open Government Licence v.3.0](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
+
+Links to the original lookup files:
+
+- [Local Authority Districts (December 2021) Names and Codes in the UK](https://geoportal.statistics.gov.uk/documents/d1fab2d9fb0a4576a7e08f89ac7e0b72/about)
+- [Local Authority District to County (December 2022) Lookup in EN](https://geoportal.statistics.gov.uk/datasets/ons::local-authority-district-to-county-december-2022-lookup-in-en/about)
+
+### Boundary files
 
 The boundary files for visualising regional data also come from ONS. The original geographical data has been processed to fit the purposes of this project. Attribution for the original regional data:
 
