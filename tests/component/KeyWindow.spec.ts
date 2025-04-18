@@ -1,14 +1,15 @@
-import { beforeEach, expect, test } from "vitest";
-import { createPinia, setActivePinia } from "pinia";
+import { expect, test } from "vitest";
+import { earnings } from "../../src/datasets/earnings";
 import KeyWindow from "../../src/components/KeyWindow.vue";
 import { mount } from "@vue/test-utils";
 
-beforeEach(() => {
-  setActivePinia(createPinia());
-});
+const testProps = {
+  colourMap: earnings.colourMap,
+  valueFormatter: earnings.valueFormatter,
+};
 
 test("correctly displays all ranges in the dataset", () => {
-  const wrapper = mount(KeyWindow);
+  const wrapper = mount(KeyWindow, { props: testProps });
 
   const expectedRanges = [
     "No data",

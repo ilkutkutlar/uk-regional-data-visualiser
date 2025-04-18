@@ -97,7 +97,10 @@ export default {
       </v-navigation-drawer>
 
       <v-main id="main">
-        <KeyWindow />
+        <KeyWindow
+          :colour-map="current.dataset.colourMap"
+          :value-formatter="current.dataset.valueFormatter"
+        />
         <InfoPanel />
         <DataSelectionBar />
         <RegionsMap v-if="current.dataset.isDataDownloaded" />

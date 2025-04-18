@@ -1,21 +1,26 @@
 <script lang="ts">
 import { Colours, type Formatter } from "@/constants";
 import { ColourMap } from "@/colour_map";
-import { useCurrent } from "@/store";
 
 export default {
+  props: {
+    colourMap: {
+      type: ColourMap,
+      required: true,
+    },
+    valueFormatter: {
+      type: Function as PropType<Formatter>,
+      required: true,
+    },
+  },
   data() {
     return {
       toggleCollapsed: false as boolean,
-      current: useCurrent(),
     };
   },
   computed: {
     key() {
-      const _key = this.generateKey(
-        this.current.dataset.colourMap,
-        this.current.dataset.valueFormatter,
-      );
+      const _key = this.generateKey(this.colourMap, this.valueFormatter);
       _key.unshift(["No data", Colours.GREY]);
       return _key;
     },
