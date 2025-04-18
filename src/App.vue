@@ -56,6 +56,10 @@ export default {
     onResize() {
       this.current.drawer = window.innerWidth >= 992;
     },
+    deselectRegion() {
+      if (this.selectedRegionId) this.current.clearHighlighted();
+      this.current.clearSelected();
+    },
   },
 };
 </script>
@@ -101,7 +105,13 @@ export default {
           :colour-map="current.dataset.colourMap"
           :value-formatter="current.dataset.valueFormatter"
         />
-        <InfoPanel />
+        <InfoPanel
+          :dataset="current.dataset"
+          :selected-year="current.year"
+          :selected-region-id="current.selectedRegionID"
+          :highlighted-region-id="current.highlightedRegionID"
+          @close-button-clicked="deselectRegion"
+        />
         <DataSelectionBar
           :dataset-name="current.dataset.metadata.name"
           :selected-year="current.year"
