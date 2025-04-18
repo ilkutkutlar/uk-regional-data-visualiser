@@ -102,7 +102,11 @@ export default {
           :value-formatter="current.dataset.valueFormatter"
         />
         <InfoPanel />
-        <DataSelectionBar />
+        <DataSelectionBar
+          :dataset-name="current.dataset.metadata.name"
+          :selected-year="current.year"
+          @toggle-drawer-button-clicked="current.toggleDrawer"
+        />
         <RegionsMap v-if="current.dataset.isDataDownloaded" />
       </v-main>
     </v-layout>
