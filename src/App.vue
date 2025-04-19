@@ -57,7 +57,7 @@ export default {
       this.current.drawer = window.innerWidth >= 992;
     },
     deselectRegion() {
-      if (this.selectedRegionId) this.current.clearHighlighted();
+      if (this.current.selectedRegionId) this.current.clearHighlighted();
       this.current.clearSelected();
     },
   },
@@ -108,8 +108,8 @@ export default {
         <InfoPanel
           :dataset="current.dataset"
           :selected-year="current.year"
-          :selected-region-id="current.selectedRegionID"
-          :highlighted-region-id="current.highlightedRegionID"
+          :selected-region-id="current.selectedRegionId"
+          :highlighted-region-id="current.highlightedRegionId"
           @close-button-clicked="deselectRegion"
         />
         <DataSelectionBar

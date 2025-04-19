@@ -74,16 +74,16 @@ export default {
   methods: {
     dataRowMouseEnter(region: string) {
       this.current.$patch({
-        highlightedRegionID: region,
+        highlightedRegionId: region,
       });
     },
     dataRowMouseLeave(region: string) {
-      if (region === this.current.selectedRegionID) return;
+      if (region === this.current.selectedRegionId) return;
       this.current.clearHighlighted();
     },
     dataRowClick(region: string) {
       this.current.$patch({
-        selectedRegionID: region,
+        selectedRegionId: region,
       });
     },
   },
@@ -183,7 +183,7 @@ export default {
               v-for="(value, region) in filteredData"
               :key="region"
               class="cursor-pointer"
-              :class="{ selected: current.selectedRegionID === region }"
+              :class="{ selected: current.selectedRegionId === region }"
               @click="() => dataRowClick(region.toString())"
               @mouseenter="() => dataRowMouseEnter(region.toString())"
               @mouseleave="() => dataRowMouseLeave(region.toString())"

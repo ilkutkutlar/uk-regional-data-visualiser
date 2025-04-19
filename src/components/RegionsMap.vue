@@ -22,7 +22,7 @@ export default {
       view: undefined as View | undefined,
       map: undefined as Map | undefined,
       featureOverlay: undefined as VectorLayer | undefined,
-      // TODO: this can be a computed property of current.selectedRegionID
+      // TODO: this can be a computed property of current.selectedRegionId
       selectedFeature: undefined as Feature | undefined,
       highlightedFeature: undefined as Feature | undefined,
     };
@@ -87,7 +87,7 @@ export default {
       if (!feature) return;
 
       this.current.$patch({
-        selectedRegionID: feature.get(this.geoJSONIDProperty),
+        selectedRegionId: feature.get(this.geoJSONIDProperty),
       });
     });
 
@@ -106,7 +106,7 @@ export default {
       }
 
       this.current.$patch({
-        highlightedRegionID: feature.get(this.geoJSONIDProperty),
+        highlightedRegionId: feature.get(this.geoJSONIDProperty),
       });
     });
 
@@ -137,9 +137,9 @@ export default {
       if (mutation.type !== "patch object") return;
 
       // TODO: consider using actions instead
-      if (mutation.payload.highlightedRegionID) {
+      if (mutation.payload.highlightedRegionId) {
         const feature = this.getFeatureByRegionId(
-          mutation.payload.highlightedRegionID,
+          mutation.payload.highlightedRegionId,
         );
 
         if (!feature) return;
@@ -151,9 +151,9 @@ export default {
         this.highlightedFeature = feature;
       }
 
-      if (mutation.payload.selectedRegionID) {
+      if (mutation.payload.selectedRegionId) {
         const feature = this.getFeatureByRegionId(
-          mutation.payload.selectedRegionID,
+          mutation.payload.selectedRegionId,
         );
 
         if (!feature) return;
