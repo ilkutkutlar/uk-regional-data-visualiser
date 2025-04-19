@@ -60,6 +60,20 @@ export default {
       if (this.current.selectedRegionId) this.current.clearHighlighted();
       this.current.clearSelected();
     },
+    onDataRowClick(region: string) {
+      this.current.$patch({
+        selectedRegionId: region,
+      });
+    },
+    onDataRowMouseEnter(region: string) {
+      this.current.$patch({
+        highlightedRegionId: region,
+      });
+    },
+    onDataRowMouseLeave(region: string) {
+      if (region === this.selectedRegionId) return;
+      this.current.clearHighlighted();
+    },
   },
 };
 </script>
@@ -84,7 +98,15 @@ export default {
         :width="400"
         color="secondary"
       >
-        <DataDetailsPanel v-if="current.dataset.isDataDownloaded" />
+        <DataDetailsPanel
+          v-if="current.dataset.isDataDownloaded"
+          :dataset="current.dataset"
+          :current-year="current.year"
+          :selected-region-id="current.selectedRegionId"
+          @data-row-click="onDataRowClick"
+          @data-row-mouse-enter="onDataRowMouseEnter"
+          @data-row-mouse-leave="onDataRowMouseLeave"
+        />
         <template #append>
           <v-container>
             <v-btn

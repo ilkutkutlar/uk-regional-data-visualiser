@@ -27,8 +27,11 @@ export default {
   },
   emits: ["closeButtonClicked"],
   computed: {
+    dataForCurrentYear() {
+      return this.dataset.data[this.selectedYear];
+    },
     rank() {
-      const rankIndex = _.chain(this.dataset.data[this.selectedYear])
+      const rankIndex = _.chain(this.dataForCurrentYear)
         .toPairs()
         .sortBy((item) => item[1])
         .reverse()

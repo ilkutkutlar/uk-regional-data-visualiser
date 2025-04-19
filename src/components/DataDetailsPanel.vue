@@ -9,6 +9,21 @@ export default {
     LicenceInfoCard,
   },
   inject: ["allDatasets"],
+  props: {
+    dataset: {
+      type: Dataset,
+      required: true,
+    },
+    currentYear: {
+      type: String,
+      required: true,
+    },
+    selectedRegionId: {
+      type: String,
+      required: true,
+    },
+  },
+  emits: ["dataRowMouseLeave", "dataRowMouseEnter", "dataRowClick"],
   data() {
     return {
       current: useCurrent(),
@@ -21,8 +36,7 @@ export default {
   },
   computed: {
     keyFormatter() {
-      return (region: string) =>
-        this.current.dataset.boundaries.prettyNameOf(region);
+      return (region: string) => this.dataset.boundaries.prettyNameOf(region);
     },
     yearSelectItems() {
       /* This is a computed property because `years`
@@ -31,10 +45,13 @@ export default {
          when this template has been initialised. Make it
          a computed property so it is updated when data
          has been downloaded */
-      return this.current.dataset.years;
+      return this.dataset.years;
+    },
+    dataForCurrentYear() {
+      return this.dataset.data[this.selectedYear];
     },
     filteredData() {
-      let data = this.current.dataForCurrentYear ?? {};
+      let data = this.dataForCurrentYear ?? {};
       if (this.searchText) {
         data = _.pickBy(data, (_, key) => {
           const formatted = this.keyFormatter(key) ?? "";
@@ -52,7 +69,7 @@ export default {
     },
     selectedYear: {
       get() {
-        return this.current.year;
+        return this.currentYear;
       },
       set(value: string) {
         this.current.setYear(value);
@@ -60,7 +77,7 @@ export default {
     },
     selectedDataset: {
       get() {
-        return this.current.dataset.metadata.id;
+        return this.dataset.metadata.id;
       },
       set(value: string) {
         this.current.setDataset(
@@ -69,22 +86,6 @@ export default {
           ),
         );
       },
-    },
-  },
-  methods: {
-    dataRowMouseEnter(region: string) {
-      this.current.$patch({
-        highlightedRegionId: region,
-      });
-    },
-    dataRowMouseLeave(region: string) {
-      if (region === this.current.selectedRegionId) return;
-      this.current.clearHighlighted();
-    },
-    dataRowClick(region: string) {
-      this.current.$patch({
-        selectedRegionId: region,
-      });
     },
   },
 };
@@ -120,7 +121,7 @@ export default {
         <v-card class="mt-5 border" prepend-icon="$cardText" variant="flat">
           <template #title>Description</template>
           <template #text>
-            {{ current.dataset.metadata.description }}
+            {{ dataset.metadata.description }}
           </template>
         </v-card>
 
@@ -128,28 +129,24 @@ export default {
           <template #title>Source</template>
           <template #text>
             <a
-              :href="current.dataset.metadata.sourceLink"
+              :href="dataset.metadata.sourceLink"
               class="d-block"
               target="blank"
             >
-              {{ current.dataset.metadata.source }}
+              {{ dataset.metadata.source }}
             </a>
           </template>
         </v-card>
 
-        <LicenceInfoCard :licence-type="current.dataset.metadata.licenceType" />
+        <LicenceInfoCard :licence-type="dataset.metadata.licenceType" />
 
         <v-card class="mt-5 border" prepend-icon="$landFields" variant="flat">
           <template #title>Boundaries</template>
           <template #text>
             <a
-              :href="
-                current.dataset.boundaries.getGeoJSONSourceUrlForYear(
-                  current.year,
-                )
-              "
+              :href="dataset.boundaries.getGeoJSONSourceUrlForYear(currentYear)"
             >
-              {{ current.dataset.metadata.boundaries }}
+              {{ dataset.metadata.boundaries }}
             </a>
             <div class="mt-2">
               Source: Office for National Statistics licensed under the
@@ -183,15 +180,15 @@ export default {
               v-for="(value, region) in filteredData"
               :key="region"
               class="cursor-pointer"
-              :class="{ selected: current.selectedRegionId === region }"
-              @click="() => dataRowClick(region.toString())"
-              @mouseenter="() => dataRowMouseEnter(region.toString())"
-              @mouseleave="() => dataRowMouseLeave(region.toString())"
+              :class="{ selected: selectedRegionId === region }"
+              @click="$emit('dataRowClick', region.toString())"
+              @mouseenter="$emit('dataRowMouseEnter', region.toString())"
+              @mouseleave="$emit('dataRowMouseLeave', region.toString())"
             >
               <td>{{ keyFormatter(region.toString()) }}</td>
               <td>
                 <span class="font-weight-bold">{{
-                  current.dataset.valueFormatter(value)
+                  dataset.valueFormatter(value)
                 }}</span>
               </td>
             </tr>
