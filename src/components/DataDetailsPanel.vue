@@ -2,7 +2,6 @@
 import _ from "lodash";
 import { Dataset } from "@/dataset";
 import LicenceInfoCard from "@/components/LicenceInfoCard.vue";
-import { useCurrent } from "@/store";
 
 export default {
   components: {
@@ -32,7 +31,6 @@ export default {
   ],
   data() {
     return {
-      current: useCurrent(),
       searchText: "",
       tab: null,
       dataSelectItems: this.allDatasets.map((dataset: Dataset) => {

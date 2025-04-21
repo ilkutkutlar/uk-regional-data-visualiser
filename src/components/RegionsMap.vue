@@ -44,7 +44,7 @@ export default {
       view: undefined as View | undefined,
       map: undefined as Map | undefined,
       featureOverlay: undefined as VectorLayer | undefined,
-      // TODO: this can be a computed property of current.selectedRegionId
+      // TODO: this can be a computed property of selectedRegionId
       selectedFeature: undefined as Feature | undefined,
       highlightedFeature: undefined as Feature | undefined,
     };

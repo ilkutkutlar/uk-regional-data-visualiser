@@ -2,13 +2,12 @@
 import _ from "lodash";
 import DataDetailsPanel from "@/components/DataDetailsPanel.vue";
 import DataSelectionBar from "@/components/DataSelectionBar.vue";
+import { type Dataset } from "@/dataset";
+import { earnings } from "@/datasets/earnings";
 import InfoPanel from "@/components/InfoPanel.vue";
 import KeyWindow from "@/components/KeyWindow.vue";
 import RegionsMap from "@/components/RegionsMap.vue";
-import { useCurrent } from "@/store";
 import { useTheme } from "vuetify";
-import type { Dataset } from "./dataset";
-import { earnings } from "./datasets/earnings";
 
 export default {
   components: {
@@ -21,11 +20,12 @@ export default {
   inject: ["allDatasets"],
   data() {
     return {
-      current: useCurrent(),
       theme: useTheme(),
       highlightedRegionId: "" as string,
       selectedRegionId: "" as string,
       dataset: earnings as Dataset,
+      year: "2021" as string,
+      isDrawerOpen: true as boolean,
     };
   },
   computed: {
@@ -39,18 +39,14 @@ export default {
       this.selectedRegionId = "";
       newDataset
         .downloadData()
-        .then(() => this.current.setYear(_.last(newDataset.years)));
+        .then(() => (this.year = _.last(newDataset.years)));
+    },
+    year() {
+      this.highlightedRegionId = "";
+      this.selectedRegionId = "";
     },
   },
   mounted() {
-    this.current.$onAction(({ name, store, after }) => {
-      switch (name) {
-        case "setYear":
-          this.highlightedRegionId = "";
-          this.selectedRegionId = "";
-          break;
-      }
-    });
     this.dataset.downloadData().then(() => {});
   },
   methods: {
@@ -59,8 +55,11 @@ export default {
         ? "light"
         : "dark";
     },
+    toggleDrawer() {
+      this.isDrawerOpen = !this.isDrawerOpen;
+    },
     onResize() {
-      this.current.drawer = window.innerWidth >= 992;
+      this.isDrawerOpen = window.innerWidth >= 992;
     },
     deselectRegion() {
       if (this.selectedRegionId) this.highlightedRegionId = "";
@@ -93,14 +92,14 @@ export default {
         <v-app-bar-nav-icon
           id="drawer-toggle-button"
           variant="text"
-          @click.stop="current.toggleDrawer"
+          @click.stop="toggleDrawer"
         ></v-app-bar-nav-icon>
         <v-toolbar-title>UK Regional Data Visualiser</v-toolbar-title>
         <v-btn :icon="toggleThemeButtonIcon" @click="toggleTheme"></v-btn>
       </v-app-bar>
 
       <v-navigation-drawer
-        v-model="current.drawer"
+        v-model="isDrawerOpen"
         location="left"
         permanent
         :width="400"
@@ -108,7 +107,7 @@ export default {
       >
         <DataDetailsPanel
           v-if="dataset.isDataDownloaded"
-          v-model:current-year="current.year"
+          v-model:current-year="year"
           v-model:dataset="dataset"
           :selected-region-id="selectedRegionId"
           @data-row-click="onDataRowClick"
@@ -123,7 +122,7 @@ export default {
               block
               color="primary"
               variant="tonal"
-              @click="current.toggleDrawer"
+              @click="toggleDrawer"
               >Close</v-btn
             >
           </v-container>
@@ -137,20 +136,20 @@ export default {
         />
         <InfoPanel
           :dataset="dataset"
-          :selected-year="current.year"
+          :selected-year="year"
           :selected-region-id="selectedRegionId"
           :highlighted-region-id="highlightedRegionId"
           @close-button-clicked="deselectRegion"
         />
         <DataSelectionBar
           :dataset-name="dataset.metadata.name"
-          :selected-year="current.year"
-          @toggle-drawer-button-clicked="current.toggleDrawer"
+          :selected-year="year"
+          @toggle-drawer-button-clicked="toggleDrawer"
         />
         <RegionsMap
           v-if="dataset.isDataDownloaded"
           v-model:highlighted-region-id="highlightedRegionId"
-          :year="current.year"
+          :year="year"
           :selected-region-id="selectedRegionId"
           :dataset="dataset"
           @region-single-click="onRegionSingleClick"
