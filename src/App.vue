@@ -7,6 +7,8 @@ import KeyWindow from "@/components/KeyWindow.vue";
 import RegionsMap from "@/components/RegionsMap.vue";
 import { useCurrent } from "@/store";
 import { useTheme } from "vuetify";
+import type { Dataset } from "./dataset";
+import { earnings } from "./datasets/earnings";
 
 export default {
   components: {
@@ -21,6 +23,9 @@ export default {
     return {
       current: useCurrent(),
       theme: useTheme(),
+      highlightedRegionId: "" as string,
+      selectedRegionId: "" as string,
+      dataset: earnings as Dataset,
     };
   },
   computed: {
@@ -28,24 +33,25 @@ export default {
       return this.theme.global.current.dark ? "$weatherNigh" : "$weatherSunny";
     },
   },
+  watch: {
+    dataset(newDataset) {
+      this.highlightedRegionId = "";
+      this.selectedRegionId = "";
+      newDataset
+        .downloadData()
+        .then(() => this.current.setYear(_.last(newDataset.years)));
+    },
+  },
   mounted() {
     this.current.$onAction(({ name, store, after }) => {
       switch (name) {
         case "setYear":
-          this.current.clearHighlighted();
-          this.current.clearSelected();
+          this.highlightedRegionId = "";
+          this.selectedRegionId = "";
           break;
-        case "setDataset":
-          this.current.clearHighlighted();
-          this.current.clearSelected();
-          after(() => {
-            store.dataset
-              .downloadData()
-              .then(() => this.current.setYear(_.last(store.dataset.years)));
-          });
       }
     });
-    this.current.dataset.downloadData().then(() => {});
+    this.dataset.downloadData().then(() => {});
   },
   methods: {
     toggleTheme() {
@@ -57,22 +63,24 @@ export default {
       this.current.drawer = window.innerWidth >= 992;
     },
     deselectRegion() {
-      if (this.current.selectedRegionId) this.current.clearHighlighted();
-      this.current.clearSelected();
+      if (this.selectedRegionId) this.highlightedRegionId = "";
+      this.selectedRegionId = "";
     },
     onDataRowClick(region: string) {
-      this.current.$patch({
-        selectedRegionId: region,
-      });
+      this.selectedRegionId = region;
     },
     onDataRowMouseEnter(region: string) {
-      this.current.$patch({
-        highlightedRegionId: region,
-      });
+      this.highlightedRegionId = region;
     },
     onDataRowMouseLeave(region: string) {
       if (region === this.selectedRegionId) return;
-      this.current.clearHighlighted();
+      this.highlightedRegionId = "";
+    },
+    onRegionSingleClick(regionId: string) {
+      this.selectedRegionId = regionId;
+    },
+    onRegionPointerMove(regionId: string) {
+      this.highlightedRegionId = regionId;
     },
   },
 };
@@ -99,10 +107,10 @@ export default {
         color="secondary"
       >
         <DataDetailsPanel
-          v-if="current.dataset.isDataDownloaded"
-          :dataset="current.dataset"
-          :current-year="current.year"
-          :selected-region-id="current.selectedRegionId"
+          v-if="dataset.isDataDownloaded"
+          v-model:current-year="current.year"
+          v-model:dataset="dataset"
+          :selected-region-id="selectedRegionId"
           @data-row-click="onDataRowClick"
           @data-row-mouse-enter="onDataRowMouseEnter"
           @data-row-mouse-leave="onDataRowMouseLeave"
@@ -124,22 +132,30 @@ export default {
 
       <v-main id="main">
         <KeyWindow
-          :colour-map="current.dataset.colourMap"
-          :value-formatter="current.dataset.valueFormatter"
+          :colour-map="dataset.colourMap"
+          :value-formatter="dataset.valueFormatter"
         />
         <InfoPanel
-          :dataset="current.dataset"
+          :dataset="dataset"
           :selected-year="current.year"
-          :selected-region-id="current.selectedRegionId"
-          :highlighted-region-id="current.highlightedRegionId"
+          :selected-region-id="selectedRegionId"
+          :highlighted-region-id="highlightedRegionId"
           @close-button-clicked="deselectRegion"
         />
         <DataSelectionBar
-          :dataset-name="current.dataset.metadata.name"
+          :dataset-name="dataset.metadata.name"
           :selected-year="current.year"
           @toggle-drawer-button-clicked="current.toggleDrawer"
         />
-        <RegionsMap v-if="current.dataset.isDataDownloaded" />
+        <RegionsMap
+          v-if="dataset.isDataDownloaded"
+          v-model:highlighted-region-id="highlightedRegionId"
+          :year="current.year"
+          :selected-region-id="selectedRegionId"
+          :dataset="dataset"
+          @region-single-click="onRegionSingleClick"
+          @region-pointer-move="onRegionPointerMove"
+        />
       </v-main>
     </v-layout>
   </v-app>

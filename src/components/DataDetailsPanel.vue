@@ -23,7 +23,13 @@ export default {
       required: true,
     },
   },
-  emits: ["dataRowMouseLeave", "dataRowMouseEnter", "dataRowClick"],
+  emits: [
+    "dataRowMouseLeave",
+    "dataRowMouseEnter",
+    "dataRowClick",
+    "update:currentYear",
+    "update:dataset",
+  ],
   data() {
     return {
       current: useCurrent(),
@@ -72,7 +78,7 @@ export default {
         return this.currentYear;
       },
       set(value: string) {
-        this.current.setYear(value);
+        this.$emit("update:currentYear", value);
       },
     },
     selectedDataset: {
@@ -80,11 +86,10 @@ export default {
         return this.dataset.metadata.id;
       },
       set(value: string) {
-        this.current.setDataset(
-          this.allDatasets.find(
-            (dataset: Dataset) => dataset.metadata.id === value,
-          ),
+        const selectedDataset = this.allDatasets.find(
+          (dataset: Dataset) => dataset.metadata.id === value,
         );
+        this.$emit("update:dataset", selectedDataset);
       },
     },
   },
