@@ -1,6 +1,5 @@
 import App from "@/App.vue";
 import { createApp } from "vue";
-import { createPinia } from "pinia";
 import { earnings } from "@/datasets/earnings";
 import { hpi } from "@/datasets/hpi";
 import { lifeExpectancyFemale } from "@/datasets/life_expectancy_female";
@@ -51,7 +50,6 @@ const customDarkTheme = {
 };
 
 const app = createApp(App);
-const pinia = createPinia();
 const vuetify = createVuetify({
   components,
   directives,
@@ -96,6 +94,5 @@ app.provide("allDatasets", [
   lifeExpectancyMale,
 ]);
 
-app.use(pinia);
 app.use(vuetify);
 app.mount("#app");
