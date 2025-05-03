@@ -31,6 +31,14 @@ export default {
       type: String,
       required: true,
     },
+    geoJsonIdProperty: {
+      type: String,
+      required: true,
+    },
+    geoJsonFilePath: {
+      type: String,
+      required: true,
+    },
   },
   emits: [
     "regionSingleClick",
@@ -44,18 +52,11 @@ export default {
       view: undefined as View | undefined,
       map: undefined as Map | undefined,
       featureOverlay: undefined as VectorLayer | undefined,
-      // TODO: this can be a computed property of selectedRegionId
       selectedFeature: undefined as Feature | undefined,
       highlightedFeature: undefined as Feature | undefined,
     };
   },
   computed: {
-    geoJSONFilePath() {
-      return this.dataset.boundaries.getGeoJSONFilePathForYear(this.year);
-    },
-    geoJSONIDProperty() {
-      return this.dataset.boundaries.getIdPropertyForYear(this.year);
-    },
     backgroundColour() {
       return this.theme.global.current.dark ? "#212121" : "#F5F5F5";
     },
@@ -102,7 +103,7 @@ export default {
     year() {
       this.regionsLayer.setSource(
         new VectorSource({
-          url: this.geoJSONFilePath,
+          url: this.geoJsonFilePath,
           format: new GeoJSON({}),
         }),
       );
@@ -148,7 +149,7 @@ export default {
       );
       if (!feature) return;
 
-      this.$emit("regionSingleClick", feature.get(this.geoJSONIDProperty));
+      this.$emit("regionSingleClick", feature.get(this.geoJsonIdProperty));
     });
 
     this.map.on("pointermove", (e: MapBrowserEvent<UIEvent>) => {
@@ -165,7 +166,7 @@ export default {
         return;
       }
 
-      this.$emit("regionPointerMove", feature.get(this.geoJSONIDProperty));
+      this.$emit("regionPointerMove", feature.get(this.geoJsonIdProperty));
     });
   },
   methods: {
@@ -187,7 +188,7 @@ export default {
       const styleFunction = (feature: Feature): Style => {
         const regionColour = this.dataset.colourOf(
           this.year,
-          feature.get(this.geoJSONIDProperty),
+          feature.get(this.geoJsonIdProperty),
         );
         return new Style({
           fill: new Fill({ color: regionColour ?? Colours.GREY }),
@@ -199,7 +200,7 @@ export default {
         background: this.backgroundColour,
         imageRatio: 2,
         source: new VectorSource({
-          url: this.geoJSONFilePath,
+          url: this.geoJsonFilePath,
           format: new GeoJSON({}),
         }),
         style: styleFunction.bind(this) as StyleLike,
@@ -208,7 +209,7 @@ export default {
     getFeatureByRegionId(regionId: string): Feature {
       const features = this.regionsLayer.getSource().getFeatures();
       return features.find(
-        (feature: Feature) => feature.get(this.geoJSONIDProperty) === regionId,
+        (feature: Feature) => feature.get(this.geoJsonIdProperty) === regionId,
       );
     },
   },

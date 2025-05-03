@@ -32,6 +32,34 @@ export default {
     toggleThemeButtonIcon() {
       return this.theme.global.current.dark ? "$weatherNigh" : "$weatherSunny";
     },
+    geoJsonFilePath() {
+      const maybeFilePath = this.dataset.boundaries.boundariesFiles.get(
+        this.year,
+      )?.filePath;
+      if (!maybeFilePath) {
+        throw new Error(
+          `No file path found for the GeoJSON file for year ${this.year}`,
+        );
+      }
+      return maybeFilePath;
+    },
+    /**
+     * Get the ID property for the GeoJSON file for a given year. This is the property
+     * of each feature in the GeoJSON file that contain the code for the region the
+     * feature depicts.
+     * @throws Will throw an error if the year is not found in the boundaries files.
+     */
+    geoJsonIdProperty() {
+      const maybeIdProperty = this.dataset.boundaries.boundariesFiles.get(
+        this.year,
+      )?.idProperty;
+      if (!maybeIdProperty) {
+        throw new Error(
+          `No ID property found for the GeoJSON file for year ${this.year}`,
+        );
+      }
+      return maybeIdProperty;
+    },
   },
   watch: {
     dataset(newDataset) {
@@ -65,14 +93,14 @@ export default {
       if (this.selectedRegionId) this.highlightedRegionId = "";
       this.selectedRegionId = "";
     },
-    onDataRowClick(region: string) {
-      this.selectedRegionId = region;
+    onDataRowClick(regionId: string) {
+      this.selectedRegionId = regionId;
     },
-    onDataRowMouseEnter(region: string) {
-      this.highlightedRegionId = region;
+    onDataRowMouseEnter(regionId: string) {
+      this.highlightedRegionId = regionId;
     },
-    onDataRowMouseLeave(region: string) {
-      if (region === this.selectedRegionId) return;
+    onDataRowMouseLeave(regionId: string) {
+      if (regionId === this.selectedRegionId) return;
       this.highlightedRegionId = "";
     },
     onRegionSingleClick(regionId: string) {
@@ -152,6 +180,8 @@ export default {
           :year="year"
           :selected-region-id="selectedRegionId"
           :dataset="dataset"
+          :geo-json-id-property="geoJsonIdProperty"
+          :geo-json-file-path="geoJsonFilePath"
           @region-single-click="onRegionSingleClick"
           @region-pointer-move="onRegionPointerMove"
         />

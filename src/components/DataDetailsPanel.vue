@@ -90,6 +90,21 @@ export default {
         this.$emit("update:dataset", selectedDataset);
       },
     },
+    /**
+     * Get the source URL for the GeoJSON file for a given year.
+     * @throws Will throw an error if the year is not found in the boundaries files.
+     */
+    geoJsonSourceUrl() {
+      const maybeSourceUrl = this.dataset.boundaries.boundariesFiles.get(
+        this.selectedYear,
+      )?.sourceUrl;
+      if (!maybeSourceUrl) {
+        throw new Error(
+          `No source URL found for the GeoJSON file for year ${this.selectedYear}`,
+        );
+      }
+      return maybeSourceUrl;
+    },
   },
 };
 </script>
@@ -146,9 +161,7 @@ export default {
         <v-card class="mt-5 border" prepend-icon="$landFields" variant="flat">
           <template #title>Boundaries</template>
           <template #text>
-            <a
-              :href="dataset.boundaries.getGeoJSONSourceUrlForYear(currentYear)"
-            >
+            <a :href="geoJsonSourceUrl">
               {{ dataset.metadata.boundaries }}
             </a>
             <div class="mt-2">

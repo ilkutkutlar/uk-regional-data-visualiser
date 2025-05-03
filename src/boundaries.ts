@@ -33,50 +33,6 @@ export class Boundaries {
   }
 
   /**
-   * Get the file path to the GeoJSON file for a given year.
-   * @throws Will throw an error if the year is not found in the boundaries files.
-   */
-  getGeoJSONFilePathForYear(year: string): string {
-    const maybeFilePath = this.boundariesFiles.get(year)?.filePath;
-    if (!maybeFilePath) {
-      throw new Error(
-        `No file path found for the GeoJSON file for year ${year}`,
-      );
-    }
-    return maybeFilePath;
-  }
-
-  /**
-   * Get the source URL for the GeoJSON file for a given year.
-   * @throws Will throw an error if the year is not found in the boundaries files.
-   */
-  getGeoJSONSourceUrlForYear(year: string): string {
-    const maybeSourceUrl = this.boundariesFiles.get(year)?.sourceUrl;
-    if (!maybeSourceUrl) {
-      throw new Error(
-        `No source URL found for the GeoJSON file for year ${year}`,
-      );
-    }
-    return maybeSourceUrl;
-  }
-
-  /**
-   * Get the ID property for the GeoJSON file for a given year. This is the property
-   * of each feature in the GeoJSON file that contain the code for the region the
-   * feature depicts.
-   * @throws Will throw an error if the year is not found in the boundaries files.
-   */
-  getIdPropertyForYear(year: string): string {
-    const maybeIdProperty = this.boundariesFiles.get(year)?.idProperty;
-    if (!maybeIdProperty) {
-      throw new Error(
-        `No ID property found for the GeoJSON file for year ${year}`,
-      );
-    }
-    return maybeIdProperty;
-  }
-
-  /**
    * Get the pretty name for a given region code.
    * @returns The pretty name for the region code, or undefined if not found.
    */
