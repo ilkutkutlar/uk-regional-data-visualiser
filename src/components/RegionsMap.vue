@@ -19,6 +19,14 @@ export default {
       type: Dataset,
       required: true,
     },
+    geoJsonIdProperty: {
+      type: String,
+      required: true,
+    },
+    geoJsonFilePath: {
+      type: String,
+      required: true,
+    },
     highlightedRegionId: {
       type: String,
       required: true,
@@ -31,18 +39,10 @@ export default {
       type: String,
       required: true,
     },
-    geoJsonIdProperty: {
-      type: String,
-      required: true,
-    },
-    geoJsonFilePath: {
-      type: String,
-      required: true,
-    },
   },
   emits: [
-    "regionSingleClick",
     "regionPointerMove",
+    "regionSingleClick",
     "update:highlightedRegionId",
   ],
   data() {
@@ -54,6 +54,7 @@ export default {
       featureOverlay: undefined as VectorLayer | undefined,
       selectedFeature: undefined as Feature | undefined,
       highlightedFeature: undefined as Feature | undefined,
+      centredZoom: 9 as number,
     };
   },
   computed: {
@@ -74,8 +75,7 @@ export default {
 
       const feature = this.getFeatureByRegionId(newRegionId);
 
-      if (!feature) return;
-      if (feature === this.highlightedFeature) return;
+      if (!feature || feature === this.highlightedFeature) return;
       this.removeHighlightOverlay(this.highlightedFeature);
       if (feature === this.selectedFeature) return;
 
@@ -86,12 +86,12 @@ export default {
       if (newRegionId === "") {
         this.removeHighlightOverlay(this.selectedFeature);
         this.selectedFeature = null;
+        return;
       }
 
       const feature = this.getFeatureByRegionId(newRegionId);
 
-      if (!feature) return;
-      if (feature === this.selectedFeature) return;
+      if (!feature || feature === this.selectedFeature) return;
       if (this.selectedFeature) {
         this.removeHighlightOverlay(this.selectedFeature);
       }
@@ -177,11 +177,11 @@ export default {
       this.featureOverlay.getSource().removeFeature(regionFeature);
     },
     centreOnRegion(regionFeature: Feature) {
-      const zoom = this.view.getZoom() > 9 ? this.view.getZoom() : 9;
       this.view.fit(regionFeature.getGeometry(), {
         padding: [0, 200, 0, 0],
         duration: 400,
-        maxZoom: zoom,
+        // If we are already zoomed in more than the desired level, don't zoom out.
+        maxZoom: Math.max(this.view.getZoom(), this.centredZoom),
       });
     },
     createRegionsLayer(): VectorImageLayer {

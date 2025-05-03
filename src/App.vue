@@ -89,25 +89,19 @@ export default {
     onResize() {
       this.isDrawerOpen = window.innerWidth >= 992;
     },
+    selectRegion(regionId: string) {
+      this.selectedRegionId = regionId;
+    },
     deselectRegion() {
       if (this.selectedRegionId) this.highlightedRegionId = "";
       this.selectedRegionId = "";
     },
-    onDataRowClick(regionId: string) {
-      this.selectedRegionId = regionId;
-    },
-    onDataRowMouseEnter(regionId: string) {
+    highlightRegion(regionId: string) {
       this.highlightedRegionId = regionId;
     },
-    onDataRowMouseLeave(regionId: string) {
+    unhighlightRegion(regionId: string) {
       if (regionId === this.selectedRegionId) return;
       this.highlightedRegionId = "";
-    },
-    onRegionSingleClick(regionId: string) {
-      this.selectedRegionId = regionId;
-    },
-    onRegionPointerMove(regionId: string) {
-      this.highlightedRegionId = regionId;
     },
   },
 };
@@ -138,9 +132,9 @@ export default {
           v-model:current-year="year"
           v-model:dataset="dataset"
           :selected-region-id="selectedRegionId"
-          @data-row-click="onDataRowClick"
-          @data-row-mouse-enter="onDataRowMouseEnter"
-          @data-row-mouse-leave="onDataRowMouseLeave"
+          @data-row-click="selectRegion"
+          @data-row-mouse-enter="highlightRegion"
+          @data-row-mouse-leave="unhighlightRegion"
         />
         <template #append>
           <v-container>
@@ -182,8 +176,8 @@ export default {
           :dataset="dataset"
           :geo-json-id-property="geoJsonIdProperty"
           :geo-json-file-path="geoJsonFilePath"
-          @region-single-click="onRegionSingleClick"
-          @region-pointer-move="onRegionPointerMove"
+          @region-single-click="selectRegion"
+          @region-pointer-move="highlightRegion"
         />
       </v-main>
     </v-layout>
