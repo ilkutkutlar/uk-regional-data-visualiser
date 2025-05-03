@@ -12,9 +12,10 @@ type BoundariesGeoJSONFile = {
  * year to another.
  */
 export class Boundaries {
-  boundariesFiles: Map<string, BoundariesGeoJSONFile>;
+  name: string;
   prettyNames: Map<string, string>;
   countyLookup: Map<string, [string, string]>;
+  boundariesFiles: Map<string, BoundariesGeoJSONFile>;
 
   /**
    * Create a Boundaries object.
@@ -23,13 +24,15 @@ export class Boundaries {
    * @param countyLookup - A lookup table of region codes to county names.
    */
   constructor(
-    boundariesFiles: Map<string, BoundariesGeoJSONFile>,
+    name: string,
     prettyNames: Map<string, string>,
     countyLookup: Map<string, [string, string]>,
+    boundariesFiles: Map<string, BoundariesGeoJSONFile>,
   ) {
-    this.boundariesFiles = boundariesFiles;
+    this.name = name;
     this.prettyNames = prettyNames;
     this.countyLookup = countyLookup;
+    this.boundariesFiles = boundariesFiles;
   }
 
   /**

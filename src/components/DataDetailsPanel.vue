@@ -162,7 +162,7 @@ export default {
           <template #title>Boundaries</template>
           <template #text>
             <a :href="geoJsonSourceUrl">
-              {{ dataset.metadata.boundaries }}
+              {{ dataset.boundaries.name }}
             </a>
             <div class="mt-2">
               Source: Office for National Statistics licensed under the

@@ -12,7 +12,6 @@ export const netInternalMigration = new Dataset(
     source: "Office for National Statistics (ONS)",
     sourceLink:
       "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/migrationwithintheuk/datasets/internalmigrationlaandregionmovesandbysexandsingleyearofagetotals",
-    boundaries: "Local Authority Districts",
     licenceType: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,

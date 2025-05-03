@@ -11,7 +11,6 @@ export const earnings = new Dataset(
       "Median annual gross income for residents of each region. The figures include both part-time and full-time workers.",
     source: "Office for National Statistics (ONS)",
     sourceLink: "https://www.ons.gov.uk/datasets/ashe-tables-7-and-8",
-    boundaries: "Local Authority Districts",
     licenceType: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,
