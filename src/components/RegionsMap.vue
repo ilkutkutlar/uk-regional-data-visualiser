@@ -2,11 +2,12 @@
 import { defaults, DragPan } from "ol/interaction.js";
 import { Feature, Kinetic, MapBrowserEvent } from "ol";
 import { Fill, Stroke, Style } from "ol/style.js";
+import { Boundaries } from "@/boundaries";
 import { Colours } from "@/constants";
 import GeoJSON from "ol/format/GeoJSON.js";
 import Map from "ol/Map.js";
+import { RegionalDataset } from "@/dataset";
 import { type StyleLike } from "ol/style/Style";
-import { useCurrent } from "@/store";
 import { useTheme } from "vuetify";
 import VectorImageLayer from "ol/layer/VectorImage.js";
 import VectorLayer from "ol/layer/Vector.js";
@@ -14,37 +15,124 @@ import VectorSource from "ol/source/Vector.js";
 import View from "ol/View.js";
 
 export default {
+  props: {
+    dataset: {
+      type: RegionalDataset,
+      required: true,
+    },
+    boundaries: {
+      type: Boundaries,
+      required: true,
+    },
+    highlightedRegionId: {
+      type: String,
+      required: true,
+    },
+    selectedRegionId: {
+      type: String,
+      required: true,
+    },
+    year: {
+      type: String,
+      required: true,
+    },
+  },
+  emits: [
+    "regionPointerMove",
+    "regionSingleClick",
+    "update:highlightedRegionId",
+  ],
   data() {
     return {
-      current: useCurrent(),
       theme: useTheme(),
       regionsLayer: undefined as VectorImageLayer | undefined,
       view: undefined as View | undefined,
       map: undefined as Map | undefined,
       featureOverlay: undefined as VectorLayer | undefined,
-      // TODO: this can be a computed property of current.selectedRegionID
       selectedFeature: undefined as Feature | undefined,
       highlightedFeature: undefined as Feature | undefined,
+      centredZoom: 9 as number,
     };
   },
   computed: {
-    geoJSONFilePath() {
-      return this.current.dataset.boundaries.getGeoJSONFilePathForYear(
-        this.current.year,
-      );
-    },
-    geoJSONIDProperty() {
-      return this.current.dataset.boundaries.getIdPropertyForYear(
-        this.current.year,
-      );
-    },
     backgroundColour() {
       return this.theme.global.current.dark ? "#212121" : "#F5F5F5";
+    },
+    geoJsonFilePath() {
+      const maybeFilePath = this.dataset.boundaries.boundariesFiles.get(
+        this.year,
+      )?.filePath;
+      if (!maybeFilePath) {
+        throw new Error(
+          `No file path found for the GeoJSON file for year ${this.year}`,
+        );
+      }
+      return maybeFilePath;
+    },
+    /**
+     * Get the ID property for the GeoJSON file for a given year. This is the property
+     * of each feature in the GeoJSON file that contain the code for the region the
+     * feature depicts.
+     * @throws Will throw an error if the year is not found in the boundaries files.
+     */
+    geoJsonIdProperty() {
+      const maybeIdProperty = this.dataset.boundaries.boundariesFiles.get(
+        this.year,
+      )?.idProperty;
+      if (!maybeIdProperty) {
+        throw new Error(
+          `No ID property found for the GeoJSON file for year ${this.year}`,
+        );
+      }
+      return maybeIdProperty;
     },
   },
   watch: {
     "theme.global.name"() {
       this.regionsLayer.setBackground(this.backgroundColour);
+    },
+    highlightedRegionId(newRegionId) {
+      if (newRegionId === "") {
+        this.removeHighlightOverlay(this.highlightedFeature);
+        this.highlightedFeature = null;
+        return;
+      }
+
+      const feature = this.getFeatureByRegionId(newRegionId);
+
+      if (!feature || feature === this.highlightedFeature) return;
+      this.removeHighlightOverlay(this.highlightedFeature);
+      if (feature === this.selectedFeature) return;
+
+      this.applyHighlightOverlay(feature);
+      this.highlightedFeature = feature;
+    },
+    selectedRegionId(newRegionId) {
+      if (newRegionId === "") {
+        this.removeHighlightOverlay(this.selectedFeature);
+        this.selectedFeature = null;
+        return;
+      }
+
+      const feature = this.getFeatureByRegionId(newRegionId);
+
+      if (!feature || feature === this.selectedFeature) return;
+      if (this.selectedFeature) {
+        this.removeHighlightOverlay(this.selectedFeature);
+      }
+
+      this.highlightedFeature = null;
+      this.selectedFeature = feature;
+      this.centreOnRegion(feature);
+    },
+    year() {
+      this.regionsLayer.setSource(
+        new VectorSource({
+          url: this.geoJsonFilePath,
+          format: new GeoJSON({}),
+        }),
+      );
+      this.regionsLayer.changed();
     },
   },
   mounted() {
@@ -86,9 +174,7 @@ export default {
       );
       if (!feature) return;
 
-      this.current.$patch({
-        selectedRegionID: feature.get(this.geoJSONIDProperty),
-      });
+      this.$emit("regionSingleClick", feature.get(this.geoJsonIdProperty));
     });
 
     this.map.on("pointermove", (e: MapBrowserEvent<UIEvent>) => {
@@ -100,72 +186,12 @@ export default {
       );
       if (!feature) {
         if (this.highlightedFeature) {
-          this.current.clearHighlighted();
+          this.$emit("update:highlightedRegionId", "");
         }
         return;
       }
 
-      this.current.$patch({
-        highlightedRegionID: feature.get(this.geoJSONIDProperty),
-      });
-    });
-
-    this.current.$onAction(({ name, after }) => {
-      switch (name) {
-        case "setYear":
-          after(() => {
-            this.regionsLayer.setSource(
-              new VectorSource({
-                url: this.geoJSONFilePath,
-                format: new GeoJSON({}),
-              }),
-            );
-            this.regionsLayer.changed();
-          });
-          break;
-        case "clearHighlighted":
-          this.removeHighlightOverlay(this.highlightedFeature);
-          this.highlightedFeature = null;
-          break;
-        case "clearSelected":
-          this.removeHighlightOverlay(this.selectedFeature);
-          this.selectedFeature = null;
-          break;
-      }
-    });
-    this.current.$subscribe((mutation) => {
-      if (mutation.type !== "patch object") return;
-
-      // TODO: consider using actions instead
-      if (mutation.payload.highlightedRegionID) {
-        const feature = this.getFeatureByRegionId(
-          mutation.payload.highlightedRegionID,
-        );
-
-        if (!feature) return;
-        if (feature === this.highlightedFeature) return;
-        this.removeHighlightOverlay(this.highlightedFeature);
-        if (feature === this.selectedFeature) return;
-
-        this.applyHighlightOverlay(feature);
-        this.highlightedFeature = feature;
-      }
-
-      if (mutation.payload.selectedRegionID) {
-        const feature = this.getFeatureByRegionId(
-          mutation.payload.selectedRegionID,
-        );
-
-        if (!feature) return;
-        if (feature === this.selectedFeature) return;
-        if (this.selectedFeature) {
-          this.removeHighlightOverlay(this.selectedFeature);
-        }
-
-        this.highlightedFeature = null;
-        this.selectedFeature = feature;
-        this.centreOnRegion(feature);
-      }
+      this.$emit("regionPointerMove", feature.get(this.geoJsonIdProperty));
     });
   },
   methods: {
@@ -176,18 +202,18 @@ export default {
       this.featureOverlay.getSource().removeFeature(regionFeature);
     },
     centreOnRegion(regionFeature: Feature) {
-      const zoom = this.view.getZoom() > 9 ? this.view.getZoom() : 9;
       this.view.fit(regionFeature.getGeometry(), {
         padding: [0, 200, 0, 0],
         duration: 400,
-        maxZoom: zoom,
+        // If we are already zoomed in more than the desired level, don't zoom out.
+        maxZoom: Math.max(this.view.getZoom(), this.centredZoom),
       });
     },
     createRegionsLayer(): VectorImageLayer {
       const styleFunction = (feature: Feature): Style => {
-        const regionColour = this.current.dataset.colourOf(
-          this.current.year,
-          feature.get(this.geoJSONIDProperty),
+        const regionColour = this.dataset.colourOf(
+          this.year,
+          feature.get(this.geoJsonIdProperty),
         );
         return new Style({
           fill: new Fill({ color: regionColour ?? Colours.GREY }),
@@ -199,7 +225,7 @@ export default {
         background: this.backgroundColour,
         imageRatio: 2,
         source: new VectorSource({
-          url: this.geoJSONFilePath,
+          url: this.geoJsonFilePath,
           format: new GeoJSON({}),
         }),
         style: styleFunction.bind(this) as StyleLike,
@@ -208,7 +234,7 @@ export default {
     getFeatureByRegionId(regionId: string): Feature {
       const features = this.regionsLayer.getSource().getFeatures();
       return features.find(
-        (feature: Feature) => feature.get(this.geoJSONIDProperty) === regionId,
+        (feature: Feature) => feature.get(this.geoJsonIdProperty) === regionId,
       );
     },
   },

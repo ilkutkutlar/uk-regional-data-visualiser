@@ -9,25 +9,32 @@ type DatasetMetadata = {
   description: string;
   source: string;
   sourceLink: string;
-  boundaries: string;
   licenceType: string;
 };
 
-/* Class representing a dataset and configurations
+class RegionalDatasetTable {
+  data: { [index: string]: number };
+
+  constructor(data: { [index: string]: number }) {
+    this.data = data;
+  }
+}
+
+/* Class representing a dataset of regional data and configurations
    about how its values should be formatted and displayed */
-export class Dataset {
+export class RegionalDataset {
   metadata: DatasetMetadata;
   boundaries: Boundaries;
   colourMap: ColourMap;
   dataPath: string;
   valueFormatter: Formatter;
-  data: { [index: string]: { [index: string]: number } } = {};
+  tables: { [index: string]: RegionalDatasetTable } = {};
 
   /**
    * Get the years for which the dataset has data.
    */
   get years(): string[] {
-    return Object.keys(this.data);
+    return Object.keys(this.tables);
   }
 
   /**
@@ -35,7 +42,7 @@ export class Dataset {
    * has been downloaded to this instance.
    */
   get isDataDownloaded(): boolean {
-    return !_.isEmpty(this.data);
+    return !_.isEmpty(this.tables);
   }
 
   /**
@@ -72,8 +79,10 @@ export class Dataset {
       return new Promise<void>((resolve) => {
         fetch(this.dataPath, { method: "get" })
           .then((resp) => resp.json())
-          .then((data) => {
-            this.data = data;
+          .then((data: { [index: string]: { [index: string]: number } }) => {
+            for (const [year, dataForYear] of Object.entries(data)) {
+              this.tables[year] = new RegionalDatasetTable(dataForYear);
+            }
             resolve();
           });
       });
@@ -86,7 +95,7 @@ export class Dataset {
    * region or null if the colour map does not prescribe a colour for the value.
    */
   colourOf(year: string, regionCode: string): string | null {
-    const value = this.data[year][regionCode];
+    const value = this.tables[year].data[regionCode];
     return this.colourMap.mapValueToColour(value);
   }
 
@@ -95,8 +104,8 @@ export class Dataset {
    */
   valueOf(year: string, regionCode: string): number {
     let value = NaN;
-    if (year in this.data && regionCode in this.data[year]) {
-      value = this.data[year][regionCode];
+    if (year in this.tables && regionCode in this.tables[year].data) {
+      value = this.tables[year].data[regionCode];
     }
     return value;
   }

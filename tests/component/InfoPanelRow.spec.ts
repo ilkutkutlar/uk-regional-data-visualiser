@@ -1,11 +1,6 @@
-import { beforeEach, expect, test } from "vitest";
-import { createPinia, setActivePinia } from "pinia";
+import { expect, test } from "vitest";
 import InfoPanelRow from "../../src/components/InfoPanelRow.vue";
 import { mount } from "@vue/test-utils";
-
-beforeEach(() => {
-  setActivePinia(createPinia());
-});
 
 const testProps = {
   year: 2021,

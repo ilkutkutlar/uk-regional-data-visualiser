@@ -1,9 +1,9 @@
 import { Colours, ValueFormatters } from "@/constants";
 import { ColourMap } from "@/colour_map";
-import { Dataset } from "@/dataset";
 import { LocalAuthoritiesGeoJSON } from "@/boundaries/local_authorities";
+import { RegionalDataset } from "@/dataset";
 
-export const pubsAndBars = new Dataset(
+export const pubsAndBars = new RegionalDataset(
   {
     id: "pubs_and_bars_local",
     name: "Number of Pubs and Bars",
@@ -12,7 +12,6 @@ export const pubsAndBars = new Dataset(
     source: "Office for National Statistics (ONS)",
     sourceLink:
       "https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/datasets/publichousesandbarsbylocalauthority",
-    boundaries: "Local Authority Districts",
     licenceType: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,

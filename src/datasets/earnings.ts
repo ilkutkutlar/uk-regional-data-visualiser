@@ -1,9 +1,9 @@
 import { Colours, ValueFormatters } from "@/constants";
 import { ColourMap } from "@/colour_map";
-import { Dataset } from "@/dataset";
 import { LocalAuthoritiesGeoJSON } from "../boundaries/local_authorities";
+import { RegionalDataset } from "@/dataset";
 
-export const earnings = new Dataset(
+export const earnings = new RegionalDataset(
   {
     id: "median_earnings_local",
     name: "Median earnings",
@@ -11,7 +11,6 @@ export const earnings = new Dataset(
       "Median annual gross income for residents of each region. The figures include both part-time and full-time workers.",
     source: "Office for National Statistics (ONS)",
     sourceLink: "https://www.ons.gov.uk/datasets/ashe-tables-7-and-8",
-    boundaries: "Local Authority Districts",
     licenceType: "open_government_licence_v3",
   },
   LocalAuthoritiesGeoJSON,

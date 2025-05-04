@@ -1,9 +1,9 @@
 import { Colours, ValueFormatters } from "@/constants";
 import { ColourMap } from "@/colour_map";
-import { Dataset } from "@/dataset";
 import { LocalAuthoritiesGeoJSON } from "../boundaries/local_authorities";
+import { RegionalDataset } from "@/dataset";
 
-export const hpi = new Dataset(
+export const hpi = new RegionalDataset(
   {
     id: "hpi_local",
     name: "House prices",
@@ -12,7 +12,6 @@ export const hpi = new Dataset(
     source: "Office for National Statistics (ONS)",
     sourceLink:
       "https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-january-2022",
-    boundaries: "Local Authority Districts",
     licenceType: "open_government_licence_v3_hm_land_registry",
   },
   LocalAuthoritiesGeoJSON,

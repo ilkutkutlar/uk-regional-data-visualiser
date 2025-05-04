@@ -1,12 +1,16 @@
 <script lang="ts">
-import { useCurrent } from "@/store";
-
 export default {
-  data() {
-    return {
-      current: useCurrent(),
-    };
+  props: {
+    datasetName: {
+      type: String,
+      required: true,
+    },
+    selectedYear: {
+      type: String,
+      required: true,
+    },
   },
+  emits: ["toggleDrawerButtonClicked"],
 };
 </script>
 
@@ -21,15 +25,15 @@ export default {
             class="me-2"
             icon="$tune"
             color="primary"
-            @click="current.toggleDrawer"
+            @click="$emit('toggleDrawerButtonClicked')"
           ></v-btn>
         </v-col>
         <v-col cols="9">
           <div class="text-left">
             <div class="font-weight-thin">Dataset</div>
-            {{ current.dataset.metadata.name }}
+            {{ datasetName }}
             <span class="mx-3 font-weight-thin text-primary">|</span>
-            {{ current.year }}
+            {{ selectedYear }}
           </div>
         </v-col>
       </v-row>

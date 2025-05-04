@@ -12,9 +12,10 @@ type BoundariesGeoJSONFile = {
  * year to another.
  */
 export class Boundaries {
-  boundariesFiles: Map<string, BoundariesGeoJSONFile>;
+  name: string;
   prettyNames: Map<string, string>;
   countyLookup: Map<string, [string, string]>;
+  boundariesFiles: Map<string, BoundariesGeoJSONFile>;
 
   /**
    * Create a Boundaries object.
@@ -23,57 +24,15 @@ export class Boundaries {
    * @param countyLookup - A lookup table of region codes to county names.
    */
   constructor(
-    boundariesFiles: Map<string, BoundariesGeoJSONFile>,
+    name: string,
     prettyNames: Map<string, string>,
     countyLookup: Map<string, [string, string]>,
+    boundariesFiles: Map<string, BoundariesGeoJSONFile>,
   ) {
-    this.boundariesFiles = boundariesFiles;
+    this.name = name;
     this.prettyNames = prettyNames;
     this.countyLookup = countyLookup;
-  }
-
-  /**
-   * Get the file path to the GeoJSON file for a given year.
-   * @throws Will throw an error if the year is not found in the boundaries files.
-   */
-  getGeoJSONFilePathForYear(year: string): string {
-    const maybeFilePath = this.boundariesFiles.get(year)?.filePath;
-    if (!maybeFilePath) {
-      throw new Error(
-        `No file path found for the GeoJSON file for year ${year}`,
-      );
-    }
-    return maybeFilePath;
-  }
-
-  /**
-   * Get the source URL for the GeoJSON file for a given year.
-   * @throws Will throw an error if the year is not found in the boundaries files.
-   */
-  getGeoJSONSourceUrlForYear(year: string): string {
-    const maybeSourceUrl = this.boundariesFiles.get(year)?.sourceUrl;
-    if (!maybeSourceUrl) {
-      throw new Error(
-        `No source URL found for the GeoJSON file for year ${year}`,
-      );
-    }
-    return maybeSourceUrl;
-  }
-
-  /**
-   * Get the ID property for the GeoJSON file for a given year. This is the property
-   * of each feature in the GeoJSON file that contain the code for the region the
-   * feature depicts.
-   * @throws Will throw an error if the year is not found in the boundaries files.
-   */
-  getIdPropertyForYear(year: string): string {
-    const maybeIdProperty = this.boundariesFiles.get(year)?.idProperty;
-    if (!maybeIdProperty) {
-      throw new Error(
-        `No ID property found for the GeoJSON file for year ${year}`,
-      );
-    }
-    return maybeIdProperty;
+    this.boundariesFiles = boundariesFiles;
   }
 
   /**

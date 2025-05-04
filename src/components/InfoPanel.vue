@@ -1,20 +1,35 @@
 <script lang="ts">
 import _ from "lodash";
 import InfoPanelRow from "@/components/InfoPanelRow.vue";
-import { useCurrent } from "@/store";
+import { RegionalDataset } from "@/dataset";
 
 export default {
   components: {
     InfoPanelRow,
   },
-  data() {
-    return {
-      current: useCurrent(),
-    };
+  props: {
+    dataset: {
+      type: RegionalDataset,
+      required: true,
+    },
+    selectedYear: {
+      type: String,
+      required: true,
+    },
+    selectedRegionId: {
+      type: String,
+      required: true,
+    },
+    highlightedRegionId: {
+      type: String,
+      required: true,
+    },
   },
+  emits: ["closeButtonClicked"],
   computed: {
     rank() {
-      const rankIndex = _.chain(this.current.dataForCurrentYear)
+      const dataForCurrentYear = this.dataset.tables[this.selectedYear].data;
+      const rankIndex = _.chain(dataForCurrentYear)
         .toPairs()
         .sortBy((item) => item[1])
         .reverse()
@@ -43,19 +58,19 @@ export default {
       }
     },
     displayedRegion() {
-      if (this.current.selectedRegionID) {
-        return this.current.selectedRegionID;
+      if (this.selectedRegionId) {
+        return this.selectedRegionId;
       }
 
-      if (this.current.highlightedRegionID) {
-        return this.current.highlightedRegionID;
+      if (this.highlightedRegionId) {
+        return this.highlightedRegionId;
       }
 
       return "";
     },
     displayedYears() {
-      const years = this.current.dataset.years;
-      const currentIndex = years.indexOf(this.current.year);
+      const years = this.dataset.years;
+      const currentIndex = years.indexOf(this.selectedYear);
 
       let lowerBound;
       switch (currentIndex) {
@@ -72,26 +87,16 @@ export default {
       return years.slice(lowerBound, lowerBound + 3).reverse();
     },
     displayedRegionName() {
-      return this.current.dataset.boundaries.prettyNameOf(this.displayedRegion);
+      return this.dataset.boundaries.prettyNameOf(this.displayedRegion);
     },
     displayedRegionCounty() {
-      return this.current.dataset.boundaries.countyOf(this.displayedRegion);
+      return this.dataset.boundaries.countyOf(this.displayedRegion);
     },
   },
   methods: {
-    closeButtonClicked() {
-      if (this.current.selectedRegionID) this.current.clearHighlighted();
-      this.current.clearSelected();
-    },
     changeBetweenYears(fromYear: string, toYear: string): number {
-      const fromValue = this.current.dataset.valueOf(
-        fromYear,
-        this.displayedRegion,
-      );
-      const toValue = this.current.dataset.valueOf(
-        toYear,
-        this.displayedRegion,
-      );
+      const fromValue = this.dataset.valueOf(fromYear, this.displayedRegion);
+      const toValue = this.dataset.valueOf(toYear, this.displayedRegion);
       if (isNaN(fromValue) || isNaN(toValue)) return NaN;
       return ((toValue - fromValue) / fromValue) * 100;
     },
@@ -117,13 +122,13 @@ export default {
         </v-col>
         <v-col cols="2">
           <v-btn
-            v-show="current.selectedRegionID"
+            v-show="selectedRegionId"
             class="float-end"
             aria-label="Close"
             icon="$close"
             variant="plain"
             size="medium"
-            @click="closeButtonClicked"
+            @click="$emit('closeButtonClicked')"
           ></v-btn>
         </v-col>
       </v-row>
@@ -134,12 +139,10 @@ export default {
           <InfoPanelRow
             v-for="year in displayedYears"
             :key="year"
-            :is-selected-row="year == current.year"
+            :is-selected-row="year == selectedYear"
             :year="year"
             :value="
-              current.dataset.valueFormatter(
-                current.dataset.valueOf(year, displayedRegion),
-              )
+              dataset.valueFormatter(dataset.valueOf(year, displayedRegion))
             "
             :change-from-last-year="
               changeBetweenYears((parseInt(year) - 1).toString(), year)
