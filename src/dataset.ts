@@ -12,9 +12,9 @@ type DatasetMetadata = {
   licenceType: string;
 };
 
-/* Class representing a dataset and configurations
+/* Class representing a dataset of regional data and configurations
    about how its values should be formatted and displayed */
-export class Dataset {
+export class RegionalDataset {
   metadata: DatasetMetadata;
   boundaries: Boundaries;
   colourMap: ColourMap;

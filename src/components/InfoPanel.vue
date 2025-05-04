@@ -1,7 +1,7 @@
 <script lang="ts">
 import _ from "lodash";
-import { Dataset } from "@/dataset";
 import InfoPanelRow from "@/components/InfoPanelRow.vue";
+import { RegionalDataset } from "@/dataset";
 
 export default {
   components: {
@@ -9,7 +9,7 @@ export default {
   },
   props: {
     dataset: {
-      type: Dataset,
+      type: RegionalDataset,
       required: true,
     },
     selectedYear: {
@@ -27,11 +27,9 @@ export default {
   },
   emits: ["closeButtonClicked"],
   computed: {
-    dataForCurrentYear() {
-      return this.dataset.data[this.selectedYear];
-    },
     rank() {
-      const rankIndex = _.chain(this.dataForCurrentYear)
+      const dataForCurrentYear = this.dataset.data[this.selectedYear];
+      const rankIndex = _.chain(dataForCurrentYear)
         .toPairs()
         .sortBy((item) => item[1])
         .reverse()

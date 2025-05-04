@@ -1,9 +1,9 @@
 import { Colours, ValueFormatters } from "@/constants";
 import { ColourMap } from "@/colour_map";
-import { Dataset } from "@/dataset";
 import { LocalAuthoritiesGeoJSON } from "@/boundaries/local_authorities";
+import { RegionalDataset } from "@/dataset";
 
-export const lifeExpectancyMale = new Dataset(
+export const lifeExpectancyMale = new RegionalDataset(
   {
     id: "life_expectancy_male",
     name: "Life expectancy (Male)",

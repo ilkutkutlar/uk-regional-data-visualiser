@@ -1,9 +1,9 @@
 import { Colours, ValueFormatters } from "@/constants";
 import { ColourMap } from "@/colour_map";
-import { Dataset } from "@/dataset";
 import { LocalAuthoritiesGeoJSON } from "../boundaries/local_authorities";
+import { RegionalDataset } from "@/dataset";
 
-export const earnings = new Dataset(
+export const earnings = new RegionalDataset(
   {
     id: "median_earnings_local",
     name: "Median earnings",

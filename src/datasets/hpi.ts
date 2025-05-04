@@ -1,9 +1,9 @@
 import { Colours, ValueFormatters } from "@/constants";
 import { ColourMap } from "@/colour_map";
-import { Dataset } from "@/dataset";
 import { LocalAuthoritiesGeoJSON } from "../boundaries/local_authorities";
+import { RegionalDataset } from "@/dataset";
 
-export const hpi = new Dataset(
+export const hpi = new RegionalDataset(
   {
     id: "hpi_local",
     name: "House prices",

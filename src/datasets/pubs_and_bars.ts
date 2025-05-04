@@ -1,9 +1,9 @@
 import { Colours, ValueFormatters } from "@/constants";
 import { ColourMap } from "@/colour_map";
-import { Dataset } from "@/dataset";
 import { LocalAuthoritiesGeoJSON } from "@/boundaries/local_authorities";
+import { RegionalDataset } from "@/dataset";
 
-export const pubsAndBars = new Dataset(
+export const pubsAndBars = new RegionalDataset(
   {
     id: "pubs_and_bars_local",
     name: "Number of Pubs and Bars",

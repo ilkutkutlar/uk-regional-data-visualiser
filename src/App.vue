@@ -2,10 +2,10 @@
 import _ from "lodash";
 import DataDetailsPanel from "@/components/DataDetailsPanel.vue";
 import DataSelectionBar from "@/components/DataSelectionBar.vue";
-import { type Dataset } from "@/dataset";
 import { earnings } from "@/datasets/earnings";
 import InfoPanel from "@/components/InfoPanel.vue";
 import KeyWindow from "@/components/KeyWindow.vue";
+import { type RegionalDataset } from "@/dataset";
 import RegionsMap from "@/components/RegionsMap.vue";
 import { useTheme } from "vuetify";
 
@@ -23,7 +23,7 @@ export default {
       theme: useTheme(),
       highlightedRegionId: "" as string,
       selectedRegionId: "" as string,
-      dataset: earnings as Dataset,
+      dataset: earnings as RegionalDataset,
       year: "2021" as string,
       isDrawerOpen: true as boolean,
     };

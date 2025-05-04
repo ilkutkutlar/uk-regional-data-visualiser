@@ -1,7 +1,7 @@
 <script lang="ts">
 import _ from "lodash";
-import { Dataset } from "@/dataset";
 import LicenceInfoCard from "@/components/LicenceInfoCard.vue";
+import { RegionalDataset } from "@/dataset";
 
 export default {
   components: {
@@ -10,7 +10,7 @@ export default {
   inject: ["allDatasets"],
   props: {
     dataset: {
-      type: Dataset,
+      type: RegionalDataset,
       required: true,
     },
     currentYear: {
@@ -33,7 +33,7 @@ export default {
     return {
       searchText: "",
       tab: null,
-      dataSelectItems: this.allDatasets.map((dataset: Dataset) => {
+      dataSelectItems: this.allDatasets.map((dataset: RegionalDataset) => {
         return { value: dataset.metadata.id, text: dataset.metadata.name };
       }),
     };
@@ -51,11 +51,9 @@ export default {
          has been downloaded */
       return this.dataset.years;
     },
-    dataForCurrentYear() {
-      return this.dataset.data[this.selectedYear];
-    },
     filteredData() {
-      let data = this.dataForCurrentYear ?? {};
+      const dataForCurrentYear = this.dataset.data[this.selectedYear];
+      let data = dataForCurrentYear ?? {};
       if (this.searchText) {
         data = _.pickBy(data, (_, key) => {
           const formatted = this.keyFormatter(key) ?? "";
@@ -85,7 +83,7 @@ export default {
       },
       set(value: string) {
         const selectedDataset = this.allDatasets.find(
-          (dataset: Dataset) => dataset.metadata.id === value,
+          (dataset: RegionalDataset) => dataset.metadata.id === value,
         );
         this.$emit("update:dataset", selectedDataset);
       },

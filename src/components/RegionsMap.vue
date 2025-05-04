@@ -3,9 +3,9 @@ import { defaults, DragPan } from "ol/interaction.js";
 import { Feature, Kinetic, MapBrowserEvent } from "ol";
 import { Fill, Stroke, Style } from "ol/style.js";
 import { Colours } from "@/constants";
-import { Dataset } from "@/dataset";
 import GeoJSON from "ol/format/GeoJSON.js";
 import Map from "ol/Map.js";
+import { RegionalDataset } from "@/dataset";
 import { type StyleLike } from "ol/style/Style";
 import { useTheme } from "vuetify";
 import VectorImageLayer from "ol/layer/VectorImage.js";
@@ -16,7 +16,7 @@ import View from "ol/View.js";
 export default {
   props: {
     dataset: {
-      type: Dataset,
+      type: RegionalDataset,
       required: true,
     },
     geoJsonIdProperty: {

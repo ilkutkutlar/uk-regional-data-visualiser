@@ -1,9 +1,9 @@
 import { Colours, ValueFormatters } from "@/constants";
 import { ColourMap } from "@/colour_map";
-import { Dataset } from "@/dataset";
 import { LocalAuthoritiesGeoJSON } from "@/boundaries/local_authorities";
+import { RegionalDataset } from "@/dataset";
 
-export const netInternalMigration = new Dataset(
+export const netInternalMigration = new RegionalDataset(
   {
     id: "net_internal_migration",
     name: "Net Internal Migration",
