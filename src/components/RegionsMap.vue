@@ -2,6 +2,7 @@
 import { defaults, DragPan } from "ol/interaction.js";
 import { Feature, Kinetic, MapBrowserEvent } from "ol";
 import { Fill, Stroke, Style } from "ol/style.js";
+import { Boundaries } from "@/boundaries";
 import { Colours } from "@/constants";
 import GeoJSON from "ol/format/GeoJSON.js";
 import Map from "ol/Map.js";
@@ -19,12 +20,8 @@ export default {
       type: RegionalDataset,
       required: true,
     },
-    geoJsonIdProperty: {
-      type: String,
-      required: true,
-    },
-    geoJsonFilePath: {
-      type: String,
+    boundaries: {
+      type: Boundaries,
       required: true,
     },
     highlightedRegionId: {
@@ -60,6 +57,34 @@ export default {
   computed: {
     backgroundColour() {
       return this.theme.global.current.dark ? "#212121" : "#F5F5F5";
+    },
+    geoJsonFilePath() {
+      const maybeFilePath = this.dataset.boundaries.boundariesFiles.get(
+        this.year,
+      )?.filePath;
+      if (!maybeFilePath) {
+        throw new Error(
+          `No file path found for the GeoJSON file for year ${this.year}`,
+        );
+      }
+      return maybeFilePath;
+    },
+    /**
+     * Get the ID property for the GeoJSON file for a given year. This is the property
+     * of each feature in the GeoJSON file that contain the code for the region the
+     * feature depicts.
+     * @throws Will throw an error if the year is not found in the boundaries files.
+     */
+    geoJsonIdProperty() {
+      const maybeIdProperty = this.dataset.boundaries.boundariesFiles.get(
+        this.year,
+      )?.idProperty;
+      if (!maybeIdProperty) {
+        throw new Error(
+          `No ID property found for the GeoJSON file for year ${this.year}`,
+        );
+      }
+      return maybeIdProperty;
     },
   },
   watch: {

@@ -28,7 +28,7 @@ export default {
   emits: ["closeButtonClicked"],
   computed: {
     rank() {
-      const dataForCurrentYear = this.dataset.data[this.selectedYear];
+      const dataForCurrentYear = this.dataset.tables[this.selectedYear].data;
       const rankIndex = _.chain(dataForCurrentYear)
         .toPairs()
         .sortBy((item) => item[1])

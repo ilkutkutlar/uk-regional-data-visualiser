@@ -52,7 +52,7 @@ export default {
       return this.dataset.years;
     },
     filteredData() {
-      const dataForCurrentYear = this.dataset.data[this.selectedYear];
+      const dataForCurrentYear = this.dataset.tables[this.selectedYear].data;
       let data = dataForCurrentYear ?? {};
       if (this.searchText) {
         data = _.pickBy(data, (_, key) => {

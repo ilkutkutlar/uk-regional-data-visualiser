@@ -32,34 +32,6 @@ export default {
     toggleThemeButtonIcon() {
       return this.theme.global.current.dark ? "$weatherNigh" : "$weatherSunny";
     },
-    geoJsonFilePath() {
-      const maybeFilePath = this.dataset.boundaries.boundariesFiles.get(
-        this.year,
-      )?.filePath;
-      if (!maybeFilePath) {
-        throw new Error(
-          `No file path found for the GeoJSON file for year ${this.year}`,
-        );
-      }
-      return maybeFilePath;
-    },
-    /**
-     * Get the ID property for the GeoJSON file for a given year. This is the property
-     * of each feature in the GeoJSON file that contain the code for the region the
-     * feature depicts.
-     * @throws Will throw an error if the year is not found in the boundaries files.
-     */
-    geoJsonIdProperty() {
-      const maybeIdProperty = this.dataset.boundaries.boundariesFiles.get(
-        this.year,
-      )?.idProperty;
-      if (!maybeIdProperty) {
-        throw new Error(
-          `No ID property found for the GeoJSON file for year ${this.year}`,
-        );
-      }
-      return maybeIdProperty;
-    },
   },
   watch: {
     dataset(newDataset) {
@@ -157,6 +129,7 @@ export default {
           :value-formatter="dataset.valueFormatter"
         />
         <InfoPanel
+          v-if="dataset.isDataDownloaded"
           :dataset="dataset"
           :selected-year="year"
           :selected-region-id="selectedRegionId"
@@ -171,11 +144,10 @@ export default {
         <RegionsMap
           v-if="dataset.isDataDownloaded"
           v-model:highlighted-region-id="highlightedRegionId"
-          :year="year"
           :selected-region-id="selectedRegionId"
           :dataset="dataset"
-          :geo-json-id-property="geoJsonIdProperty"
-          :geo-json-file-path="geoJsonFilePath"
+          :boundaries="dataset.boundaries"
+          :year="year"
           @region-single-click="selectRegion"
           @region-pointer-move="highlightRegion"
         />
