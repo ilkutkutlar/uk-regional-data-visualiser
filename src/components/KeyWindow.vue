@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Colours, type Formatter } from "@/constants";
 import { ColourMap } from "@/colour_map";
+import type { PropType } from "vue";
 
 export default {
   props: {

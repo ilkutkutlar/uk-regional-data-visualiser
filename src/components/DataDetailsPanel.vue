@@ -1,5 +1,6 @@
 <script lang="ts">
 import _ from "lodash";
+
 import LicenceInfoCard from "@/components/LicenceInfoCard.vue";
 import { RegionalDataset } from "@/dataset";
 
@@ -93,15 +94,11 @@ export default {
      * @throws Will throw an error if the year is not found in the boundaries files.
      */
     geoJsonSourceUrl() {
-      const maybeSourceUrl = this.dataset.boundaries.boundariesFiles.get(
-        this.selectedYear,
-      )?.sourceUrl;
-      if (!maybeSourceUrl) {
-        throw new Error(
-          `No source URL found for the GeoJSON file for year ${this.selectedYear}`,
-        );
-      }
-      return maybeSourceUrl;
+      return (
+        this.dataset.boundaries.boundariesFiles.get(this.selectedYear)
+          ?.sourceUrl ??
+        this.dataset.boundaries.boundariesFiles.get("default")?.sourceUrl
+      );
     },
   },
 };
@@ -162,7 +159,7 @@ export default {
             <a :href="geoJsonSourceUrl">
               {{ dataset.boundaries.name }}
             </a>
-            <div class="mt-2">
+            <div v-once class="mt-2">
               Source: Office for National Statistics licensed under the
               <a
                 href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"

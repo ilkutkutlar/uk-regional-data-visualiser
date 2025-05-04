@@ -18,7 +18,7 @@ export default {
   <v-card id="bottom-card" class="ma-2 d-md-none">
     <v-card-text>
       <v-row class="px-2">
-        <v-col cols="3" class="text-right">
+        <v-col v-once cols="3" class="text-right">
           <v-btn
             size="small"
             variant="tonal"

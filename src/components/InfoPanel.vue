@@ -1,5 +1,6 @@
 <script lang="ts">
 import _ from "lodash";
+
 import InfoPanelRow from "@/components/InfoPanelRow.vue";
 import { RegionalDataset } from "@/dataset";
 
