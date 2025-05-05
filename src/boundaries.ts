@@ -1,7 +1,6 @@
 type BoundariesGeoJSONFile = {
   filePath: string;
   sourceUrl: string;
-  idProperty: string;
 };
 
 /**

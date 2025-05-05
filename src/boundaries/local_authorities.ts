@@ -705,15 +705,16 @@ export const LAD_CODE_TO_COUNTY: Map<string, [string, string]> = new Map([
   ["E09000031", ["E13000002", "Outer London"]],
 ]);
 
+const DATA_DIR = "./data/geojson/";
+
 // Boundaries data for 2017 is missing, so we use 2016 boundaries.
 const GEOJSON_FILES = new Map([
   [
     "default",
     {
-      filePath: "./data/geojson/LAD_DEC_2016_UK_BUC.geojson",
+      filePath: `${DATA_DIR}/LAD_DEC_2016_UK_BUC.geojson`,
       sourceUrl:
         "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2016-boundaries-uk-buc/about",
-      idProperty: "lad16cd",
     },
   ],
   [
@@ -722,7 +723,6 @@ const GEOJSON_FILES = new Map([
       filePath: "./data/geojson/LAD_DEC_2016_UK_BUC.geojson",
       sourceUrl:
         "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2016-boundaries-uk-buc/about",
-      idProperty: "lad16cd",
     },
   ],
   [
@@ -731,7 +731,6 @@ const GEOJSON_FILES = new Map([
       filePath: "./data/geojson/LAD_DEC_2016_UK_BUC.geojson",
       sourceUrl:
         "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2016-boundaries-uk-buc/about",
-      idProperty: "lad16cd",
     },
   ],
   [
@@ -740,7 +739,6 @@ const GEOJSON_FILES = new Map([
       filePath: "./data/geojson/LAD_DEC_2018_UK_BUC.geojson",
       sourceUrl:
         "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2018-boundaries-uk-buc-1/about",
-      idProperty: "lad18cd",
     },
   ],
   [
@@ -749,7 +747,6 @@ const GEOJSON_FILES = new Map([
       filePath: "./data/geojson/LAD_DEC_2019_UK_BUC.geojson",
       sourceUrl:
         "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2019-boundaries-uk-buc-1/about",
-      idProperty: "lad19cd",
     },
   ],
   [
@@ -758,7 +755,6 @@ const GEOJSON_FILES = new Map([
       filePath: "./data/geojson/LAD_DEC_2020_UK_BUC.geojson",
       sourceUrl:
         "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2020-boundaries-uk-buc/about",
-      idProperty: "LAD20CD",
     },
   ],
   [
@@ -767,7 +763,6 @@ const GEOJSON_FILES = new Map([
       filePath: "./data/geojson/LAD_DEC_2021_UK_BUC.geojson",
       sourceUrl:
         "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2021-boundaries-uk-buc-2/about",
-      idProperty: "LAD21CD",
     },
   ],
   [
@@ -776,7 +771,6 @@ const GEOJSON_FILES = new Map([
       filePath: "./data/geojson/LAD_DEC_2022_UK_BUC.geojson",
       sourceUrl:
         "https://geoportal.statistics.gov.uk/datasets/ons::local-authority-districts-december-2022-boundaries-uk-buc-2/about",
-      idProperty: "LAD22CD",
     },
   ],
 ]);

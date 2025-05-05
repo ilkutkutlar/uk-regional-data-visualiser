@@ -4,11 +4,18 @@ import _ from "lodash";
 import LicenceInfoCard from "@/components/LicenceInfoCard.vue";
 import { RegionalDataset } from "@/dataset";
 
+import { earnings } from "@/datasets/earnings";
+import { hpi } from "@/datasets/hpi";
+import { lifeExpectancyFemale } from "@/datasets/life_expectancy_female";
+import { lifeExpectancyMale } from "@/datasets/life_expectancy_male";
+import { netInternalMigration } from "@/datasets/net_internal_migration";
+import { population } from "@/datasets/population";
+import { pubsAndBars } from "@/datasets/pubs_and_bars";
+
 export default {
   components: {
     LicenceInfoCard,
   },
-  inject: ["allDatasets"],
   props: {
     dataset: {
       type: RegionalDataset,
@@ -32,17 +39,20 @@ export default {
   ],
   data() {
     return {
-      searchText: "",
-      tab: null,
-      dataSelectItems: this.allDatasets.map((dataset: RegionalDataset) => {
-        return { value: dataset.metadata.id, text: dataset.metadata.name };
-      }),
+      searchText: "" as string,
+      tab: null as string | null,
+      allDatasets: [
+        earnings,
+        hpi,
+        population,
+        netInternalMigration,
+        pubsAndBars,
+        lifeExpectancyFemale,
+        lifeExpectancyMale,
+      ] as Array<RegionalDataset>,
     };
   },
   computed: {
-    keyFormatter() {
-      return (region: string) => this.dataset.boundaries.prettyNameOf(region);
-    },
     yearSelectItems() {
       /* This is a computed property because `years`
          uses the "data" property, which is downloaded
@@ -51,6 +61,14 @@ export default {
          a computed property so it is updated when data
          has been downloaded */
       return this.dataset.years;
+    },
+    dataSelectItems() {
+      return this.allDatasets.map((dataset: RegionalDataset) => {
+        return { value: dataset.metadata.id, text: dataset.metadata.name };
+      });
+    },
+    keyFormatter() {
+      return (region: string) => this.dataset.boundaries.prettyNameOf(region);
     },
     filteredData() {
       const dataForCurrentYear = this.dataset.tables[this.selectedYear].data;

@@ -18,7 +18,6 @@ export default {
     DataSelectionBar,
     RegionsMap,
   },
-  inject: ["allDatasets"],
   data() {
     return {
       theme: useTheme(),

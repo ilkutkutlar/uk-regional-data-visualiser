@@ -140,7 +140,7 @@ export default {
           <InfoPanelRow
             v-for="year in displayedYears"
             :key="year"
-            :is-selected-row="year == selectedYear"
+            :is-selected-row="year === selectedYear"
             :year="year"
             :value="
               dataset.valueFormatter(dataset.valueOf(year, displayedRegion))

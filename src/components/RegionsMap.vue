@@ -62,18 +62,6 @@ export default {
         this.dataset.boundaries.boundariesFiles.get("default")?.filePath
       );
     },
-    /**
-     * Get the ID property for the GeoJSON file for a given year. This is the property
-     * of each feature in the GeoJSON file that contain the code for the region the
-     * feature depicts.
-     * @throws Will throw an error if the year is not found in the boundaries files.
-     */
-    geoJsonIdProperty() {
-      return (
-        this.dataset.boundaries.boundariesFiles.get(this.year)?.idProperty ??
-        this.dataset.boundaries.boundariesFiles.get("default")?.idProperty
-      );
-    },
   },
   watch: {
     theme() {
@@ -154,7 +142,7 @@ export default {
       const feature = this.map?.forEachFeatureAtPixel(e.pixel, (f) => f);
       if (!feature) return;
 
-      this.$emit("regionSingleClick", feature.get(this.geoJsonIdProperty));
+      this.$emit("regionSingleClick", feature.getId());
     });
 
     this.map.on("pointermove", (e: MapBrowserEvent<UIEvent>) => {
@@ -168,7 +156,7 @@ export default {
         return;
       }
 
-      this.$emit("regionPointerMove", feature.get(this.geoJsonIdProperty));
+      this.$emit("regionPointerMove", feature.getId());
     });
   },
   methods: {
@@ -191,10 +179,7 @@ export default {
     },
     createRegionsLayer(): VectorImageLayer {
       const styleFunction = (feature: Feature): Style => {
-        const regionColour = this.dataset.colourOf(
-          this.year,
-          feature.get(this.geoJsonIdProperty),
-        );
+        const regionColour = this.dataset.colourOf(this.year, feature.getId());
         return new Style({
           fill: new Fill({ color: regionColour ?? Colours.GREY }),
           stroke: new Stroke({ width: 1 }),
@@ -213,9 +198,7 @@ export default {
     },
     getFeatureByRegionId(regionId: string): Feature | undefined {
       const features = this.regionsLayer?.getSource()?.getFeatures();
-      return features?.find(
-        (feature: Feature) => feature.get(this.geoJsonIdProperty) === regionId,
-      );
+      return features?.find((feature: Feature) => feature.getId() === regionId);
     },
   },
 };

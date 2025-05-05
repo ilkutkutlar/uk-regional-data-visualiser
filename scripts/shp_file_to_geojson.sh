@@ -9,7 +9,6 @@ SIMPLIFY_FACTOR='25.0%'
 
 # Add this option for WGS84 maps
 # -proj webmercator \
-mapshaper \
-  -i id-field="${id_field}" "${shp_file}" \
+mapshaper "${shp_file}" \
   -simplify weighted "${SIMPLIFY_FACTOR}" \
   -o format=geojson id-field="${id_field}" "${output_dir}/${output_file}"
