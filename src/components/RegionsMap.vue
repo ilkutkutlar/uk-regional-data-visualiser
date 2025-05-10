@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defaults, DragPan } from "ol/interaction.js";
+import { defaults, DragPan, Select } from "ol/interaction.js";
 import { Feature, MapBrowserEvent } from "ol";
 import { Fill, Stroke, Style } from "ol/style.js";
 import GeoJSON from "ol/format/GeoJSON.js";
@@ -131,7 +131,7 @@ export default {
       source: new VectorSource(),
       style: new Style({
         stroke: new Stroke({ color: "white", width: 4 }),
-        fill: new Fill({ color: "rgba(255, 255, 255, 0.4)" }),
+        fill: new Fill({ color: [255, 255, 255, 0.4] }),
       }),
     });
 
@@ -181,7 +181,7 @@ export default {
         const regionColour = this.dataset.colourOf(this.year, feature.getId());
         return new Style({
           fill: new Fill({ color: regionColour ?? Colours.GREY }),
-          stroke: new Stroke({ width: 1 }),
+          stroke: new Stroke({ width: 1, color: [10, 10, 10, 0.5] }),
         });
       };
       // TODO: Create a custom source/layer type for UK map

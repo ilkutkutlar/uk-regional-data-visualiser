@@ -25,3 +25,6 @@ tests/i2e/screenshots/
 *.njsproj
 *.sln
 *.sw?
+
+# Misc.
+tmp/*
