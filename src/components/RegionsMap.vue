@@ -129,11 +129,10 @@ export default {
     this.featureOverlay = new VectorLayer({
       map: this.map,
       source: new VectorSource(),
-      style: {
-        "stroke-color": "rgba(255, 255, 255, 1)",
-        "stroke-width": 4,
-        "fill-color": "rgba(255, 255, 255, 0.4)",
-      },
+      style: new Style({
+        stroke: new Stroke({ color: "white", width: 4 }),
+        fill: new Fill({ color: "rgba(255, 255, 255, 0.4)" }),
+      }),
     });
 
     this.map.on("singleclick", (e: MapBrowserEvent<UIEvent>) => {
