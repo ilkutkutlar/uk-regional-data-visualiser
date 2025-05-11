@@ -109,7 +109,6 @@ export default {
     },
     /**
      * Get the source URL for the GeoJSON file for a given year.
-     * @throws Will throw an error if the year is not found in the boundaries files.
      */
     geoJsonSourceUrl() {
       return (

@@ -32,6 +32,31 @@ export default {
     toggleThemeButtonIcon() {
       return this.theme.global.current.dark ? "$weatherNight" : "$weatherSunny";
     },
+    regionColours() {
+      const mapping = new Map();
+
+      for (const [regionCode, regionValue] of Object.entries(
+        this.dataset.tables[this.year].data,
+      )) {
+        mapping.set(
+          regionCode,
+          this.dataset.colourMap.mapValueToColour(regionValue),
+        );
+      }
+
+      return mapping;
+    },
+    geoJsonFilePath() {
+      const files = this.dataset.boundaries.boundariesFiles;
+
+      const maybePath = files.get(this.year)?.filePath;
+      if (maybePath) return maybePath;
+
+      const maybeDefaultPath = files.get("default")?.filePath;
+      if (maybeDefaultPath) return maybeDefaultPath;
+
+      throw new Error("Could not find a GeoJSON file path for this year");
+    },
   },
   watch: {
     dataset(newDataset: RegionalDataset) {
@@ -145,8 +170,8 @@ export default {
           v-if="dataset.isDataDownloaded"
           v-model:highlighted-region-id="highlightedRegionId"
           :selected-region-id="selectedRegionId"
-          :dataset="dataset"
-          :year="year"
+          :region-colours="regionColours"
+          :geo-json-file-path="geoJsonFilePath"
           :theme="theme.global.name"
           @region-single-click="selectRegion"
           @region-pointer-move="highlightRegion"

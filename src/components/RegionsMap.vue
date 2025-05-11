@@ -3,7 +3,7 @@ import { defaults, DragPan } from "ol/interaction.js";
 import { Feature, MapBrowserEvent } from "ol";
 import { Fill, Stroke, Style } from "ol/style.js";
 import GeoJSON from "ol/format/GeoJSON.js";
-import Map from "ol/Map.js";
+import OpenLayersMap from "ol/Map.js";
 import { type StyleLike } from "ol/style/Style";
 import VectorImageLayer from "ol/layer/VectorImage.js";
 import VectorLayer from "ol/layer/Vector.js";
@@ -11,7 +11,6 @@ import VectorSource from "ol/source/Vector.js";
 import View from "ol/View.js";
 
 import { Colours } from "@/constants";
-import { RegionalDataset } from "@/dataset";
 
 export default {
   props: {
@@ -23,12 +22,12 @@ export default {
       type: String,
       required: true,
     },
-    dataset: {
-      type: RegionalDataset,
+    geoJsonFilePath: {
+      type: String,
       required: true,
     },
-    year: {
-      type: String,
+    regionColours: {
+      type: Map<number | string | undefined, Colours>,
       required: true,
     },
     theme: {
@@ -45,7 +44,7 @@ export default {
     return {
       regionsLayer: undefined as VectorImageLayer | undefined,
       view: undefined as View | undefined,
-      map: undefined as Map | undefined,
+      map: undefined as OpenLayersMap | undefined,
       featureOverlay: undefined as VectorLayer | undefined,
       selectedFeature: null as Feature | null,
       highlightedFeature: null as Feature | null,
@@ -55,12 +54,6 @@ export default {
   computed: {
     backgroundColour() {
       return this.theme === "dark" ? "#212121" : "#F5F5F5";
-    },
-    geoJsonFilePath() {
-      return (
-        this.dataset.boundaries.boundariesFiles.get(this.year)?.filePath ??
-        this.dataset.boundaries.boundariesFiles.get("default")?.filePath
-      );
     },
   },
   watch: {
@@ -101,13 +94,16 @@ export default {
       this.selectedFeature = feature;
       this.centreOnRegion(feature);
     },
-    year() {
+    geoJsonFilePath() {
       this.regionsLayer?.setSource(
         new VectorSource({
           url: this.geoJsonFilePath,
           format: new GeoJSON({}),
         }),
       );
+      this.regionsLayer?.changed();
+    },
+    regionColours() {
       this.regionsLayer?.changed();
     },
   },
@@ -119,7 +115,7 @@ export default {
       zoom: 7,
       maxZoom: 11,
     });
-    this.map = new Map({
+    this.map = new OpenLayersMap({
       layers: [this.regionsLayer],
       target: "map",
       view: this.view,
@@ -178,13 +174,13 @@ export default {
     },
     createRegionsLayer(): VectorImageLayer {
       const styleFunction = (feature: Feature): Style => {
-        const regionColour = this.dataset.colourOf(this.year, feature.getId());
+        const regionColour = this.regionColours.get(feature.getId());
         return new Style({
           fill: new Fill({ color: regionColour ?? Colours.GREY }),
           stroke: new Stroke({ width: 1, color: [10, 10, 10, 0.5] }),
         });
       };
-      // TODO: Create a custom source/layer type for UK map
+
       return new VectorImageLayer({
         background: this.backgroundColour,
         imageRatio: 2,
