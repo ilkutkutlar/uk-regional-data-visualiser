@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defaults, DragPan, Select } from "ol/interaction.js";
+import { defaults, DragPan } from "ol/interaction.js";
 import { Feature, MapBrowserEvent } from "ol";
 import { Fill, Stroke, Style } from "ol/style.js";
 import GeoJSON from "ol/format/GeoJSON.js";
