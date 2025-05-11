@@ -20,7 +20,7 @@ export default {
     <template #title>Licence information</template>
     <template #text>
       <div class="mb-3">
-        <span class="text-subtitle-1 mb-1 font-weight-medium">
+        <span v-once class="text-subtitle-1 mb-1 font-weight-medium">
           For the datasets
         </span>
         <div v-if="licenceType == 'open_government_licence_v3'">
@@ -42,7 +42,7 @@ export default {
         </div>
       </div>
 
-      <div>
+      <div v-once>
         <span class="text-subtitle-1 mb-1 font-weight-medium">
           For the county and region code lookups
         </span>

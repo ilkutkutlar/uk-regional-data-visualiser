@@ -1,5 +1,7 @@
 <script lang="ts">
 import _ from "lodash";
+import { useTheme } from "vuetify";
+
 import DataDetailsPanel from "@/components/DataDetailsPanel.vue";
 import DataSelectionBar from "@/components/DataSelectionBar.vue";
 import { earnings } from "@/datasets/earnings";
@@ -7,7 +9,6 @@ import InfoPanel from "@/components/InfoPanel.vue";
 import KeyWindow from "@/components/KeyWindow.vue";
 import { type RegionalDataset } from "@/dataset";
 import RegionsMap from "@/components/RegionsMap.vue";
-import { useTheme } from "vuetify";
 
 export default {
   components: {
@@ -17,7 +18,6 @@ export default {
     DataSelectionBar,
     RegionsMap,
   },
-  inject: ["allDatasets"],
   data() {
     return {
       theme: useTheme(),
@@ -30,11 +30,11 @@ export default {
   },
   computed: {
     toggleThemeButtonIcon() {
-      return this.theme.global.current.dark ? "$weatherNigh" : "$weatherSunny";
+      return this.theme.global.current.dark ? "$weatherNight" : "$weatherSunny";
     },
   },
   watch: {
-    dataset(newDataset) {
+    dataset(newDataset: RegionalDataset) {
       this.highlightedRegionId = "";
       this.selectedRegionId = "";
       newDataset
@@ -88,7 +88,7 @@ export default {
           variant="text"
           @click.stop="toggleDrawer"
         ></v-app-bar-nav-icon>
-        <v-toolbar-title>UK Regional Data Visualiser</v-toolbar-title>
+        <v-toolbar-title v-once>UK Regional Data Visualiser</v-toolbar-title>
         <v-btn :icon="toggleThemeButtonIcon" @click="toggleTheme"></v-btn>
       </v-app-bar>
 
@@ -146,8 +146,8 @@ export default {
           v-model:highlighted-region-id="highlightedRegionId"
           :selected-region-id="selectedRegionId"
           :dataset="dataset"
-          :boundaries="dataset.boundaries"
           :year="year"
+          :theme="theme.global.name"
           @region-single-click="selectRegion"
           @region-pointer-move="highlightRegion"
         />

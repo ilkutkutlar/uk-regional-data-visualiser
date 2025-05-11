@@ -49,7 +49,7 @@ export default {
       <span data-cy="year" class="font-weight-bold text-primary">
         {{ year }}
       </span>
-      <span class="mx-2 font-weight-thin">|</span>
+      <span v-once class="mx-2 font-weight-thin">|</span>
       <span data-cy="value">
         {{ value }}
       </span>
