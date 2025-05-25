@@ -1,5 +1,6 @@
 {
-  "name": "data-maps",
+  "name": "uk-regional-data-visualiser",
+  "description": "Interactive tool for visualising and exploring regional data related to the UK",
   "version": "0.0.1",
   "private": true,
   "type": "module",
