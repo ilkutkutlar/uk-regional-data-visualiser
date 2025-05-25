@@ -10,8 +10,6 @@ import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 import View from "ol/View.js";
 
-import { Colours } from "@/constants";
-
 export default {
   props: {
     highlightedRegionId: {
@@ -27,8 +25,12 @@ export default {
       required: true,
     },
     regionColours: {
-      type: Map<number | string | undefined, Colours>,
+      type: Map<number | string | undefined, string>,
       required: true,
+    },
+    regionNoDataColour: {
+      type: String,
+      default: "#BFBFBF",
     },
     theme: {
       type: String,
@@ -177,7 +179,7 @@ export default {
       const styleFunction = (feature: Feature): Style => {
         const regionColour = this.regionColours.get(feature.getId());
         return new Style({
-          fill: new Fill({ color: regionColour ?? Colours.GREY }),
+          fill: new Fill({ color: regionColour ?? this.regionNoDataColour }),
           stroke: new Stroke({ width: 1, color: [10, 10, 10, 0.5] }),
         });
       };
