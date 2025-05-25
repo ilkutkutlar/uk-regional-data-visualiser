@@ -119,6 +119,7 @@ export default {
       layers: [this.regionsLayer],
       target: "map",
       view: this.view,
+      controls: [],
       interactions: defaults({ dragPan: false }).extend([new DragPan()]),
     });
 
