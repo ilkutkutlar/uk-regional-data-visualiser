@@ -1,5 +1,6 @@
 import App from "@/App.vue";
 import { createApp } from "vue";
+import RegionsMap from "vue-geojson-regions-map";
 
 import "vuetify/styles";
 import * as components from "vuetify/components";
@@ -78,4 +79,5 @@ const vuetify = createVuetify({
 });
 
 app.use(vuetify);
+app.use(RegionsMap);
 app.mount("#app");

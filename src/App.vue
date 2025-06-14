@@ -8,7 +8,6 @@ import { earnings } from "@/datasets/earnings";
 import InfoPanel from "@/components/InfoPanel.vue";
 import KeyWindow from "@/components/KeyWindow.vue";
 import { type RegionalDataset } from "@/dataset";
-import RegionsMap from "@/components/RegionsMap.vue";
 
 export default {
   components: {
@@ -16,7 +15,6 @@ export default {
     InfoPanel,
     DataDetailsPanel,
     DataSelectionBar,
-    RegionsMap,
   },
   data() {
     return {
@@ -199,5 +197,11 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 10;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  position: absolute;
 }
 </style>
