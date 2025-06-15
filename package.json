@@ -22,9 +22,8 @@
     "@mdi/font": "^7.1.96",
     "d3": "^7.9.0",
     "lodash": "^4.17.21",
-    "ol": "^10.4.0",
     "vue": "^3.5.13",
-    "vue-geojson-regions-map": "^0.0.3",
+    "vue-geojson-regions-map": "^0.0.4",
     "vue-router": "^4.5.0",
     "vuetify": "^3.7.18"
   },

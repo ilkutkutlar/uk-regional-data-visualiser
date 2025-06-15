@@ -55,6 +55,18 @@ export default {
 
       throw new Error("Could not find a GeoJSON file path for this year");
     },
+    extraViewOptions() {
+      return {
+        // center: [444377,339011],
+        center: [288231,591158],
+        minZoom: 7,
+        zoom: 7,
+        maxZoom: 11,
+        // extent: [-532389, -477563, 1210118, 1581434],
+        // extent: [-341962,-380064,1375862,1593397]
+        // extent: [-749154,-521725,1337519,1833445]
+      };
+    },
   },
   watch: {
     dataset(newDataset: RegionalDataset) {
@@ -167,6 +179,7 @@ export default {
         <RegionsMap
           v-if="dataset.isDataDownloaded"
           v-model:highlighted-region-id="highlightedRegionId"
+          :extra-view-options="extraViewOptions"
           :selected-region-id="selectedRegionId"
           :region-colours="regionColours"
           :geo-json-file-path="geoJsonFilePath"
