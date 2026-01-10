@@ -58,7 +58,7 @@ export default {
     extraViewOptions() {
       return {
         // center: [444377,339011],
-        center: [288231,591158],
+        center: [288231, 591158],
         minZoom: 7,
         zoom: 7,
         maxZoom: 11,
